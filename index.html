@@ -1,0 +1,2108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AtomCollide AI智能体实验室 · 21款产品矩阵</title>
+<style>
+/* ========================================
+   AtomCollide v3 — Cyber-Tech Design System
+   赛博科技风：透视网格 · 双粒子场 · 全息卡片 · 数据流
+   ======================================== */
+:root {
+  --abyss: #020617;
+  --void: #060b1a;
+  --deep: #0b132b;
+  --navy: #111d3d;
+  --slate: #1a2d56;
+  --steel: #243b6e;
+  --electric: #3366ff;
+  --cyan: #00d4ff;
+  --neon: #00f0ff;
+  --mint: #2dd4bf;
+  --amber: #f59e0b;
+  --rose: #f472b6;
+  --violet: #a78bfa;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --card-bg: rgba(11,19,43,0.82);
+  --card-border: rgba(51,102,255,0.18);
+  --glass: rgba(11,19,43,0.55);
+  --glow-cyan: 0 0 20px rgba(0,212,255,0.4), 0 0 60px rgba(0,212,255,0.15);
+  --glow-blue: 0 0 20px rgba(51,102,255,0.4), 0 0 60px rgba(51,102,255,0.12);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--abyss);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.7;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── Background Layers ── */
+
+/* Layer 0: Perspective Grid */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    linear-gradient(rgba(51,102,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(51,102,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Layer 1: Scanlines */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Layer 2: Radial Vignette */
+.page-vignette {
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, transparent 40%, rgba(2,6,23,0.7) 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Dual Canvas System ── */
+#particle-drift, #data-stream {
+  position: fixed; top:0; left:0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+#data-stream { z-index: 2; opacity: 0.5; }
+
+/* ── Content Wrapper ── */
+.content-layer {
+  position: relative;
+  z-index: 10;
+}
+
+/* ── Top Navigation ── */
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 48px;
+  background: rgba(6,11,26,0.78);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(51,102,255,0.12);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.top-nav::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 5%; right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,240,255,0.3) 20%, rgba(0,240,255,0.6) 50%, rgba(0,240,255,0.3) 80%, transparent);
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text-primary);
+}
+.nav-brand svg { width: 34px; height: 34px; }
+.nav-links {
+  display: flex;
+  gap: 36px;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+}
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.25s;
+  position: relative;
+  padding: 4px 0;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: var(--cyan);
+  transition: width 0.3s;
+}
+.nav-links a:hover { color: var(--cyan); }
+.nav-links a:hover::after { width: 100%; }
+
+/* ── System Status Bar ── */
+.sys-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 10px 20px;
+  background: rgba(2,6,23,0.6);
+  border-bottom: 1px solid rgba(51,102,255,0.06);
+  font-family: 'SF Mono','Fira Code','Cascadia Code',monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+.sys-item { display: flex; align-items: center; gap: 6px; }
+.sys-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--mint);
+  box-shadow: 0 0 6px var(--mint);
+  animation: sys-pulse 2s ease-in-out infinite;
+}
+.sys-dot.warn { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+@keyframes sys-pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 90px 20px 70px;
+  position: relative;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,212,255,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Atom Animation — Enhanced */
+.hero-atom-wrap {
+  position: relative;
+  width: 200px; height: 200px;
+  margin: 0 auto 36px;
+}
+.atom-core {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 40px; height: 40px;
+  background: radial-gradient(circle at 35% 35%, #fff, var(--cyan) 30%, var(--electric) 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(0,240,255,0.6), 0 0 80px rgba(0,240,255,0.25), 0 0 120px rgba(0,240,255,0.1);
+  animation: core-breathe 2.5s ease-in-out infinite;
+}
+@keyframes core-breathe {
+  0%,100% { box-shadow: 0 0 40px rgba(0,240,255,0.6), 0 0 80px rgba(0,240,255,0.25); }
+  50% { box-shadow: 0 0 60px rgba(0,240,255,0.8), 0 0 120px rgba(0,240,255,0.4), 0 0 180px rgba(0,240,255,0.15); }
+}
+
+/* Ring Wave from core */
+.atom-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  border: 1px solid rgba(0,240,255,0.25);
+  animation: ring-expand 3s ease-out infinite;
+}
+.atom-ring:nth-child(2) { animation-delay: 1s; }
+.atom-ring:nth-child(3) { animation-delay: 2s; }
+@keyframes ring-expand {
+  0% { width: 40px; height: 40px; opacity: 0.6; }
+  100% { width: 260px; height: 260px; opacity: 0; }
+}
+
+/* Orbits */
+.atom-orbit {
+  position: absolute;
+  top: 50%; left: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(51,102,255,0.25);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.atom-orbit::after {
+  content: '';
+  position: absolute;
+  width: 8px; height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--cyan), 0 0 24px rgba(0,240,255,0.5);
+}
+.orbit-1 { width: 130px; height: 130px; margin: -65px 0 0 -65px; transform: rotateX(72deg); animation: orbit-spin 7s linear infinite; }
+.orbit-1::after { top: -4px; left: 50%; margin-left: -4px; }
+.orbit-2 { width: 170px; height: 115px; margin: -57px 0 0 -85px; transform: rotateX(68deg) rotateY(35deg); animation: orbit-spin 11s linear infinite reverse; }
+.orbit-2::after { top: 50%; left: -4px; margin-top: -4px; }
+.orbit-3 { width: 150px; height: 90px; margin: -45px 0 0 -75px; transform: rotateX(65deg) rotateY(-25deg); animation: orbit-spin 9s linear infinite; }
+.orbit-3::after { bottom: -4px; left: 50%; margin-left: -4px; }
+.orbit-4 { width: 190px; height: 140px; margin: -70px 0 0 -95px; transform: rotateX(60deg) rotateY(-45deg); animation: orbit-spin 13s linear infinite reverse; }
+.orbit-4::after { top: 30%; right: -4px; margin-top: -4px; }
+
+@keyframes orbit-spin {
+  from { transform: rotateX(72deg) rotate(0deg); }
+  to { transform: rotateX(72deg) rotate(360deg); }
+}
+
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 22px;
+  background: rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 100px;
+  font-family: 'SF Mono','Fira Code',monospace;
+  font-size: 12px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+}
+.hero-label .blip {
+  width: 5px; height: 5px;
+  background: var(--cyan);
+  border-radius: 50%;
+  animation: blip 1.2s ease-in-out infinite;
+}
+@keyframes blip {
+  0%,100% { opacity: 1; box-shadow: 0 0 6px var(--cyan); }
+  50% { opacity: 0.2; box-shadow: 0 0 2px var(--cyan); }
+}
+
+.hero h1 {
+  font-size: clamp(36px, 7vw, 58px);
+  font-weight: 800;
+  line-height: 1.18;
+  margin-bottom: 14px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #e2e8f0 0%, #7dd3fc 30%, #00d4ff 55%, #a5b4fc 80%, #e2e8f0 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shimmer 4s linear infinite;
+}
+@keyframes text-shimmer {
+  to { background-position: 200% center; }
+}
+.hero .subtitle {
+  font-size: 17px;
+  color: var(--text-secondary);
+  letter-spacing: 0.8px;
+  max-width: 640px;
+  margin: 0 auto 28px;
+}
+.hero-tags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+.htag {
+  padding: 8px 18px;
+  background: rgba(17,29,61,0.6);
+  border: 1px solid rgba(51,102,255,0.15);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  transition: all 0.3s;
+  cursor: default;
+}
+.htag:hover {
+  border-color: rgba(0,240,255,0.4);
+  color: var(--cyan);
+  box-shadow: 0 0 18px rgba(0,212,255,0.1);
+  transform: translateY(-1px);
+}
+
+/* Stats */
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 64px;
+  flex-wrap: wrap;
+}
+.stat-block { text-align: center; }
+.stat-num {
+  font-family: 'SF Mono','Fira Code',monospace;
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--cyan);
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(0,212,255,0.3);
+  font-variant-numeric: tabular-nums;
+}
+.stat-lbl {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ── Section Header ── */
+.section-hd {
+  text-align: center;
+  padding: 50px 20px 40px;
+}
+.section-hd .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 18px;
+  background: rgba(0,212,255,0.05);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 6px;
+  font-family: 'SF Mono',monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 1.5px;
+  margin-bottom: 16px;
+}
+.section-hd h2 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+.section-hd p {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+/* ── Knowledge Tree ── */
+.tree-wrap {
+  padding: 0 40px 40px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+.tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tree-root {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 34px;
+  background: linear-gradient(135deg, rgba(17,29,61,0.8), rgba(36,59,110,0.3));
+  border: 1px solid rgba(0,240,255,0.25);
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 1.5px;
+  box-shadow: 0 0 30px rgba(0,212,255,0.08);
+  position: relative;
+}
+.tree-root::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,240,255,0.1);
+  animation: border-pulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes border-pulse {
+  0%,100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+.tree-trunk {
+  width: 2px;
+  height: 36px;
+  background: linear-gradient(to bottom, rgba(0,240,255,0.35), rgba(51,102,255,0.08));
+  position: relative;
+}
+.tree-trunk::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 4px; height: 4px;
+  background: var(--cyan);
+  border-radius: 50%;
+  left: -1px;
+  animation: data-drop 2s ease-in infinite;
+}
+@keyframes data-drop {
+  0% { top: 0%; opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.tree-branches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 20px 24px;
+  position: relative;
+  padding: 14px 0 0 0;
+  width: 100%;
+}
+.tree-branches::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 5%; right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(51,102,255,0.25) 15%, rgba(0,240,255,0.35) 50%, rgba(51,102,255,0.25) 85%, transparent);
+}
+.tree-branch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: rgba(11,19,43,0.25);
+  border: 1px solid rgba(51,102,255,0.06);
+  border-radius: 16px;
+  padding: 18px 14px 16px;
+  transition: all 0.3s;
+  position: relative;
+}
+.tree-branch:hover {
+  border-color: rgba(51,102,255,0.15);
+  background: rgba(11,19,43,0.45);
+  box-shadow: 0 0 24px rgba(0,212,255,0.04);
+}
+.tree-node {
+  padding: 11px 20px;
+  width: 100%;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+  transition: all 0.3s;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.tree-node::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0,240,255,0.06), transparent);
+  transition: left 0.5s;
+}
+.tree-node:hover::before { left: 100%; }
+.tree-node:hover {
+  border-color: rgba(0,240,255,0.5);
+  box-shadow: 0 0 20px rgba(0,212,255,0.1);
+  transform: translateY(-1px);
+}
+.tree-line {
+  width: 1px;
+  height: 18px;
+  background: linear-gradient(to bottom, rgba(51,102,255,0.2), rgba(0,240,255,0.05));
+}
+.tree-leaves {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 42px;
+  width: 100%;
+}
+.tree-leaf {
+  padding: 5px 11px;
+  background: rgba(17,29,61,0.45);
+  border: 1px solid rgba(51,102,255,0.08);
+  border-radius: 6px;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  transition: all 0.25s;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+.tree-leaf:hover {
+  border-color: rgba(0,240,255,0.35);
+  color: var(--text-primary);
+  background: rgba(17,29,61,0.75);
+  box-shadow: 0 0 12px rgba(0,212,255,0.06);
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════
+   BUSINESS ENGINE — Five-Layer Pipeline
+   ═══════════════════════════════════════ */
+.engine-wrap {
+  padding: 20px 40px 50px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Section header override for engine */
+.engine-hd {
+  text-align: center;
+  padding: 30px 20px 24px;
+}
+.engine-hd .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 18px;
+  background: rgba(0,212,255,0.05);
+  border: 1px solid rgba(0,240,255,0.2);
+  border-radius: 6px;
+  font-family: 'SF Mono',monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+}
+.engine-hd h2 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+.engine-hd p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ── Five-Layer Pipeline ── */
+.pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  margin-bottom: 50px;
+}
+
+/* Artery connector between layers */
+.pipeline-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  position: relative;
+  z-index: 2;
+}
+.pipeline-connector .arrow-shaft {
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,240,255,0.4), rgba(51,102,255,0.15));
+  position: relative;
+}
+.pipeline-connector .arrow-head {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid rgba(0,240,255,0.5);
+}
+.pipeline-connector .flow-particle {
+  position: absolute;
+  width: 5px; height: 5px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--cyan);
+  left: 50%;
+  transform: translateX(-50%);
+  animation: flow-up 2.5s ease-in-out infinite;
+}
+@keyframes flow-up {
+  0% { top: 90%; opacity: 0; }
+  50% { opacity: 1; }
+  100% { top: 10%; opacity: 0; }
+}
+
+/* Each layer row */
+.pl-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(51,102,255,0.12);
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  transition: all 0.35s;
+  position: relative;
+  min-height: 90px;
+}
+.pl-row:hover {
+  border-color: rgba(0,240,255,0.3);
+  box-shadow: 0 0 30px rgba(0,212,255,0.08);
+  transform: translateX(2px);
+}
+.pl-row::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: radial-gradient(600px circle at 20% 50%, var(--row-glow, rgba(0,212,255,0.03)), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+.pl-row:hover::before { opacity: 1; }
+
+/* Left accent bar */
+.pl-accent {
+  width: 6px;
+  flex-shrink: 0;
+  border-radius: 16px 0 0 16px;
+}
+
+/* Layer label area (left side) */
+.pl-label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 18px 22px;
+  min-width: 220px;
+  max-width: 260px;
+  flex-shrink: 0;
+  border-right: 1px solid rgba(51,102,255,0.06);
+}
+.pl-num {
+  font-family: 'SF Mono','Fira Code',monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.pl-name {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+.pl-tagline {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+.pl-insight {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 6px;
+  padding: 6px 10px;
+  background: rgba(11,19,43,0.3);
+  border-radius: 6px;
+  border-left: 2px solid rgba(0,240,255,0.2);
+}
+
+/* Products area (right side) */
+.pl-products {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 22px;
+  flex: 1;
+}
+.pl-chip {
+  padding: 7px 15px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  transition: all 0.3s;
+  cursor: default;
+}
+.pl-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+}
+
+/* Layer-specific colors */
+.pl-monetize .pl-accent { background: linear-gradient(to bottom, #f59e0b, #fbbf24); }
+.pl-monetize .pl-name { color: #fbbf24; }
+.pl-monetize { --row-glow: rgba(245,158,11,0.04); }
+.pl-monetize .pl-chip { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.2); color: #fcd34d; }
+.pl-monetize .pl-chip:hover { background: rgba(245,158,11,0.22); border-color: rgba(245,158,11,0.4); }
+
+.pl-convert .pl-accent { background: linear-gradient(to bottom, #2dd4bf, #5eead4); }
+.pl-convert .pl-name { color: #5eead4; }
+.pl-convert { --row-glow: rgba(45,212,191,0.04); }
+.pl-convert .pl-chip { background: rgba(45,212,191,0.12); border: 1px solid rgba(45,212,191,0.2); color: #5eead4; }
+.pl-convert .pl-chip:hover { background: rgba(45,212,191,0.22); border-color: rgba(45,212,191,0.4); }
+
+.pl-traffic .pl-accent { background: linear-gradient(to bottom, #a78bfa, #c4b5fd); }
+.pl-traffic .pl-name { color: #c4b5fd; }
+.pl-traffic { --row-glow: rgba(167,139,250,0.04); }
+.pl-traffic .pl-chip { background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.2); color: #c4b5fd; }
+.pl-traffic .pl-chip:hover { background: rgba(167,139,250,0.22); border-color: rgba(167,139,250,0.4); }
+
+.pl-create .pl-accent { background: linear-gradient(to bottom, #f472b6, #f9a8d4); }
+.pl-create .pl-name { color: #f9a8d4; }
+.pl-create { --row-glow: rgba(244,114,182,0.04); }
+.pl-create .pl-chip { background: rgba(244,114,182,0.12); border: 1px solid rgba(244,114,182,0.2); color: #f9a8d4; }
+.pl-create .pl-chip:hover { background: rgba(244,114,182,0.22); border-color: rgba(244,114,182,0.4); }
+
+.pl-infra .pl-accent { background: linear-gradient(to bottom, #3366ff, #60a5fa); }
+.pl-infra .pl-name { color: #60a5fa; }
+.pl-infra { --row-glow: rgba(51,102,255,0.04); }
+.pl-infra .pl-chip { background: rgba(51,102,255,0.12); border: 1px solid rgba(51,102,255,0.2); color: #93c5fd; }
+.pl-infra .pl-chip:hover { background: rgba(51,102,255,0.22); border-color: rgba(51,102,255,0.4); }
+
+/* ── Insight Cards Row ── */
+.engine-insights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 50px;
+}
+.insight-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 22px 20px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.insight-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  border-radius: 14px 0 0 14px;
+}
+.insight-card:hover {
+  border-color: rgba(0,240,255,0.25);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.4);
+  transform: translateY(-2px);
+}
+.insight-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+.insight-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.insight-card .highlight {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+.ic-monetize::before { background: linear-gradient(to bottom, #f59e0b, #fbbf24); }
+.ic-convert::before { background: linear-gradient(to bottom, #2dd4bf, #5eead4); }
+.ic-traffic::before { background: linear-gradient(to bottom, #a78bfa, #c4b5fd); }
+.ic-create::before { background: linear-gradient(to bottom, #f472b6, #f9a8d4); }
+.ic-infra::before { background: linear-gradient(to bottom, #3366ff, #60a5fa); }
+
+/* ── Closed Loop ── */
+.loop-wrap {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 26px 30px;
+  margin-bottom: 50px;
+  position: relative;
+  overflow: hidden;
+}
+.loop-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(700px circle at 50% 50%, rgba(0,240,255,0.03), transparent 60%);
+  pointer-events: none;
+}
+.loop-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.loop-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+.loop-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+}
+.loop-step {
+  padding: 8px 15px;
+  background: rgba(17,29,61,0.6);
+  border: 1px solid rgba(51,102,255,0.15);
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.loop-step:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 18px rgba(0,212,255,0.12);
+  transform: translateY(-1px);
+}
+.loop-arrow {
+  font-size: 16px;
+  color: var(--cyan);
+  font-weight: 700;
+  margin: 0 2px;
+  opacity: 0.7;
+  animation: arrow-pulse 1.8s ease-in-out infinite;
+}
+@keyframes arrow-pulse {
+  0%,100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+.loop-summary {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(51,102,255,0.06);
+}
+.loop-summary p {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+.loop-summary .glow-text {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .pl-row { flex-direction: column; }
+  .pl-label { min-width: auto; max-width: none; border-right: none; border-bottom: 1px solid rgba(51,102,255,0.06); }
+  .pl-accent { width: 100%; height: 4px; border-radius: 16px 16px 0 0; }
+  .pl-products { justify-content: center; }
+  .engine-insights { grid-template-columns: 1fr; }
+  .loop-flow { gap: 6px; }
+  .loop-step { font-size: 11px; padding: 6px 10px; }
+}
+
+/* ── Product Galaxy ── */
+.galaxy {
+  padding: 20px 40px 80px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+.cat-group { margin-bottom: 50px; }
+.cat-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-left: 4px;
+}
+.cat-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.cat-bar h3 { font-size: 20px; font-weight: 700; letter-spacing: 0.3px; }
+.cat-n {
+  margin-left: auto;
+  font-family: 'SF Mono',monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 4px 10px;
+  background: rgba(11,19,43,0.5);
+  border-radius: 6px;
+  border: 1px solid rgba(51,102,255,0.08);
+}
+
+/* Category accents */
+.c-blue .cat-icon { background: rgba(51,102,255,0.12); }
+.c-purple .cat-icon { background: rgba(139,92,246,0.12); }
+.c-indigo .cat-icon { background: rgba(99,102,241,0.12); }
+.c-rose .cat-icon { background: rgba(244,114,182,0.12); }
+.c-green .cat-icon { background: rgba(45,212,191,0.12); }
+.c-amber .cat-icon { background: rgba(245,158,11,0.12); }
+.c-cyan .cat-icon { background: rgba(0,212,255,0.12); }
+.c-teal .cat-icon { background: rgba(45,212,191,0.12); }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+
+/* ── HOLOGRAPHIC CARD ── */
+.holo-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 22px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  backdrop-filter: blur(4px);
+  height: 100%;
+}
+
+/* Circuit corner accents */
+.holo-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 60px; height: 60px;
+  background:
+    linear-gradient(135deg, transparent 48%, rgba(0,240,255,0.06) 48%, rgba(0,240,255,0.06) 52%, transparent 52%),
+    linear-gradient(135deg, transparent 42%, rgba(0,240,255,0.04) 42%, rgba(0,240,255,0.04) 44%, transparent 44%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.holo-card:hover::after { opacity: 1; }
+
+/* Scan line on hover */
+.holo-card .scan-line {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,240,255,0.5), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 5;
+}
+.holo-card:hover .scan-line {
+  opacity: 1;
+  animation: scan-down 2s ease-in-out infinite;
+}
+@keyframes scan-down {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+/* Mouse-glow layer */
+.holo-card .glow-layer {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(500px circle at var(--mx,50%) var(--my,50%), rgba(0,240,255,0.07), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  z-index: 1;
+}
+.holo-card:hover .glow-layer { opacity: 1; }
+
+/* Border glow */
+.holo-card .border-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  transition: border-color 0.4s;
+  z-index: 2;
+  pointer-events: none;
+}
+.holo-card:hover .border-glow {
+  border-color: rgba(0,240,255,0.35);
+  box-shadow: inset 0 0 30px rgba(0,212,255,0.04);
+}
+
+.holo-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(0,240,255,0.3);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,240,255,0.06);
+}
+
+/* Card inner (above glow) */
+.card-inner { position: relative; z-index: 3; display:flex; flex-direction:column; flex:1; }
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.card-ico {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  position: relative;
+}
+.card-ico::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 13px;
+  border: 1px solid rgba(0,240,255,0.08);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.holo-card:hover .card-ico::after { opacity: 1; }
+.card-info { flex: 1; min-width: 0; }
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  letter-spacing: 0.2px;
+}
+.card-repo {
+  font-family: 'SF Mono','Fira Code',monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+}
+.card-desc {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 12px;
+  flex: 1;
+}
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+.ctag {
+  padding: 3px 9px;
+  background: rgba(17,29,61,0.5);
+  border: 1px solid rgba(51,102,255,0.08);
+  border-radius: 5px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'SF Mono',monospace;
+}
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(51,102,255,0.08);
+  margin-top: auto;
+}
+.ver-tag {
+  padding: 3px 9px;
+  background: rgba(45,212,191,0.1);
+  border: 1px solid rgba(45,212,191,0.2);
+  border-radius: 5px;
+  font-family: 'SF Mono',monospace;
+  font-size: 11px;
+  color: var(--mint);
+}
+.live-ind {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-family: 'SF Mono',monospace;
+  color: var(--mint);
+}
+.live-ind::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--mint);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--mint);
+}
+
+/* ── Community ── */
+.comm {
+  background: linear-gradient(180deg, rgba(11,19,43,0.15) 0%, rgba(2,6,23,0.7) 100%);
+  border-top: 1px solid rgba(51,102,255,0.08);
+  padding: 70px 20px;
+}
+.comm-inner { max-width: 1200px; margin: 0 auto; }
+.comm-head { text-align: center; margin-bottom: 48px; }
+.comm-flair {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 20px;
+  background: linear-gradient(135deg, rgba(51,102,255,0.18), rgba(0,240,255,0.08));
+  border: 1px solid rgba(0,240,255,0.2);
+  border-radius: 8px;
+  font-family: 'SF Mono',monospace;
+  font-size: 12px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+.comm-head h2 {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #e2e8f0, #7dd3fc, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.comm-head p { font-size: 17px; color: var(--text-secondary); }
+.comm-desc {
+  max-width: 780px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+.comm-desc p {
+  font-size: 14.5px;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  margin-bottom: 10px;
+}
+.comm-desc strong { color: var(--text-primary); }
+.comm-desc em { color: var(--cyan); font-style: normal; }
+
+.val-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.val-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 30px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.val-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(400px circle at var(--mx,50%) var(--my,50%), rgba(0,240,255,0.04), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.val-card:hover::before { opacity: 1; }
+.val-card:hover {
+  border-color: rgba(0,240,255,0.3);
+  box-shadow: 0 0 25px rgba(0,212,255,0.06);
+}
+.val-card h3 { font-size: 18px; margin-bottom: 12px; color: var(--text-primary); }
+.val-card p { font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.7; }
+.val-card ul { list-style: none; }
+.val-card li {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  padding: 0 0 10px 16px;
+  position: relative;
+  line-height: 1.6;
+}
+.val-card li::before {
+  content: '›';
+  position: absolute;
+  left: 0; top: 0;
+  color: var(--cyan);
+  font-weight: 700;
+}
+.val-card li strong { color: var(--text-primary); }
+
+.kb-box {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 26px 30px;
+  margin-bottom: 40px;
+}
+.kb-box h3 { font-size: 18px; margin-bottom: 16px; color: var(--text-primary); }
+.kb-links { display: flex; flex-wrap: wrap; gap: 9px; }
+.kb-links a {
+  padding: 8px 16px;
+  background: rgba(17,29,61,0.5);
+  border: 1px solid rgba(51,102,255,0.1);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 13px;
+  transition: all 0.25s;
+}
+.kb-links a:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(0,240,255,0.04);
+  box-shadow: 0 0 14px rgba(0,212,255,0.06);
+}
+
+.join-box { text-align: center; }
+.join-box h3 { font-size: 24px; font-weight: 700; margin-bottom: 6px; color: var(--text-primary); }
+.join-note { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.group-grid a {
+  display: block;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(17,29,61,0.7), rgba(26,45,86,0.5));
+  border: 1px solid rgba(51,102,255,0.12);
+  border-radius: 10px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s;
+  text-align: center;
+}
+.group-grid a:hover {
+  background: linear-gradient(135deg, rgba(51,102,255,0.25), rgba(0,240,255,0.1));
+  border-color: var(--cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+.group-grid .vip-link {
+  background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(244,114,182,0.08));
+  border-color: rgba(139,92,246,0.2);
+}
+.group-grid .vip-link:hover {
+  background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(244,114,182,0.15));
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 32px 20px;
+  border-top: 1px solid rgba(51,102,255,0.06);
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.footer .prompt {
+  font-family: 'SF Mono',monospace;
+  color: var(--mint);
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.footer .prompt .cursor {
+  display: inline-block;
+  width: 8px; height: 15px;
+  background: var(--mint);
+  margin-left: 4px;
+  vertical-align: text-bottom;
+  animation: cursor 1s step-end infinite;
+}
+@keyframes cursor {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.footer a { color: var(--cyan); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 28px; }
+  .hero { padding: 60px 16px 50px; }
+  .hero-atom-wrap { width: 150px; height: 150px; }
+  .top-nav { padding: 14px 16px; flex-direction: column; gap: 10px; }
+  .nav-links { gap: 18px; flex-wrap: wrap; justify-content: center; }
+  .sys-bar { gap: 14px; font-size: 10px; }
+  .tree-wrap, .galaxy { padding: 0 14px 30px; }
+  .tree-branches { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .cards { grid-template-columns: 1fr; }
+  .stats-row { gap: 28px; }
+  .stat-num { font-size: 32px; }
+  .val-grid { grid-template-columns: 1fr; }
+  .comm { padding: 40px 14px; }
+  .comm-head h2 { font-size: 24px; }
+}
+
+@media print {
+  body::before, body::after, .page-vignette, canvas, .sys-bar, .nav-links { display: none; }
+  .holo-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+
+<!-- Background Layers -->
+<div class="page-vignette"></div>
+<canvas id="particle-drift"></canvas>
+<canvas id="data-stream"></canvas>
+
+<div class="content-layer">
+
+  <!-- System Status Bar -->
+  <div class="sys-bar">
+    <span class="sys-item"><span class="sys-dot"></span> SYS.ONLINE</span>
+    <span class="sys-item">NODES: 21 ACTIVE</span>
+    <span class="sys-item">UPTIME: 99.97%</span>
+    <span class="sys-item">CLUSTER: <span style="color:var(--cyan)">ATOMCOLLIDE-v3</span></span>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="top-nav">
+    <div class="nav-brand">
+      <svg viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="18" r="6" fill="url(#ng)"/>
+        <ellipse cx="18" cy="18" rx="16" ry="6" stroke="rgba(0,240,255,0.4)" stroke-width="1" fill="none"/>
+        <ellipse cx="18" cy="18" rx="16" ry="6" stroke="rgba(51,102,255,0.3)" stroke-width="1" fill="none" transform="rotate(60,18,18)"/>
+        <ellipse cx="18" cy="18" rx="16" ry="6" stroke="rgba(0,240,255,0.25)" stroke-width="1" fill="none" transform="rotate(-60,18,18)"/>
+        <defs><radialGradient id="ng"><stop stop-color="#fff"/><stop offset="40%" stop-color="#00f0ff"/><stop offset="100%" stop-color="#243b6e"/></radialGradient></defs>
+      </svg>
+      AtomCollide
+    </div>
+    <div class="nav-links">
+      <a href="#tree">知识树</a>
+      <a href="#engine">商业引擎</a>
+      <a href="#products">产品矩阵</a>
+      <a href="#community">社群招募</a>
+      <a href="https://github.com/503496348-ops" target="_blank">GitHub ↗</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-atom-wrap">
+      <div class="atom-ring"></div>
+      <div class="atom-ring"></div>
+      <div class="atom-ring"></div>
+      <div class="atom-core"></div>
+      <div class="atom-orbit orbit-1"></div>
+      <div class="atom-orbit orbit-2"></div>
+      <div class="atom-orbit orbit-3"></div>
+      <div class="atom-orbit orbit-4"></div>
+    </div>
+    <div class="hero-label"><span class="blip"></span> ATOMCOLLIDE · 智械工坊</div>
+    <h1>AI 智能体实验室<br>21 款产品技能矩阵</h1>
+    <p class="subtitle">覆盖安全检测 · Agent运维 · 内容创作 · 多媒体生成 · 智能服务 · 电商竞品 · 量化投资 · 体育分析的全栈 AI Agent 产品矩阵</p>
+    <div class="hero-tags">
+      <span class="htag">知识沉淀</span>
+      <span class="htag">价值倍增</span>
+      <span class="htag">经验传承</span>
+      <span class="htag">高效协作</span>
+      <span class="htag">踩坑复盘</span>
+    </div>
+    <div class="stats-row">
+      <div class="stat-block"><div class="stat-num">21</div><div class="stat-lbl">产品总数</div></div>
+      <div class="stat-block"><div class="stat-num">21</div><div class="stat-lbl">全部上线</div></div>
+      <div class="stat-block"><div class="stat-num">8</div><div class="stat-lbl">覆盖领域</div></div>
+      <div class="stat-block"><div class="stat-num">100%</div><div class="stat-lbl">开源可用</div></div>
+    </div>
+  </section>
+
+  <!-- Knowledge Tree -->
+  <div class="section-hd" id="tree">
+    <div class="badge">// KNOWLEDGE_TREE</div>
+    <h2>知识树</h2>
+    <p>从根基到枝叶，21 款产品构成的 Agent 能力版图</p>
+  </div>
+  <div class="tree-wrap">
+    <div class="tree">
+      <div class="tree-root">⚛ AtomCollide AI 智能体实验室</div>
+      <div class="tree-trunk"></div>
+      <div class="tree-branches">
+        <div class="tree-branch"><div class="tree-node">🛡 安全检测</div><div class="tree-line"></div><div class="tree-leaves"><span class="tree-leaf">奇点造物</span><span class="tree-leaf">AtomGuard</span></div></div>
+        <div class="tree-branch"><div class="tree-node">🔧 Agent运维</div><div class="tree-line"></div><div class="tree-leaves"><span class="tree-leaf">白龙马医生</span><span class="tree-leaf">皮皮虾医生</span><span class="tree-leaf">荒原序列</span><span class="tree-leaf">智脑星河</span></div></div>
+        <div class="tree-branch"><div class="tree-node">✍ 内容创作</div><div class="tree-line"></div><div class="tree-leaves"><span class="tree-leaf">裂变创作</span><span class="tree-leaf">召物少年</span><span class="tree-leaf">艺游未境</span><span class="tree-leaf">有点东西</span><span class="tree-leaf">灵感象限</span></div></div>
+        <div class="tree-branch"><div class="tree-node">🎥 多媒体</div><div class="tree-line"></div><div class="tree-leaves"><span class="tree-leaf">破窗造视</span><span class="tree-leaf">艺术生花</span></div></div>
+        <div class="tree-branch"><div class="tree-node">🤖 智能服务</div><div class="tree-line"></div><div class="tree-leaves"><span class="tree-leaf">松弛有度</span><span class="tree-leaf">他山之石</span><span class="tree-leaf">别样觉醒</span></div></div>
+        <div class="tree-branch"><div class="tree-node">📊 电商竞品</div><div class="tree-line"></div><div class="tree-leaves"><span class="tree-leaf">自然良品</span><span class="tree-leaf">元气方程</span><span class="tree-leaf">意识浓缩</span></div></div>
+        <div class="tree-branch"><div class="tree-node">📈 量化投资</div><div class="tree-line"></div><div class="tree-leaves"><span class="tree-leaf">深度方略</span></div></div>
+        <div class="tree-branch"><div class="tree-node">⚽ 体育分析</div><div class="tree-line"></div><div class="tree-leaves"><span class="tree-leaf">此地无垠</span><span class="tree-leaf">绿茵智脑</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       BUSINESS ENGINE — Five Layers
+       ═══════════════════════════════════ -->
+  <div class="engine-hd" id="engine">
+    <div class="badge">// BUSINESS_ENGINE</div>
+    <h2>原子碰撞商业引擎</h2>
+    <p>21 款产品不是孤岛——它们是一台五层嵌套的商业引擎，从底层运维到顶层变现，全程 AI 驱动</p>
+  </div>
+
+  <div class="engine-wrap">
+
+    <!-- Pipeline: Layer 5 → Layer 1 (top to bottom) -->
+    <div class="pipeline">
+
+      <!-- Layer 5: Monetize -->
+      <div class="pl-row pl-monetize">
+        <div class="pl-accent"></div>
+        <div class="pl-label">
+          <div class="pl-num">LAYER 5</div>
+          <div class="pl-name">变现层</div>
+          <div class="pl-tagline">Monetization → 直接产生现金流</div>
+          <div class="pl-insight">不只卖课，也卖"判断"——AI辅助决策系统，量化投资 + 体育预测</div>
+        </div>
+        <div class="pl-products">
+          <span class="pl-chip">📈 深度方略</span>
+          <span class="pl-chip">⚽ 此地无垠</span>
+          <span class="pl-chip">🏆 绿茵智脑</span>
+        </div>
+      </div>
+
+      <div class="pipeline-connector">
+        <div class="arrow-shaft"></div>
+        <div class="arrow-head"></div>
+        <div class="flow-particle" style="animation-delay:0s"></div>
+        <div class="flow-particle" style="animation-delay:0.8s"></div>
+        <div class="flow-particle" style="animation-delay:1.6s"></div>
+      </div>
+
+      <!-- Layer 4: Convert -->
+      <div class="pl-row pl-convert">
+        <div class="pl-accent"></div>
+        <div class="pl-label">
+          <div class="pl-num">LAYER 4</div>
+          <div class="pl-name">转化层</div>
+          <div class="pl-tagline">Conversion → 把流量变成钱</div>
+          <div class="pl-insight">每个触点都有 AI 在帮你接住人、推荐对的东西——全平台客服 + 智能选品</div>
+        </div>
+        <div class="pl-products">
+          <span class="pl-chip">🎯 松弛有度</span>
+          <span class="pl-chip">🌿 自然良品</span>
+        </div>
+      </div>
+
+      <div class="pipeline-connector">
+        <div class="arrow-shaft"></div>
+        <div class="arrow-head"></div>
+        <div class="flow-particle" style="animation-delay:0.3s"></div>
+        <div class="flow-particle" style="animation-delay:1.1s"></div>
+      </div>
+
+      <!-- Layer 3: Traffic -->
+      <div class="pl-row pl-traffic">
+        <div class="pl-accent"></div>
+        <div class="pl-label">
+          <div class="pl-num">LAYER 3</div>
+          <div class="pl-name">流量层</div>
+          <div class="pl-tagline">Traffic → 知道流量在哪</div>
+          <div class="pl-insight">流量不是玄学，是可逆向工程的结构——拆爆款 / SEO审计 / 竞品洞察</div>
+        </div>
+        <div class="pl-products">
+          <span class="pl-chip">🌸 艺术生花</span>
+          <span class="pl-chip">🧪 意识浓缩</span>
+          <span class="pl-chip">⚡ 元气方程</span>
+        </div>
+      </div>
+
+      <div class="pipeline-connector">
+        <div class="arrow-shaft"></div>
+        <div class="arrow-head"></div>
+        <div class="flow-particle" style="animation-delay:0.6s"></div>
+        <div class="flow-particle" style="animation-delay:1.4s"></div>
+      </div>
+
+      <!-- Layer 2: Create -->
+      <div class="pl-row pl-create">
+        <div class="pl-accent"></div>
+        <div class="pl-label">
+          <div class="pl-num">LAYER 2</div>
+          <div class="pl-name">创作层</div>
+          <div class="pl-tagline">Creation → 全格式内容工厂</div>
+          <div class="pl-insight">内容创作的供给侧改革——一个人不可能同时擅长写作/剪辑/设计/配音，但 AI 可以</div>
+        </div>
+        <div class="pl-products">
+          <span class="pl-chip">📖 裂变创作</span>
+          <span class="pl-chip">🎬 灵感象限</span>
+          <span class="pl-chip">💎 有点东西</span>
+          <span class="pl-chip">🪟 破窗造视</span>
+          <span class="pl-chip">🎭 艺游未境</span>
+          <span class="pl-chip">🎨 召物少年</span>
+        </div>
+      </div>
+
+      <div class="pipeline-connector">
+        <div class="arrow-shaft"></div>
+        <div class="arrow-head"></div>
+        <div class="flow-particle" style="animation-delay:0.9s"></div>
+      </div>
+
+      <!-- Layer 1: Infra -->
+      <div class="pl-row pl-infra">
+        <div class="pl-accent"></div>
+        <div class="pl-label">
+          <div class="pl-num">LAYER 1</div>
+          <div class="pl-name">基础设施层</div>
+          <div class="pl-tagline">Infrastructure → 让 Agent 可规模化运维</div>
+          <div class="pl-insight">不是"做一个Agent"——是让一群Agent活着、协作、自愈、减 91% token 消耗</div>
+        </div>
+        <div class="pl-products">
+          <span class="pl-chip">👤 别样觉醒</span>
+          <span class="pl-chip">🏥 白龙马医生</span>
+          <span class="pl-chip">🦐 皮皮虾医生</span>
+          <span class="pl-chip">🏜️ 荒原序列</span>
+          <span class="pl-chip">⚡ 奇点造物</span>
+          <span class="pl-chip">🧠 智脑星河</span>
+        </div>
+      </div>
+
+    </div><!-- /pipeline -->
+
+    <!-- Insight Cards -->
+    <div class="engine-insights">
+      <div class="insight-card ic-create">
+        <h4>第一层：创作层 — "什么都能造"</h4>
+        <p>6 个产品覆盖<span class="highlight">文本、视频、设计、多媒体、漫画</span>五种内容形态。用 AI 把"一个人"的能力边界撑大五倍。</p>
+      </div>
+      <div class="insight-card ic-traffic">
+        <h4>第二层：流量层 — "科学拆解"</h4>
+        <p>三把手术刀：拆抖音爆款<span class="highlight">四维分析</span>、SEO<span class="highlight">八维审计</span>、竞品<span class="highlight">深度洞察</span>——"为什么火了"变成可拆解的题。</p>
+      </div>
+      <div class="insight-card ic-convert">
+        <h4>第三层：转化层 — "人来了别跑"</h4>
+        <p>全平台 AI 客服承接 + 智能选品引擎。<span class="highlight">每个触点都有 AI</span>在接住人、推荐对的东西。</p>
+      </div>
+      <div class="insight-card ic-monetize">
+        <h4>第四层：变现层 — "卖判断"</h4>
+        <p>AI选股<span class="highlight">三维评估</span> + 足球预测<span class="highlight">27维特征ML集成</span> + 世界杯<span class="highlight">62%准确率</span>。卖的是判断力。</p>
+      </div>
+      <div class="insight-card ic-infra">
+        <h4>第五层：基础设施 — "护城河"</h4>
+        <p>数字分身 + 自愈 + 复活 + 编排 + 安全 + <span class="highlight">上下文减91%token</span>。让Agent活着、协作、自修。</p>
+      </div>
+    </div>
+
+    <!-- Closed Loop -->
+    <div class="loop-wrap">
+      <div class="loop-header">
+        <span style="font-size:22px">🔄</span>
+        <h3>全链路闭环：内容从创作到变现的完整通路</h3>
+      </div>
+      <div class="loop-flow">
+        <span class="loop-step" style="background:rgba(244,114,182,0.12);border-color:rgba(244,114,182,0.2);color:#f9a8d4">📖 裂变创作写网文</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step" style="background:rgba(244,114,182,0.12);border-color:rgba(244,114,182,0.2);color:#f9a8d4">🎨 召物少年转漫画</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step" style="background:rgba(244,114,182,0.12);border-color:rgba(244,114,182,0.2);color:#f9a8d4">🎬 灵感象限剪视频</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step" style="background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.2);color:#c4b5fd">🌸 艺术生花拆爆款</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step" style="background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.2);color:#c4b5fd">🧪 意识浓缩审计SEO</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step" style="background:rgba(45,212,191,0.12);border-color:rgba(45,212,191,0.2);color:#5eead4">🎯 松弛有度承接粉丝</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step" style="background:rgba(45,212,191,0.12);border-color:rgba(45,212,191,0.2);color:#5eead4">🌿 自然良品推荐商品</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.2);color:#fcd34d">📈 深度方略管赚来的钱</span>
+        <span class="loop-arrow">↩</span>
+      </div>
+      <div class="loop-summary">
+        <p>用 AI 建了一个<span class="glow-text">内容工厂</span>（创作层），用 AI <span class="glow-text">拆解流量规律</span>（流量层），用 AI <span class="glow-text">自动承接转化</span>（转化层），用 AI 做出<span class="glow-text">可卖的判断工具</span>（变现层），再用 AI <span class="glow-text">运维 AI 本身</span>（基础设施层）。</p>
+        <p style="margin-top:8px;font-size:1.05em;font-weight:600;color:var(--text-primary)">这不是"一人公司"，这是一个<span style="color:var(--cyan);font-size:1.1em">一个人的 AI 军团</span>。</p>
+      </div>
+    </div>
+
+  </div><!-- /engine-wrap -->
+
+  <!-- Product Galaxy -->
+  <div class="section-hd" id="products">
+    <div class="badge">// PRODUCT_MATRIX</div>
+    <h2>产品矩阵 · 全家福</h2>
+    <p>点击任意卡片跳转 GitHub 查看源码</p>
+  </div>
+
+  <div class="galaxy">
+
+    <!-- 安全检测 -->
+    <div class="cat-group c-blue">
+      <div class="cat-bar"><div class="cat-icon">🛡️</div><h3>安全检测</h3><span class="cat-n">2 款</span></div>
+      <div class="cards">
+        <a href="https://github.com/503496348-ops/hermes-security-suite" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(51,102,255,0.12)">⚡</div><div class="card-info"><div class="card-title">奇点造物 · Genesisix</div><div class="card-repo">hermes-security-suite</div></div></div>
+            <div class="card-desc">Agent 安全三件套：825 规则 / 13 层检测 + 诊断自愈 + 实时拦截防护。MCP 工具投毒检测 + 供应链漏洞扫描 + OSV 实时 CVE 查询。</div>
+            <div class="card-tags"><span class="ctag">MCP安全</span><span class="ctag">供应链扫描</span><span class="ctag">CVE查询</span></div>
+            <div class="card-foot"><span class="ver-tag">v2.1.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/atomguard" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(51,102,255,0.12)">🔒</div><div class="card-info"><div class="card-title">AtomGuard</div><div class="card-repo">atomguard</div></div></div>
+            <div class="card-desc">AI 红队平台：基础设施漏洞扫描、MCP Server &amp; Agent Skills 扫描、越狱评估。</div>
+            <div class="card-tags"><span class="ctag">红队测试</span><span class="ctag">漏洞扫描</span><span class="ctag">越狱评估</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 智能体运维 -->
+    <div class="cat-group c-purple">
+      <div class="cat-bar"><div class="cat-icon">🔧</div><h3>智能体运维</h3><span class="cat-n">4 款</span></div>
+      <div class="cards">
+        <a href="https://github.com/503496348-ops/hermes-doctor" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(139,92,246,0.12)">🏥</div><div class="card-info"><div class="card-title">白龙马医生 · Bailongma</div><div class="card-repo">hermes-doctor</div></div></div>
+            <div class="card-desc">Hermes Agent 自诊断与自愈：体检、药方匹配、修复计划、病历沉淀、飞书消息路由。</div>
+            <div class="card-tags"><span class="ctag">自诊断</span><span class="ctag">自愈</span><span class="ctag">病历管理</span></div>
+            <div class="card-foot"><span class="ver-tag">v0.1.3</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/pipixia-doctor" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(139,92,246,0.12)">🦐</div><div class="card-info"><div class="card-title">皮皮虾医生 · PipiXia</div><div class="card-repo">pipixia-doctor</div></div></div>
+            <div class="card-desc">OpenClaw Agent 数字遗产 + 永恒记忆 + 复活。独立产品，与白龙马医生为同领域不同平台。</div>
+            <div class="card-tags"><span class="ctag">数字遗产</span><span class="ctag">永恒记忆</span><span class="ctag">复活</span></div>
+            <div class="card-foot"><span class="ver-tag">v3.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/barren-order" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(139,92,246,0.12)">🏜️</div><div class="card-info"><div class="card-title">荒原序列 · BarrenOrder</div><div class="card-repo">barren-order</div></div></div>
+            <div class="card-desc">多 Agent 飞书群 @协作协议：主从分工、能力匹配、熔断器、消息去重。</div>
+            <div class="card-tags"><span class="ctag">多Agent</span><span class="ctag">飞书协作</span><span class="ctag">协议</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/mindriver" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(139,92,246,0.12)">🧠</div><div class="card-info"><div class="card-title">智脑星河 · MindRiver</div><div class="card-repo">mindriver</div></div></div>
+            <div class="card-desc">Agent 上下文数据库：文件系统范式管理记忆/资源/技能，分层加载减少 91% token 消耗。</div>
+            <div class="card-tags"><span class="ctag">上下文管理</span><span class="ctag">记忆分层</span><span class="ctag">Token优化</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 内容创作 -->
+    <div class="cat-group c-indigo">
+      <div class="cat-bar"><div class="cat-icon">✍️</div><h3>内容创作</h3><span class="cat-n">5 款</span></div>
+      <div class="cards">
+        <a href="https://github.com/503496348-ops/fission-creative" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(99,102,241,0.12)">📖</div><div class="card-info"><div class="card-title">裂变创作 · Fission Creative</div><div class="card-repo">fission-creative</div></div></div>
+            <div class="card-desc">长篇网文辅助创作系统：迭代式深度研究引擎、多查询扩展、来源可信度评估、结构化大纲生成。</div>
+            <div class="card-tags"><span class="ctag">网文创作</span><span class="ctag">深度研究</span><span class="ctag">大纲生成</span></div>
+            <div class="card-foot"><span class="ver-tag">v7.1.1</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/summoner" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(99,102,241,0.12)">🎨</div><div class="card-info"><div class="card-title">召物少年 · Summoner</div><div class="card-repo">summoner</div></div></div>
+            <div class="card-desc">AI 小说转漫画生成平台：角色一致性、动态布局、多风格支持。</div>
+            <div class="card-tags"><span class="ctag">漫画生成</span><span class="ctag">小说转漫</span><span class="ctag">角色一致</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/canvas-design" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(99,102,241,0.12)">🎭</div><div class="card-info"><div class="card-title">艺游未境 · Wanderix</div><div class="card-repo">canvas-design</div></div></div>
+            <div class="card-desc">视觉创作全链路引擎：海报 / PPT / 原型 / 动画 / 视频 / AI 生图 / PLOC 手账。34 套模板 + 22 种版式。</div>
+            <div class="card-tags"><span class="ctag">视觉创作</span><span class="ctag">PPT</span><span class="ctag">动画</span></div>
+            <div class="card-foot"><span class="ver-tag">v5.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/nichecraft" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(99,102,241,0.12)">💎</div><div class="card-info"><div class="card-title">有点东西 · Nichecraft</div><div class="card-repo">nichecraft</div></div></div>
+            <div class="card-desc">飞书白板设计系统：35 种配色方案、SVG 白板渲染、HTML 演示引擎。</div>
+            <div class="card-tags"><span class="ctag">白板设计</span><span class="ctag">配色方案</span><span class="ctag">HTML演示</span></div>
+            <div class="card-foot"><span class="ver-tag">v2.1</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/hermes-skill-ideasphere" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(99,102,241,0.12)">🎬</div><div class="card-info"><div class="card-title">灵感象限 · Ideasphere</div><div class="card-repo">hermes-skill-ideasphere</div></div></div>
+            <div class="card-desc">自媒体视频一站式剪辑：去静音 → Whisper 字幕 → 翻译 → 烧录 → 平台适配。</div>
+            <div class="card-tags"><span class="ctag">视频剪辑</span><span class="ctag">字幕生成</span><span class="ctag">多平台</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.1.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 多媒体生成 -->
+    <div class="cat-group c-rose">
+      <div class="cat-bar"><div class="cat-icon">🎥</div><h3>多媒体生成</h3><span class="cat-n">2 款</span></div>
+      <div class="cards">
+        <a href="https://github.com/503496348-ops/fractovision" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(244,114,182,0.12)">🪟</div><div class="card-info"><div class="card-title">破窗造视 · Fractovision</div><div class="card-repo">fractovision</div></div></div>
+            <div class="card-desc">MiniMax 模型多媒体生成引擎：图片 + 视频 + 语音 + 音乐四合一 API 封装。</div>
+            <div class="card-tags"><span class="ctag">图片生成</span><span class="ctag">视频生成</span><span class="ctag">语音合成</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/hermes-skill-aestheflow" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(244,114,182,0.12)">🌸</div><div class="card-info"><div class="card-title">艺术生花 · Aestheflow</div><div class="card-repo">hermes-skill-aestheflow</div></div></div>
+            <div class="card-desc">抖音视频深度拆解分析：数据 + 结构 + 视觉 + 文案四维爆款分析报告。</div>
+            <div class="card-tags"><span class="ctag">视频分析</span><span class="ctag">爆款拆解</span><span class="ctag">抖音</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 智能服务 -->
+    <div class="cat-group c-green">
+      <div class="cat-bar"><div class="cat-icon">🤖</div><h3>智能服务</h3><span class="cat-n">3 款</span></div>
+      <div class="cards">
+        <a href="https://github.com/503496348-ops/easyrhythm" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(45,212,191,0.12)">🎯</div><div class="card-info"><div class="card-title">松弛有度 · EasyRhythm</div><div class="card-repo">easyrhythm</div></div></div>
+            <div class="card-desc">Agent 智能客服系统：飞书 / Telegram / Discord / 微信四平台适配，RAG 检索，知识库管理。</div>
+            <div class="card-tags"><span class="ctag">智能客服</span><span class="ctag">多平台</span><span class="ctag">RAG</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/herpeakgem" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(45,212,191,0.12)">📚</div><div class="card-info"><div class="card-title">他山之石 · HerPeakGem</div><div class="card-repo">herpeakgem</div></div></div>
+            <div class="card-desc">Agent 智能教育与个性化学习：学情分析、闪卡工具、自适应学习路径。</div>
+            <div class="card-tags"><span class="ctag">智能教育</span><span class="ctag">个性化</span><span class="ctag">学情分析</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/awake-differently" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(45,212,191,0.12)">👤</div><div class="card-info"><div class="card-title">别样觉醒 · Awake Differently</div><div class="card-repo">awake-differently</div></div></div>
+            <div class="card-desc">基于聊天记录深度蒸馏的数字分身 / 人物画像：角色模拟、人格进化。</div>
+            <div class="card-tags"><span class="ctag">数字分身</span><span class="ctag">人格蒸馏</span><span class="ctag">聊天分析</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 电商竞品 -->
+    <div class="cat-group c-amber">
+      <div class="cat-bar"><div class="cat-icon">📊</div><h3>电商竞品</h3><span class="cat-n">3 款</span></div>
+      <div class="cards">
+        <a href="https://github.com/503496348-ops/purepicks" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(245,158,11,0.12)">🌿</div><div class="card-info"><div class="card-title">自然良品 · PurePicks</div><div class="card-repo">purepicks</div></div></div>
+            <div class="card-desc">多 Agent 电商推荐系统：价格比较、情感分析、智能选品。</div>
+            <div class="card-tags"><span class="ctag">电商推荐</span><span class="ctag">价格比较</span><span class="ctag">情感分析</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/energsolve" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(245,158,11,0.12)">⚡</div><div class="card-info"><div class="card-title">元气方程 · Energsolve</div><div class="card-repo">energsolve</div></div></div>
+            <div class="card-desc">Agent 竞品分析系统：智能爬虫、数据采集、竞品监控。</div>
+            <div class="card-tags"><span class="ctag">竞品分析</span><span class="ctag">数据采集</span><span class="ctag">监控</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/minddistill" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(245,158,11,0.12)">🧪</div><div class="card-info"><div class="card-title">意识浓缩 · Minddistill</div><div class="card-repo">minddistill</div></div></div>
+            <div class="card-desc">AI 搜索引擎就绪度诊断引擎：8 维度审计 + 可引用性评分 + 自动生成修复文件 + 推广内容生成。</div>
+            <div class="card-tags"><span class="ctag">GEO诊断</span><span class="ctag">SEO优化</span><span class="ctag">内容营销</span></div>
+            <div class="card-foot"><span class="ver-tag">v2.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 量化投资 -->
+    <div class="cat-group c-cyan">
+      <div class="cat-bar"><div class="cat-icon">📈</div><h3>量化投资</h3><span class="cat-n">1 款</span></div>
+      <div class="cards">
+        <a href="https://github.com/503496348-ops/Stratapro" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(0,212,255,0.12)">📊</div><div class="card-info"><div class="card-title">深度方略 · Stratapro</div><div class="card-repo">Stratapro</div></div></div>
+            <div class="card-desc">A 股多源验证选股决策系统：动态权重 AI 智能选股、技术面 / 基本面 / 产业渗透率三维评分。</div>
+            <div class="card-tags"><span class="ctag">A股选股</span><span class="ctag">三维评分</span><span class="ctag">日报推送</span></div>
+            <div class="card-foot"><span class="ver-tag">v3.1</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 体育分析 -->
+    <div class="cat-group c-teal">
+      <div class="cat-bar"><div class="cat-icon">⚽</div><h3>体育分析</h3><span class="cat-n">2 款</span></div>
+      <div class="cards">
+        <a href="https://github.com/503496348-ops/football-predictor" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(45,212,191,0.12)">⚽</div><div class="card-info"><div class="card-title">此地无垠 · Icilllimite</div><div class="card-repo">football-predictor</div></div></div>
+            <div class="card-desc">ML 足球预测 Skill：RF + XGBoost + LR 集成，27 维特征，17 联赛支持，胜平负 + 大小球预测。</div>
+            <div class="card-tags"><span class="ctag">足球预测</span><span class="ctag">ML集成</span><span class="ctag">17联赛</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+        <a href="https://github.com/503496348-ops/worldcup-predictor" class="holo-card" target="_blank">
+          <div class="scan-line"></div><div class="glow-layer"></div><div class="border-glow"></div>
+          <div class="card-inner">
+            <div class="card-head"><div class="card-ico" style="background:rgba(45,212,191,0.12)">🏆</div><div class="card-info"><div class="card-title">绿茵智脑 · 世界杯版</div><div class="card-repo">worldcup-predictor</div></div></div>
+            <div class="card-desc">2026 世界杯专用预测模型：Elo + Dixon-Coles + Monte Carlo，63 队，62% 准确率。</div>
+            <div class="card-tags"><span class="ctag">世界杯</span><span class="ctag">Elo评分</span><span class="ctag">Monte Carlo</span></div>
+            <div class="card-foot"><span class="ver-tag">v1.0.0</span><span class="live-ind">已上线</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /galaxy -->
+
+  <!-- Community -->
+  <section class="comm" id="community">
+    <div class="comm-inner">
+      <div class="comm-head">
+        <div class="comm-flair">🚀 RECRUITING</div>
+        <h2>元素碰撞 — AtomCollide-AI 智能体实验室</h2>
+        <p>测试人专属成长社群</p>
+      </div>
+      <div class="comm-desc">
+        <p>我们的目标很纯粹：<strong>连接每一位测试工程师 / AI 使用探索与爱好者</strong>，让你在这里既能扎实打磨技术硬实力，也能打通职业晋升的新通路。这是一个专注于 AI 领域的开源组织，汇聚了众多优秀学习者，使命——<em>for the learner</em>，和学习者一起成长。</p>
+        <p>元素碰撞-AtomCollide-AI 智能体实验室聚集了来自全国各地、各大一线厂的测试从业者，大家在社群里深度投入 AI 赋能测试的落地研究，共同沉淀了《AtomCollide AI 测试实战知识库》，只输出对测试人真正有用、可直接落地的干货内容。</p>
+      </div>
+      <div class="val-grid">
+        <div class="val-card">
+          <h3>💼 找工作：更省力，也更精准</h3>
+          <p>社群本身就是一个高浓度的行业资源池，帮你大幅缩短求职路径，少走弯路：</p>
+          <ul>
+            <li><strong>一线大厂内推通道</strong>：汇聚字节、阿里、腾讯等头部企业测试负责人与同行资源，岗位直达面试官</li>
+            <li><strong>全链路求职赋能包</strong>：专属整理的 AI 测试面试题库、简历优化模板、面试技巧与晋升指导</li>
+            <li><strong>线下技术沙龙 &amp; 人脉网络</strong>：不定期举办城市线下交流局，拓展靠谱行业人脉</li>
+          </ul>
+        </div>
+        <div class="val-card">
+          <h3>🧪 学 AI 测试：真正落地，拒绝空谈</h3>
+          <p>如果你正在关注 AI，却不知道怎么把它用到实际测试工作中：</p>
+          <ul>
+            <li><strong>从 0 到 1 实战落地体系</strong>：紧跟 Skills、MCP、Openclaw、RAG、AI IDE 等前沿技术</li>
+            <li><strong>独家自研资料与工具矩阵</strong>：《AtomCollide AI 测试实战知识库》全套内容、AI 测试自研平台</li>
+            <li><strong>前沿技术同步与提效方案</strong>：最新研究成果与行业动态，始终保持技术敏感度</li>
+          </ul>
+        </div>
+      </div>
+      <div class="kb-box">
+        <h3>📚 知识库</h3>
+        <div class="kb-links">
+          <a href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank">踩坑合集</a>
+          <a href="https://vcnvmnln7wit.feishu.cn/wiki/LdIxwlrKGibFEVkWMocc2K9KnBh" target="_blank">商业化案例库</a>
+          <a href="https://vcnvmnln7wit.feishu.cn/wiki/K1RPwM8zji9ZchkxlOmcivUgnJe" target="_blank">科普专栏</a>
+          <a href="https://vcnvmnln7wit.feishu.cn/wiki/CThswol0PiNJJbkhgT1cZIxanLb" target="_blank">Open Build</a>
+          <a href="https://vcnvmnln7wit.feishu.cn/wiki/KwGQwS2ciT2EdkSBBtcYnbsnSd" target="_blank">LLM / Agent / 研究报告</a>
+          <a href="https://vcnvmnln7wit.feishu.cn/wiki/PDfpwqJZUibTyBkUa7TcZZ6Onpd" target="_blank">Skill 封装合集</a>
+          <a href="https://vcnvmnln7wit.feishu.cn/wiki/MSEGwrdnTiiF9Dk8qCVcNW6InJg" target="_blank">社区治理运营</a>
+        </div>
+      </div>
+      <div class="join-box">
+        <h3>🎯 加入社群</h3>
+        <p class="join-note">请选择 1 个常用社群加入，内容全域同步，无需重复加入</p>
+        <div class="group-grid">
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=074vd565-6084-455c-ac52-9703e89a0697" target="_blank">AI 探索交流 1 区</a>
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=60bj94f0-1a67-48a7-abbb-9172b161c2b0" target="_blank">AI 探索交流 2 区</a>
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=13do1920-db46-4444-b635-005680beaf58" target="_blank">AI 探索交流 3 区</a>
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f17o1b86-06f6-4f10-911a-69a299a25fe3" target="_blank">AI 探索交流 4 区</a>
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=2bbh6ab6-22c2-4753-b973-74bb1a2edcc9" target="_blank">AI 探索交流 5 区</a>
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=d19r19f7-2f47-42ba-b1ec-cb0342cf2e80" target="_blank">AI 探索交流 6 区</a>
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=fe9vdacc-7316-4b4d-ae4a-fdbcf56315e6" target="_blank">AI 探索交流 7 区</a>
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=103kfae8-1fd7-424f-984f-d66c210e42d1" target="_blank">AI 探索交流 8 区</a>
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=239p3cad-2f83-4baa-a230-f40386067548" target="_blank">AI 探索交流 9 区</a>
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=880r7cf5-3638-45ff-afb9-7944de991872" target="_blank">AI 探索交流 10 区</a>
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=6a3v579b-ab43-4e1a-87f9-be63bab88da7" target="_blank" class="vip-link">AI 探索交流 — 网文作家</a>
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=76at299e-73da-4eeb-9eba-32161e98f2f8" target="_blank" class="vip-link">AI 探索交流群 — 音乐达人</a>
+          <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f2av73d0-6bb4-4a9f-9095-5fbbe83e49ec" target="_blank" class="vip-link">AI 探索交流群 — 微笑驿站</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="prompt">atomcollide@cluster:~$ <span class="cursor"></span></div>
+    <p>AtomCollide 智械工坊出品 · <a href="https://github.com/503496348-ops" target="_blank">GitHub</a></p>
+    <p style="margin-top:4px">连接每一位测试工程师 / AI 使用探索与爱好者</p>
+  </footer>
+
+</div><!-- /content-layer -->
+
+<!-- ====== Dual Particle System ====== -->
+<script>
+(function(){
+  // ── Canvas 1: Drift particles with connections ──
+  const c1 = document.getElementById('particle-drift');
+  const ctx1 = c1.getContext('2d');
+  let W, H, drifters = [];
+
+  function resize() {
+    W = c1.width = window.innerWidth;
+    H = c1.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', () => { resize(); initDrifters(); });
+
+  function initDrifters() {
+    drifters = [];
+    const N = 90;
+    for (let i = 0; i < N; i++) {
+      drifters.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.6 + 0.4,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        a: Math.random() * 0.4 + 0.12,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+  initDrifters();
+
+  function drawDrift() {
+    ctx1.clearRect(0, 0, W, H);
+    const t = Date.now() * 0.0015;
+    drifters.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < -20) p.x = W + 20;
+      if (p.x > W + 20) p.x = -20;
+      if (p.y < -20) p.y = H + 20;
+      if (p.y > H + 20) p.y = -20;
+      const alpha = p.a * (0.65 + 0.35 * Math.sin(p.phase + t));
+      ctx1.beginPath();
+      ctx1.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx1.fillStyle = `rgba(0,212,255,${alpha})`;
+      ctx1.fill();
+    });
+    // Connections
+    for (let i = 0; i < drifters.length; i++) {
+      for (let j = i + 1; j < drifters.length; j++) {
+        const dx = drifters[i].x - drifters[j].x;
+        const dy = drifters[i].y - drifters[j].y;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        if (d < 130) {
+          ctx1.beginPath();
+          ctx1.moveTo(drifters[i].x, drifters[i].y);
+          ctx1.lineTo(drifters[j].x, drifters[j].y);
+          ctx1.strokeStyle = `rgba(0,212,255,${0.04 * (1 - d/130)})`;
+          ctx1.lineWidth = 0.5;
+          ctx1.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(drawDrift);
+  }
+  drawDrift();
+
+  // ── Canvas 2: Data stream drops ──
+  const c2 = document.getElementById('data-stream');
+  const ctx2 = c2.getContext('2d');
+  let drops = [];
+
+  function initDrops() {
+    drops = [];
+    const N = 35;
+    for (let i = 0; i < N; i++) {
+      drops.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        len: Math.random() * 60 + 20,
+        speed: Math.random() * 0.6 + 0.2,
+        a: Math.random() * 0.18 + 0.04
+      });
+    }
+  }
+  initDrops();
+
+  function drawDrops() {
+    ctx2.clearRect(0, 0, W, H);
+    drops.forEach(d => {
+      d.y += d.speed;
+      if (d.y > H + d.len) { d.y = -d.len; d.x = Math.random() * W; }
+      const grad = ctx2.createLinearGradient(d.x, d.y - d.len, d.x, d.y);
+      grad.addColorStop(0, 'rgba(0,240,255,0)');
+      grad.addColorStop(0.6, `rgba(0,240,255,${d.a})`);
+      grad.addColorStop(1, 'rgba(0,240,255,0)');
+      ctx2.beginPath();
+      ctx2.moveTo(d.x, d.y - d.len);
+      ctx2.lineTo(d.x, d.y);
+      ctx2.strokeStyle = grad;
+      ctx2.lineWidth = 1;
+      ctx2.stroke();
+    });
+    requestAnimationFrame(drawDrops);
+  }
+  drawDrops();
+
+  // ── Card mouse tracking ──
+  document.querySelectorAll('.holo-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * 100;
+      const y = ((e.clientY - r.top) / r.height) * 100;
+      card.style.setProperty('--mx', x + '%');
+      card.style.setProperty('--my', y + '%');
+    });
+  });
+
+  // ── Value card mouse tracking ──
+  document.querySelectorAll('.val-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * 100;
+      const y = ((e.clientY - r.top) / r.height) * 100;
+      card.style.setProperty('--mx', x + '%');
+      card.style.setProperty('--my', y + '%');
+    });
+  });
+})();
+</script>
+</body>
+</html>
