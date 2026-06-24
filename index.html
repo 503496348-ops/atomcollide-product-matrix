@@ -3,1005 +3,731 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AtomCollide AI智能体实验室 · 23款产品矩阵</title>
-<meta name="description" content="AtomCollide-智械工坊 AI智能体实验室：23款开源产品技能矩阵，覆盖安全检测、智能体运维、内容创作、多媒体生成、智能服务、电商竞品、量化投资、体育分析8大领域。">
-<meta property="og:title" content="AtomCollide AI智能体实验室 · 23款产品矩阵">
-<meta property="og:description" content="23款开源AI智能体产品，覆盖8大领域，100%上线可用。">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://503496348-ops.github.io/atomcollide-product-matrix/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AtomCollide AI智能体实验室 · 23款产品矩阵">
-<meta name="twitter:description" content="23款开源AI智能体产品，覆盖8大领域，100%上线可用。">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+<title>元素碰撞 AtomCollide — AI 智能体实验室 · 技能矩阵全家福</title>
 <style>
 :root {
-  --bg: #020617;
-  --surface: #0b132b;
-  --card: rgba(11,19,43,0.82);
-  --border: rgba(51,102,255,0.18);
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --accent: #3366ff;
-  --cyan: #00d4ff;
-  --green: #2dd4bf;
-  --amber: #f59e0b;
-  --rose: #f472b6;
-  --violet: #a78bfa;
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --surface2: #1a1a24;
+  --border: #2a2a3a;
+  --text: #e8e8f0;
+  --text-muted: #8888a0;
+  --accent: #6c5ce7;
+  --accent2: #a29bfe;
+  --green: #00cec9;
+  --orange: #fdcb6e;
+  --pink: #fd79a8;
+  --blue: #74b9ff;
+  --red: #ff7675;
+  --radius: 12px;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-family: var(--font);
   background: var(--bg);
   color: var(--text);
-  line-height: 1.7;
+  line-height: 1.6;
+  min-height: 100vh;
 }
-.container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
 
-/* Hero */
+/* ── Hero ── */
 .hero {
   text-align: center;
-  padding: 60px 0 40px;
+  padding: 80px 24px 60px;
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0a1a2e 100%);
   border-bottom: 1px solid var(--border);
-  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
 }
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 50%, rgba(108,92,231,0.08) 0%, transparent 50%),
+              radial-gradient(circle at 70% 50%, rgba(0,206,201,0.06) 0%, transparent 50%);
+  animation: drift 20s ease-in-out infinite;
+}
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-2%, 1%); }
+}
+.hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
 .hero h1 {
-  font-size: 2.5em;
-  background: linear-gradient(135deg, var(--cyan), var(--accent));
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--accent2), var(--green));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 .hero .subtitle {
-  color: var(--muted);
-  font-size: 1.1em;
-  max-width: 800px;
-  margin: 0 auto 24px;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-weight: 400;
 }
-.hero-stats {
+.hero .stats {
   display: flex;
   justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
+  gap: 48px;
+  margin-top: 32px;
 }
-.stat {
-  text-align: center;
+.hero .stat-num {
+  font-size: 2.4rem;
+  font-weight: 800;
+  font-family: var(--mono);
+  color: var(--accent2);
 }
-.stat-num {
-  font-size: 2.5em;
-  font-weight: 700;
-  color: var(--cyan);
-}
-.stat-label {
-  color: var(--muted);
-  font-size: 0.9em;
+.hero .stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
 
-/* Category */
-.category {
-  margin-bottom: 48px;
+/* ── Section ── */
+.section {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 60px 24px;
 }
-.category-header {
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
 }
-.category-icon {
-  font-size: 1.5em;
-}
-.category-title {
-  font-size: 1.3em;
-  font-weight: 600;
-}
-.category-count {
-  color: var(--muted);
-  font-size: 0.9em;
-  margin-left: auto;
+.section-desc {
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  font-size: 0.95rem;
 }
 
-/* Cards Grid */
-.cards {
+/* ── Product Grid ── */
+.products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
 }
-.card {
-  background: var(--card);
+.product-card {
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius);
   padding: 20px;
-  transition: all 0.2s;
-  text-decoration: none;
-  color: inherit;
-  display: block;
+  transition: all 0.2s ease;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
 }
-.card:hover {
+.product-card:hover {
   border-color: var(--accent);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(51,102,255,0.15);
+  box-shadow: 0 8px 32px rgba(108,92,231,0.15);
 }
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+.product-card .num {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 0.75rem;
+  font-family: var(--mono);
+  color: var(--text-muted);
+  opacity: 0.5;
 }
-.card-emoji {
-  font-size: 1.5em;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(51,102,255,0.12);
-  border-radius: 8px;
+.product-card .name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 2px;
 }
-.card-title {
-  font-weight: 600;
-  font-size: 1.05em;
+.product-card .eng {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: var(--mono);
+  margin-bottom: 8px;
 }
-.card-repo {
-  color: var(--muted);
-  font-size: 0.85em;
-  font-family: monospace;
-}
-.card-desc {
-  color: var(--muted);
-  font-size: 0.9em;
-  margin-bottom: 12px;
-  line-height: 1.5;
-}
-.card-tags {
+.product-card .tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 12px;
+  margin-top: 10px;
 }
 .tag {
-  background: rgba(51,102,255,0.12);
-  color: var(--cyan);
+  font-size: 0.72rem;
   padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 0.8em;
+  border-radius: 6px;
+  font-weight: 500;
 }
-.card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.tag-cat {
+  background: rgba(108,92,231,0.15);
+  color: var(--accent2);
 }
-.version {
-  color: var(--muted);
-  font-size: 0.85em;
-  font-family: monospace;
-}
-.status {
+.tag-status {
+  background: rgba(0,206,201,0.15);
   color: var(--green);
-  font-size: 0.85em;
+}
+.tag-archived {
+  background: rgba(136,136,160,0.15);
+  color: var(--text-muted);
+}
+.product-card .repo {
+  font-size: 0.75rem;
+  font-family: var(--mono);
+  color: var(--text-muted);
+  margin-top: 8px;
+  opacity: 0.6;
+}
+.product-card a {
+  color: var(--blue);
+  text-decoration: none;
+}
+.product-card a:hover { text-decoration: underline; }
+
+/* ── Category badges ── */
+.cat-badge {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
 }
 
-/* Community Section */
-.community {
-  margin-top: 60px;
-  padding: 40px;
-  background: var(--surface);
-  border-radius: 16px;
+/* ── Recruitment Section ── */
+.recruit {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
   border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px;
+  margin-top: 40px;
 }
-.community h2 {
-  font-size: 1.8em;
-  margin-bottom: 24px;
-  text-align: center;
-  background: linear-gradient(135deg, var(--cyan), var(--accent));
+.recruit h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--orange), var(--pink));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.community-intro {
-  max-width: 800px;
-  margin: 0 auto 32px;
-  text-align: center;
-  color: var(--muted);
+.recruit .mission {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
   line-height: 1.8;
 }
-.community-values {
+.recruit-columns {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 24px;
   margin-bottom: 32px;
 }
-.value-card {
-  background: var(--card);
+@media (max-width: 768px) {
+  .recruit-columns { grid-template-columns: 1fr; }
+}
+.recruit-col {
+  background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius);
   padding: 24px;
 }
-.value-card h3 {
-  font-size: 1.1em;
+.recruit-col h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
   margin-bottom: 12px;
-  color: var(--cyan);
-}
-.value-card p {
-  color: var(--muted);
-  font-size: 0.95em;
-  line-height: 1.7;
-}
-.value-card ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 12px;
-}
-.value-card li {
-  color: var(--muted);
-  font-size: 0.9em;
-  padding: 4px 0;
-  padding-left: 20px;
-  position: relative;
-}
-.value-card li:before {
-  content: "•";
-  color: var(--cyan);
-  position: absolute;
-  left: 0;
-}
-
-/* Links Section */
-.links-section {
-  margin-top: 32px;
-}
-.links-section h3 {
-  font-size: 1.2em;
-  margin-bottom: 16px;
-  color: var(--text);
-}
-.links-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 12px;
-}
-.link-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
-  background: var(--card);
+}
+.recruit-col ul {
+  list-style: none;
+  padding: 0;
+}
+.recruit-col li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(42,42,58,0.5);
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+.recruit-col li:last-child { border-bottom: none; }
+.recruit-col li strong { color: var(--accent2); }
+
+/* ── Links Section ── */
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+.link-card {
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 8px;
-  color: var(--text);
-  text-decoration: none;
-  font-size: 0.9em;
+  padding: 14px 16px;
+  text-align: center;
   transition: all 0.2s;
 }
-.link-item:hover {
+.link-card:hover {
   border-color: var(--accent);
-  background: rgba(51,102,255,0.08);
+  background: var(--surface);
 }
-.link-icon {
-  font-size: 1.1em;
+.link-card a {
+  color: var(--blue);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.link-card .link-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
 
-/* Notice */
-.notice {
-  margin-top: 32px;
-  padding: 20px;
-  background: rgba(245,158,11,0.1);
-  border: 1px solid rgba(245,158,11,0.3);
+/* ── Knowledge Base ── */
+.kb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+.kb-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  color: var(--muted);
-  font-size: 0.9em;
-  line-height: 1.7;
+  padding: 16px;
+  transition: all 0.2s;
 }
-.notice strong {
-  color: var(--amber);
+.kb-card:hover { border-color: var(--green); }
+.kb-card a {
+  color: var(--green);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
-/* Footer */
+/* ── Notice ── */
+.notice {
+  background: rgba(253,203,110,0.08);
+  border: 1px solid rgba(253,203,110,0.2);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-top: 32px;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--text);
+}
+.notice strong { color: var(--orange); }
+
+/* ── Footer ── */
 .footer {
   text-align: center;
-  padding: 40px 0 20px;
-  color: var(--muted);
-  font-size: 0.85em;
+  padding: 40px 24px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
   border-top: 1px solid var(--border);
-  margin-top: 40px;
+}
+.footer a { color: var(--accent2); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .hero h1 { font-size: 1.8rem; }
+  .hero .stats { gap: 24px; }
+  .hero .stat-num { font-size: 1.6rem; }
+  .products-grid { grid-template-columns: 1fr; }
+  .recruit { padding: 24px; }
 }
 </style>
 </head>
 <body>
-<div class="container">
 
-<!-- Hero -->
-<div class="hero">
-  <h1>AtomCollide AI 智能体实验室</h1>
-  <p class="subtitle">23款开源产品技能矩阵，覆盖安全检测 · Agent运维 · 内容创作 · 多媒体生成 · 智能服务 · 电商竞品 · 量化投资 · 体育分析</p>
-  <div class="hero-stats">
-    <div class="stat">
-      <div class="stat-num">23</div>
-      <div class="stat-label">产品总数</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">23</div>
-      <div class="stat-label">全部上线</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">8</div>
-      <div class="stat-label">覆盖领域</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">100%</div>
-      <div class="stat-label">开源可用</div>
+<!-- ════ Hero ════ -->
+<header class="hero">
+  <div class="hero-content">
+    <h1>元素碰撞 · AtomCollide</h1>
+    <p class="subtitle">AI 智能体实验室 — 技能矩阵全家福</p>
+    <div class="stats">
+      <div>
+        <div class="stat-num">24</div>
+        <div class="stat-label">开源产品</div>
+      </div>
+      <div>
+        <div class="stat-num">21</div>
+        <div class="stat-label">技术分类</div>
+      </div>
+      <div>
+        <div class="stat-num">9K+</div>
+        <div class="stat-label">代码提交</div>
+      </div>
     </div>
   </div>
-</div>
+</header>
 
-<!-- 安全检测 -->
-<div class="category">
-  <div class="category-header">
-    <span class="category-icon">🛡️</span>
-    <span class="category-title">安全检测</span>
-    <span class="category-count">2 款</span>
-  </div>
-  <div class="cards">
-    <a href="https://github.com/503496348-ops/hermes-security-suite" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">⚡</div>
-        <div>
-          <div class="card-title">奇点造物 · Genesisix</div>
-          <div class="card-repo">hermes-security-suite</div>
-        </div>
-      </div>
-      <div class="card-desc">Agent 安全三件套：825 规则 / 13 层检测 + 诊断自愈 + 实时拦截防护。MCP 工具投毒检测 + 供应链漏洞扫描 + OSV 实时 CVE 查询。</div>
-      <div class="card-tags">
-        <span class="tag">MCP安全</span>
-        <span class="tag">供应链扫描</span>
-        <span class="tag">CVE查询</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v2.3.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/atomguard" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🔒</div>
-        <div>
-          <div class="card-title">AtomGuard</div>
-          <div class="card-repo">atomguard</div>
-        </div>
-      </div>
-      <div class="card-desc">AI 红队平台：基础设施漏洞扫描、MCP Server & Agent Skills 扫描、越狱评估。</div>
-      <div class="card-tags">
-        <span class="tag">红队测试</span>
-        <span class="tag">漏洞扫描</span>
-        <span class="tag">越狱评估</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-  </div>
-</div>
+<!-- ════ Products ════ -->
+<section class="section">
+  <h2 class="section-title">🧬 技能矩阵 · 24款产品</h2>
+  <p class="section-desc">全部开源，覆盖 AI Agent 全链路 — 从安全检测到内容创作，从多Agent协作到知识管理</p>
 
-<!-- 智能体运维 -->
-<div class="category">
-  <div class="category-header">
-    <span class="category-icon">🔧</span>
-    <span class="category-title">智能体运维</span>
-    <span class="category-count">4 款</span>
-  </div>
-  <div class="cards">
-    <a href="https://github.com/503496348-ops/hermes-doctor" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🏥</div>
-        <div>
-          <div class="card-title">白龙马医生 · Bailongma</div>
-          <div class="card-repo">hermes-doctor</div>
-        </div>
-      </div>
-      <div class="card-desc">Hermes Agent 自诊断与自愈：体检、药方匹配、修复计划、病历沉淀、飞书消息路由。</div>
-      <div class="card-tags">
-        <span class="tag">自诊断</span>
-        <span class="tag">自愈</span>
-        <span class="tag">病历管理</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v0.3.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/pipixia-doctor" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🦐</div>
-        <div>
-          <div class="card-title">皮皮虾医生 · PipiXia</div>
-          <div class="card-repo">pipixia-doctor</div>
-        </div>
-      </div>
-      <div class="card-desc">OpenClaw Agent 数字遗产 + 永恒记忆 + 复活。独立产品，与白龙马医生为同领域不同平台。</div>
-      <div class="card-tags">
-        <span class="tag">数字遗产</span>
-        <span class="tag">永恒记忆</span>
-        <span class="tag">复活</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v5.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/barren-order" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🏜️</div>
-        <div>
-          <div class="card-title">荒原序列 · BarrenOrder</div>
-          <div class="card-repo">barren-order</div>
-        </div>
-      </div>
-      <div class="card-desc">多 Agent 飞书群 @协作协议：主从分工、能力匹配、熔断器、消息去重。</div>
-      <div class="card-tags">
-        <span class="tag">多Agent</span>
-        <span class="tag">飞书协作</span>
-        <span class="tag">协议</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/mindriver" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🧠</div>
-        <div>
-          <div class="card-title">智脑星河 · MindRiver</div>
-          <div class="card-repo">mindriver</div>
-        </div>
-      </div>
-      <div class="card-desc">Agent 上下文数据库：文件系统范式管理记忆/资源/技能，分层加载减少 91% token 消耗。</div>
-      <div class="card-tags">
-        <span class="tag">上下文管理</span>
-        <span class="tag">记忆分层</span>
-        <span class="tag">Token优化</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-  </div>
-</div>
+  <div class="products-grid">
 
-<!-- 内容创作 -->
-<div class="category">
-  <div class="category-header">
-    <span class="category-icon">✍️</span>
-    <span class="category-title">内容创作</span>
-    <span class="category-count">6 款</span>
-  </div>
-  <div class="cards">
-    <a href="https://github.com/503496348-ops/fission-creative" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">📖</div>
-        <div>
-          <div class="card-title">裂变创作 · Fission Creative</div>
-          <div class="card-repo">fission-creative</div>
-        </div>
+    <div class="product-card">
+      <span class="num">#01</span>
+      <div class="name">裂变创作</div>
+      <div class="eng">Fission Creative</div>
+      <div class="tags">
+        <span class="tag tag-cat">长文创作</span>
+        <span class="tag tag-status">✅ 活跃</span>
       </div>
-      <div class="card-desc">长篇网文辅助创作系统：深度研究引擎 + AI味检测引擎（33类模式 + 5维度评分 + 声纹校准）。</div>
-      <div class="card-tags">
-        <span class="tag">网文创作</span>
-        <span class="tag">深度研究</span>
-        <span class="tag">AI味检测</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v8.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/summoner" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🎨</div>
-        <div>
-          <div class="card-title">召物少年 · Summoner</div>
-          <div class="card-repo">summoner</div>
-        </div>
-      </div>
-      <div class="card-desc">AI 小说转漫画生成平台：角色一致性、动态布局、多风格支持。</div>
-      <div class="card-tags">
-        <span class="tag">漫画生成</span>
-        <span class="tag">小说转漫</span>
-        <span class="tag">角色一致</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/canvas-design" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🎭</div>
-        <div>
-          <div class="card-title">艺游未境 · Wanderix</div>
-          <div class="card-repo">canvas-design</div>
-        </div>
-      </div>
-      <div class="card-desc">视觉创作全链路引擎：海报 / PPT / 原型 / 动画 / 视频 / AI 生图 / PLOC 手账。34 套模板 + 22 种版式。</div>
-      <div class="card-tags">
-        <span class="tag">视觉创作</span>
-        <span class="tag">PPT</span>
-        <span class="tag">动画</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v5.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/nichecraft" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">💎</div>
-        <div>
-          <div class="card-title">有点东西 · Nichecraft</div>
-          <div class="card-repo">nichecraft</div>
-        </div>
-      </div>
-      <div class="card-desc">飞书白板设计系统：35 种配色方案、SVG 白板渲染、HTML 演示引擎。</div>
-      <div class="card-tags">
-        <span class="tag">白板设计</span>
-        <span class="tag">配色方案</span>
-        <span class="tag">HTML演示</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v2.2.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/hermes-skill-ideasphere" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🎬</div>
-        <div>
-          <div class="card-title">灵感象限 · Ideasphere</div>
-          <div class="card-repo">hermes-skill-ideasphere</div>
-        </div>
-      </div>
-      <div class="card-desc">自媒体视频一站式剪辑：去静音 → Whisper 字幕 → 翻译 → 烧录 → 平台适配。</div>
-      <div class="card-tags">
-        <span class="tag">视频剪辑</span>
-        <span class="tag">字幕生成</span>
-        <span class="tag">多平台</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.4.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/artipen" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">✒️</div>
-        <div>
-          <div class="card-title">妙笔生花 · ArtiPen</div>
-          <div class="card-repo">artipen</div>
-        </div>
-      </div>
-      <div class="card-desc">多平台文章编排引擎：公众号/小红书/知乎/掘金一键排版 + 配图 + AI味检测。</div>
-      <div class="card-tags">
-        <span class="tag">文章编排</span>
-        <span class="tag">多平台</span>
-        <span class="tag">AI味检测</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-  </div>
-</div>
-
-<!-- 多媒体生成 -->
-<div class="category">
-  <div class="category-header">
-    <span class="category-icon">🎥</span>
-    <span class="category-title">多媒体生成</span>
-    <span class="category-count">2 款</span>
-  </div>
-  <div class="cards">
-    <a href="https://github.com/503496348-ops/fractovision" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🪟</div>
-        <div>
-          <div class="card-title">破窗造视 · Fractovision</div>
-          <div class="card-repo">fractovision</div>
-        </div>
-      </div>
-      <div class="card-desc">MiniMax 模型多媒体生成引擎：图片 + 视频 + 语音 + 音乐四合一 API 封装。</div>
-      <div class="card-tags">
-        <span class="tag">图片生成</span>
-        <span class="tag">视频生成</span>
-        <span class="tag">语音合成</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.2.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/hermes-skill-aestheflow" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🌸</div>
-        <div>
-          <div class="card-title">艺术生花 · Aestheflow</div>
-          <div class="card-repo">hermes-skill-aestheflow</div>
-        </div>
-      </div>
-      <div class="card-desc">抖音视频深度拆解分析：数据 + 结构 + 视觉 + 文案四维爆款分析报告。</div>
-      <div class="card-tags">
-        <span class="tag">视频分析</span>
-        <span class="tag">爆款拆解</span>
-        <span class="tag">抖音</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-  </div>
-</div>
-
-<!-- 智能服务 -->
-<div class="category">
-  <div class="category-header">
-    <span class="category-icon">🤖</span>
-    <span class="category-title">智能服务</span>
-    <span class="category-count">3 款</span>
-  </div>
-  <div class="cards">
-    <a href="https://github.com/503496348-ops/easyrhythm" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🎯</div>
-        <div>
-          <div class="card-title">松弛有度 · EasyRhythm</div>
-          <div class="card-repo">easyrhythm</div>
-        </div>
-      </div>
-      <div class="card-desc">Agent 智能客服系统：飞书 / Telegram / Discord / 微信四平台适配，RAG 检索，知识库管理。</div>
-      <div class="card-tags">
-        <span class="tag">智能客服</span>
-        <span class="tag">多平台</span>
-        <span class="tag">RAG</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/herpeakgem" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">📚</div>
-        <div>
-          <div class="card-title">他山之石 · HerPeakGem</div>
-          <div class="card-repo">herpeakgem</div>
-        </div>
-      </div>
-      <div class="card-desc">Agent 智能教育与个性化学习：学情分析、闪卡工具、自适应学习路径。</div>
-      <div class="card-tags">
-        <span class="tag">智能教育</span>
-        <span class="tag">个性化</span>
-        <span class="tag">学情分析</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/awake-differently" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">👤</div>
-        <div>
-          <div class="card-title">别样觉醒 · Awake Differently</div>
-          <div class="card-repo">awake-differently</div>
-        </div>
-      </div>
-      <div class="card-desc">基于聊天记录深度蒸馏的数字分身 / 人物画像：角色模拟、人格进化。</div>
-      <div class="card-tags">
-        <span class="tag">数字分身</span>
-        <span class="tag">人格蒸馏</span>
-        <span class="tag">聊天分析</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-  </div>
-</div>
-
-<!-- 电商竞品 -->
-<div class="category">
-  <div class="category-header">
-    <span class="category-icon">📊</span>
-    <span class="category-title">电商竞品</span>
-    <span class="category-count">3 款</span>
-  </div>
-  <div class="cards">
-    <a href="https://github.com/503496348-ops/purepicks" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🌿</div>
-        <div>
-          <div class="card-title">自然良品 · PurePicks</div>
-          <div class="card-repo">purepicks</div>
-        </div>
-      </div>
-      <div class="card-desc">多 Agent 电商推荐系统：价格比较、情感分析、智能选品。</div>
-      <div class="card-tags">
-        <span class="tag">电商推荐</span>
-        <span class="tag">价格比较</span>
-        <span class="tag">情感分析</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/energsolve" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">⚡</div>
-        <div>
-          <div class="card-title">元气方程 · Energsolve</div>
-          <div class="card-repo">energsolve</div>
-        </div>
-      </div>
-      <div class="card-desc">Agent 竞品分析系统：智能爬虫、数据采集、竞品监控。</div>
-      <div class="card-tags">
-        <span class="tag">竞品分析</span>
-        <span class="tag">数据采集</span>
-        <span class="tag">监控</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/minddistill" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🧪</div>
-        <div>
-          <div class="card-title">意识浓缩 · Minddistill</div>
-          <div class="card-repo">minddistill</div>
-        </div>
-      </div>
-      <div class="card-desc">AI 搜索引擎就绪度诊断引擎：8 维度审计 + 可引用性评分 + 自动生成修复文件 + 推广内容生成。</div>
-      <div class="card-tags">
-        <span class="tag">GEO诊断</span>
-        <span class="tag">SEO优化</span>
-        <span class="tag">内容营销</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v2.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-  </div>
-</div>
-
-<!-- 量化投资 -->
-<div class="category">
-  <div class="category-header">
-    <span class="category-icon">📈</span>
-    <span class="category-title">量化投资</span>
-    <span class="category-count">1 款</span>
-  </div>
-  <div class="cards">
-    <a href="https://github.com/503496348-ops/Stratapro" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">📊</div>
-        <div>
-          <div class="card-title">深度方略 · Stratapro</div>
-          <div class="card-repo">Stratapro</div>
-        </div>
-      </div>
-      <div class="card-desc">A 股多源验证选股决策系统：动态权重 AI 智能选股、技术面 / 基本面 / 产业渗透率三维评分。</div>
-      <div class="card-tags">
-        <span class="tag">A股选股</span>
-        <span class="tag">三维评分</span>
-        <span class="tag">日报推送</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v3.1</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-  </div>
-</div>
-
-<!-- 体育分析 -->
-<div class="category">
-  <div class="category-header">
-    <span class="category-icon">⚽</span>
-    <span class="category-title">体育分析</span>
-    <span class="category-count">2 款</span>
-  </div>
-  <div class="cards">
-    <a href="https://github.com/503496348-ops/football-predictor" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">⚽</div>
-        <div>
-          <div class="card-title">此地无垠 · Icilllimite</div>
-          <div class="card-repo">football-predictor</div>
-        </div>
-      </div>
-      <div class="card-desc">ML 足球预测 Skill：RF + XGBoost + LR 集成，27 维特征，17 联赛支持，胜平负 + 大小球预测。</div>
-      <div class="card-tags">
-        <span class="tag">足球预测</span>
-        <span class="tag">ML集成</span>
-        <span class="tag">17联赛</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-    <a href="https://github.com/503496348-ops/worldcup-predictor" class="card" target="_blank">
-      <div class="card-header">
-        <div class="card-emoji">🏆</div>
-        <div>
-          <div class="card-title">绿茵智脑 · 世界杯版</div>
-          <div class="card-repo">worldcup-predictor</div>
-        </div>
-      </div>
-      <div class="card-desc">2026 世界杯专用预测模型：Elo + Dixon-Coles + Monte Carlo，63 队，62% 准确率。</div>
-      <div class="card-tags">
-        <span class="tag">世界杯</span>
-        <span class="tag">Elo评分</span>
-        <span class="tag">Monte Carlo</span>
-      </div>
-      <div class="card-footer">
-        <span class="version">v1.1.0</span>
-        <span class="status">✓ 已上线</span>
-      </div>
-    </a>
-  </div>
-</div>
-
-<!-- 社群招募 -->
-<div class="community">
-  <h2>🚀 元素碰撞 — AtomCollide-AI 智能体实验室</h2>
-  <p class="community-intro">测试人专属成长社群 · 正式招募</p>
-  
-  <div class="community-intro">
-    <p>我们的目标很纯粹：<strong>连接每一位测试工程师/AI使用探索与爱好者</strong>，让你在这里既能扎实打磨技术硬实力，也能打通职业晋升的新通路。这是一个专注于AI领域的开源组织，汇聚了众多优秀学习者，使命——<em>for the learner，和学习者一起成长</em>。</p>
-    <p style="margin-top:16px">元素碰撞-AtomCollide-AI 智能体实验室聚集了来自全国各地、各大一线厂的测试从业者，大家在社群里深度投入AI赋能测试的落地研究，共同沉淀了《AtomCollide AI测试实战知识库》，只输出对测试人真正有用、可直接落地的干货内容。</p>
-  </div>
-
-  <div class="community-values">
-    <div class="value-card">
-      <h3>💼 找工作：更省力，也更精准</h3>
-      <p>社群本身就是一个高浓度的行业资源池，帮你大幅缩短求职路径，少走弯路：</p>
-      <ul>
-        <li><strong>一线大厂内推通道</strong>：汇聚字节、阿里、腾讯等头部企业测试负责人与同行资源，岗位直达面试官，比海投简历效率高3倍以上</li>
-        <li><strong>全链路求职赋能包</strong>：专属整理的AI测试面试题库、简历优化模板、面试技巧与晋升指导，帮你在关键环节建立优势</li>
-        <li><strong>线下技术沙龙 & 人脉网络</strong>：不定期举办城市线下交流局，拓展靠谱行业人脉，很多机会往往藏在一次面对面的深度交流里</li>
-      </ul>
+      <div class="repo"><a href="https://github.com/503496348-ops/fission-creative">fission-creative</a></div>
     </div>
-    <div class="value-card">
-      <h3>🧪 学 AI 测试：真正落地，拒绝空谈</h3>
-      <p>如果你正在关注AI，却不知道怎么把它用到实际测试工作中，这里会是你最好的起点：</p>
-      <ul>
-        <li><strong>从0到1实战落地体系</strong>：紧跟Skills、MCP、Openclaw、RAG、AI IDE等前沿技术，将其深度融合进接口测试、自动化测试、性能测试等全流程</li>
-        <li><strong>独家自研资料与工具矩阵</strong>：《AtomCollide AI测试实战知识库》全套内容、AI测试自研平台、系统视频教程、职场通用模板，拿来就能用</li>
-        <li><strong>前沿技术同步与提效方案</strong>：最新研究成果与行业动态，让你始终保持技术敏感度，走在AI测试的最前沿</li>
-      </ul>
+
+    <div class="product-card">
+      <span class="num">#02</span>
+      <div class="name">别样觉醒</div>
+      <div class="eng">Awake Differently</div>
+      <div class="tags">
+        <span class="tag tag-cat">身份蒸馏</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/awake-differently">awake-differently</a></div>
     </div>
-  </div>
 
-  <div class="community-intro">
-    <p>此外，社群还持续输出全栈测试技术干货、测试人转型路径、副业变现实操、项目复盘方法论与高效工作范式，覆盖从初级测试到测试专家的全成长周期。无论你是想精进技术、拓展收入边界，还是跳槽到更好的平台，都能在这里找到适配的成长路径。</p>
-    <p style="margin-top:12px">这是一个<strong>拒绝水群、纯技术驱动、真诚互助的成长社群</strong>。你可以随时就技术难题、测试策略或职业困惑发起提问，每一位渴望成长的伙伴都会得到认真的回应。</p>
-  </div>
-
-  <!-- 知识库 -->
-  <div class="links-section">
-    <h3>📚 知识库</h3>
-    <div class="links-grid">
-      <a href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" class="link-item" target="_blank">
-        <span class="link-icon">📖</span>
-        <span>踩坑合集</span>
-      </a>
-      <a href="https://vcnvmnln7wit.feishu.cn/wiki/LdIxwlrKGibFEVkWMocc2K9KnBh" class="link-item" target="_blank">
-        <span class="link-icon">💰</span>
-        <span>商业化案例库</span>
-      </a>
-      <a href="https://vcnvmnln7wit.feishu.cn/wiki/K1RPwM8zji9ZchkxlOmcivUgnJe" class="link-item" target="_blank">
-        <span class="link-icon">📝</span>
-        <span>科普专栏</span>
-      </a>
-      <a href="https://vcnvmnln7wit.feishu.cn/wiki/CThswol0PiNJJbkhgT1cZIxanLb" class="link-item" target="_blank">
-        <span class="link-icon">🔨</span>
-        <span>Open Build</span>
-      </a>
-      <a href="https://vcnvmnln7wit.feishu.cn/wiki/KwGQwS2TciT2EdkSBBtcYnbsnSd" class="link-item" target="_blank">
-        <span class="link-icon">📊</span>
-        <span>LLM / Agent / 研究报告</span>
-      </a>
-      <a href="https://vcnvmnln7wit.feishu.cn/wiki/PDfpwqJZUibTyBkUa7TcZZ6Onpd" class="link-item" target="_blank">
-        <span class="link-icon">⚙️</span>
-        <span>Skill 封装合集</span>
-      </a>
-      <a href="https://vcnvmnln7wit.feishu.cn/wiki/MSEGwrdnTiiF9Dk8qCVcNW6InJg" class="link-item" target="_blank">
-        <span class="link-icon">🏛️</span>
-        <span>社区治理运营</span>
-      </a>
+    <div class="product-card">
+      <span class="num">#03</span>
+      <div class="name">白龙马医生</div>
+      <div class="eng">Bailongma Doctor</div>
+      <div class="tags">
+        <span class="tag tag-cat">智能体健康</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/hermes-doctor">hermes-doctor</a></div>
     </div>
-  </div>
 
-  <!-- 社群 -->
-  <div class="links-section" style="margin-top:32px">
-    <h3>🎯 加入社群</h3>
-    <p style="color:var(--muted);font-size:0.9em;margin-bottom:16px">请选择 1 个常用社群加入，内容全域同步，无需重复加入</p>
-    <div class="links-grid">
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=074vd565-6084-455c-ac52-9703e89a0697" class="link-item" target="_blank">
-        <span class="link-icon">💬</span>
-        <span>AI 探索交流 1 区</span>
-      </a>
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=60bj94f0-1a67-48a7-abbb-9172b161c2b0" class="link-item" target="_blank">
-        <span class="link-icon">💬</span>
-        <span>AI 探索交流 2 区</span>
-      </a>
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=13do1920-db46-4444-b635-005680beaf58" class="link-item" target="_blank">
-        <span class="link-icon">💬</span>
-        <span>AI 探索交流 3 区</span>
-      </a>
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f17o1b86-06f6-4f10-911a-69a299a25fe3" class="link-item" target="_blank">
-        <span class="link-icon">💬</span>
-        <span>AI 探索交流 4 区</span>
-      </a>
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=2bbh6ab6-22c2-4753-b973-74bb1a2edcc9" class="link-item" target="_blank">
-        <span class="link-icon">💬</span>
-        <span>AI 探索交流 5 区</span>
-      </a>
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=d19r19f7-2f47-42ba-b1ec-cb0342cf2e80" class="link-item" target="_blank">
-        <span class="link-icon">💬</span>
-        <span>AI 探索交流 6 区</span>
-      </a>
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=fe9vdacc-7316-4b4d-ae4a-fdbcf56315e6" class="link-item" target="_blank">
-        <span class="link-icon">💬</span>
-        <span>AI 探索交流 7 区</span>
-      </a>
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=103kfae8-1fd7-424f-984f-d66c210e42d1" class="link-item" target="_blank">
-        <span class="link-icon">💬</span>
-        <span>AI 探索交流 8 区</span>
-      </a>
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=239p3cad-2f83-4baa-a230-f40386067548" class="link-item" target="_blank">
-        <span class="link-icon">💬</span>
-        <span>AI 探索交流 9 区</span>
-      </a>
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=880r7cf5-3638-45ff-afb9-7944de991872" class="link-item" target="_blank">
-        <span class="link-icon">💬</span>
-        <span>AI 探索交流 10 区</span>
-      </a>
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=6a3v579b-ab43-4e1a-87f9-be63bab88da7" class="link-item" target="_blank">
-        <span class="link-icon">✍️</span>
-        <span>AI 探索交流 — 网文作家</span>
-      </a>
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=76at299e-73da-4eeb-9eba-32161e98f2f8" class="link-item" target="_blank">
-        <span class="link-icon">🎵</span>
-        <span>AI 探索交流群 — 音乐达人</span>
-      </a>
-      <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f2av73d0-6bb4-4a9f-9095-5fbbe83e49ec" class="link-item" target="_blank">
-        <span class="link-icon">😊</span>
-        <span>AI 探索交流群 — 微笑驿站</span>
-      </a>
+    <div class="product-card">
+      <span class="num">#04</span>
+      <div class="name">皮皮虾医生</div>
+      <div class="eng">PipiXia Doctor</div>
+      <div class="tags">
+        <span class="tag tag-cat">智能体健康</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/pipixia-doctor">pipixia-doctor</a></div>
     </div>
+
+    <div class="product-card">
+      <span class="num">#05</span>
+      <div class="name">深度方略</div>
+      <div class="eng">Stratapro</div>
+      <div class="tags">
+        <span class="tag tag-cat">量化投资</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/Stratapro">Stratapro</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#06</span>
+      <div class="name">灵感象限</div>
+      <div class="eng">Ideasphere</div>
+      <div class="tags">
+        <span class="tag tag-cat">视频剪辑</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/hermes-skill-ideasphere">hermes-skill-ideasphere</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#07</span>
+      <div class="name">有点东西</div>
+      <div class="eng">Nichecraft</div>
+      <div class="tags">
+        <span class="tag tag-cat">飞书白板设计+PPT</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/nichecraft">nichecraft</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#08</span>
+      <div class="name">破窗造视</div>
+      <div class="eng">Fractovision</div>
+      <div class="tags">
+        <span class="tag tag-cat">多媒体生成</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/fractovision">fractovision</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#09</span>
+      <div class="name">荒原序列</div>
+      <div class="eng">BarrenOrder</div>
+      <div class="tags">
+        <span class="tag tag-cat">多Agent协作</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/barren-order">barren-order</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#10</span>
+      <div class="name">艺游未境</div>
+      <div class="eng">Wanderix</div>
+      <div class="tags">
+        <span class="tag tag-cat">视觉创作</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/canvas-design">canvas-design</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#11</span>
+      <div class="name">奇点造物</div>
+      <div class="eng">Genesisix</div>
+      <div class="tags">
+        <span class="tag tag-cat">安全检测</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/hermes-security-suite">hermes-security-suite</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#12</span>
+      <div class="name">艺术生花</div>
+      <div class="eng">Aestheflow</div>
+      <div class="tags">
+        <span class="tag tag-cat">内容分析</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/hermes-skill-aestheflow">hermes-skill-aestheflow</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#13</span>
+      <div class="name">松弛有度</div>
+      <div class="eng">EasyRhythm</div>
+      <div class="tags">
+        <span class="tag tag-cat">智能客服</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/easyrhythm">easyrhythm</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#14</span>
+      <div class="name">他山之石</div>
+      <div class="eng">HerPeakGem</div>
+      <div class="tags">
+        <span class="tag tag-cat">智能教育</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/herpeakgem">herpeakgem</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#15</span>
+      <div class="name">自然良品</div>
+      <div class="eng">PurePicks</div>
+      <div class="tags">
+        <span class="tag tag-cat">电商推荐</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/purepicks">purepicks</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#16</span>
+      <div class="name">元气方程</div>
+      <div class="eng">Energsolve</div>
+      <div class="tags">
+        <span class="tag tag-cat">竞品分析</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/energsolve">energsolve</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#17</span>
+      <div class="name">召物少年</div>
+      <div class="eng">Summoner</div>
+      <div class="tags">
+        <span class="tag tag-cat">漫画生成</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/summoner">summoner</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#18</span>
+      <div class="name">此地无垠</div>
+      <div class="eng">Icilllimite</div>
+      <div class="tags">
+        <span class="tag tag-cat">体育分析</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/football-predictor">football-predictor</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#19</span>
+      <div class="name">绿茵智脑</div>
+      <div class="eng">WorldCup Predictor</div>
+      <div class="tags">
+        <span class="tag tag-cat">体育分析</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/worldcup-predictor">worldcup-predictor</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#20</span>
+      <div class="name">意识浓缩</div>
+      <div class="eng">Minddistill</div>
+      <div class="tags">
+        <span class="tag tag-cat">GEO诊断</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/minddistill">minddistill</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#21</span>
+      <div class="name">智脑星河</div>
+      <div class="eng">MindRiver</div>
+      <div class="tags">
+        <span class="tag tag-cat">Agent上下文</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/mindriver">mindriver</a></div>
+    </div>
+
+    <div class="product-card" style="opacity:0.5">
+      <span class="num">#22</span>
+      <div class="name">AtomGuard</div>
+      <div class="eng">AtomGuard</div>
+      <div class="tags">
+        <span class="tag tag-cat">安全检测</span>
+        <span class="tag tag-archived">🔒 已归档</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/atomguard">atomguard</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#23</span>
+      <div class="name">妙笔生花</div>
+      <div class="eng">ArtiPen</div>
+      <div class="tags">
+        <span class="tag tag-cat">内容创作</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/artipen">artipen</a></div>
+    </div>
+
+    <div class="product-card">
+      <span class="num">#24</span>
+      <div class="name">无限循环</div>
+      <div class="eng">Neverend</div>
+      <div class="tags">
+        <span class="tag tag-cat">知识管理</span>
+        <span class="tag tag-status">✅ 活跃</span>
+      </div>
+      <div class="repo"><a href="https://github.com/503496348-ops/neverend">neverend</a></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════ Recruitment ════ -->
+<section class="section">
+  <div class="recruit">
+    <h2>🚀 元素碰撞 AtomCollide — AI 智能体实验室 正式招募</h2>
+    <p class="mission">
+      我们的目标很纯粹：连接每一位测试工程师 / AI 使用探索与爱好者，让你在这里既能扎实打磨技术硬实力，也能打通职业晋升的新通路。这是一个专注于 AI 领域的开源组织，汇聚了众多优秀学习者。<br>
+      <strong style="color:var(--accent2)">使命 — for the learner，和学习者一起成长。</strong>
+    </p>
+    <p class="mission">
+      元素碰撞 AtomCollide — AI 智能体实验室聚集了来自全国各地、各大一线厂的测试从业者，大家在社群里深度投入 AI 赋能测试的落地研究，共同沉淀了《AtomCollide AI 测试实战知识库》，只输出对测试人真正有用、可直接落地的干货内容。今天诚邀你加入，两个核心价值，我想重点说给你听：
+    </p>
+
+    <div class="recruit-columns">
+      <div class="recruit-col">
+        <h3>💼 找工作：更省力，也更精准</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px">社群本身就是一个高浓度的行业资源池，帮你大幅缩短求职路径，少走弯路：</p>
+        <ul>
+          <li><strong>一线大厂内推通道</strong>：汇聚字节、阿里、腾讯等头部企业测试负责人与同行资源，岗位直达面试官，比海投简历效率高 3 倍以上</li>
+          <li><strong>全链路求职赋能包</strong>：专属整理的 AI 测试面试题库、简历优化模板、面试技巧与晋升指导，帮你在关键环节建立优势</li>
+          <li><strong>线下技术沙龙 & 人脉网络</strong>：不定期举办城市线下交流局，拓展靠谱行业人脉，很多机会往往藏在一次面对面的深度交流里</li>
+        </ul>
+      </div>
+      <div class="recruit-col">
+        <h3>🧪 学 AI 测试：真正落地，拒绝空谈</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px">如果你正在关注 AI，却不知道怎么把它用到实际测试工作中，这里会是你最好的起点：</p>
+        <ul>
+          <li><strong>从 0 到 1 实战落地体系</strong>：紧跟 Skills、MCP、Openclaw、RAG、AI IDE 等前沿技术，深度融合进接口测试、自动化测试、性能测试等全流程</li>
+          <li><strong>独家自研资料与工具矩阵</strong>：《AtomCollide AI 测试实战知识库》全套内容、AI 测试自研平台、系统视频教程、职场通用模板，拿来就能用</li>
+          <li><strong>前沿技术同步与提效方案</strong>：最新研究成果与行业动态分享，让你始终保持技术敏感度，走在 AI 测试的最前沿</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="font-size:0.9rem;line-height:1.8;color:var(--text)">
+      此外，社群还持续输出全栈测试技术干货、测试人转型路径、副业变现实操、项目复盘方法论与高效工作范式，覆盖从初级测试到测试专家的全成长周期。无论你是想精进技术、拓展收入边界，还是跳槽到更好的平台，都能在这里找到适配的成长路径。<br><br>
+      这是一个<strong style="color:var(--green)">拒绝水群、纯技术驱动、真诚互助的成长社群</strong>。你可以随时就技术难题、测试策略或职业困惑发起提问，每一位渴望成长的伙伴都会得到认真的回应。
+    </p>
+  </div>
+</section>
+
+<!-- ════ Knowledge Base ════ -->
+<section class="section">
+  <h2 class="section-title">📚 知识库（7席）</h2>
+  <p class="section-desc">AtomCollide Open Build 知识库体系</p>
+  <div class="kb-grid">
+    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank">📖 知识库入口 1</a></div>
+    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/LdIxwlrKGibFEVkWMocc2K9KnBh" target="_blank">📖 知识库入口 2</a></div>
+    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/K1RPwM8zji9ZchkxlOmcivUgnJe" target="_blank">📖 知识库入口 3</a></div>
+    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/CThswol0PiNJJbkhgT1cZIxanLb" target="_blank">📖 T3｜学习文档・组织升级</a></div>
+    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/KwGQwS2TciT2EdkSBBtcYnbsnSd" target="_blank">📖 知识库入口 5</a></div>
+    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/PDfpwqJZUibTyBkUa7TcZZ6Onpd" target="_blank">📖 知识库入口 6</a></div>
+    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/MSEGwrdnTiiF9Dk8qCVcNW6InJg" target="_blank">📖 知识库入口 7</a></div>
+  </div>
+</section>
+
+<!-- ════ Chat Groups ════ -->
+<section class="section">
+  <h2 class="section-title">💬 社群入口（13席）</h2>
+  <p class="section-desc">所有社群内容全域同步，保留 1 个常用社群即可</p>
+  <div class="links-grid">
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=074vd565-6084-455c-ac52-9703e89a0697" target="_blank">AI 探索交流 1 区</a></div>
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=60bj94f0-1a67-48a7-abbb-9172b161c2b0" target="_blank">AI 探索交流 2 区</a></div>
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=13do1920-db46-4444-b635-005680beaf58" target="_blank">AI 探索交流 3 区</a></div>
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f17o1b86-06f6-4f10-911a-69a299a25fe3" target="_blank">AI 探索交流 4 区</a></div>
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=2bbh6ab6-22c2-4753-b973-74bb1a2edcc9" target="_blank">AI 探索交流 5 区</a></div>
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=d19r19f7-2f47-42ba-b1ec-cb0342cf2e80" target="_blank">AI 探索交流 6 区</a></div>
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=fe9vdacc-7316-4b4d-ae4a-fdbcf56315e6" target="_blank">AI 探索交流 7 区</a></div>
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=103kfae8-1fd7-424f-984f-d66c210e42d1" target="_blank">AI 探索交流 8 区</a></div>
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=239p3cad-2f83-4baa-a230-f40386067548" target="_blank">AI 探索交流 9 区</a></div>
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=880r7cf5-3638-45ff-afb9-7944de991872" target="_blank">AI 探索交流 10 区</a></div>
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=6a3v579b-ab43-4e1a-87f9-be63bab88da7" target="_blank">AI 探索交流 · 网文作家</a></div>
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=76at299e-73da-4eeb-9eba-32161e98f2f8" target="_blank">AI 探索交流群 · 音乐达人</a></div>
+    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f2av73d0-6bb4-4a9f-9095-5fbbe83e49ec" target="_blank">AI 探索交流群 · 微笑驿站</a></div>
   </div>
 
-  <!-- 公告 -->
   <div class="notice">
-    <strong>📢 社群公告：</strong>为保障充足的交流席位与良好的社群体验，我们目前开设了十余席社群，覆盖不同入群批次与交流场景。全社区所有社群已实现内容全域同步：所有通知、干货分享、活动公告、优质话题讨论等核心内容，均由社区机器人自动跨群搬运、实时投送，各群可获取的信息完全一致。<br><br>
-    <strong>倡议：</strong>请大家根据自身交流习惯，保留 1 个常用社群即可，其余重复加入的社群可自行退出。感谢每一位伙伴的理解与配合，让我们共同维护清爽、高效、友好的社区交流环境。
+    <strong>📢 社群公告：</strong>为保障充足的交流席位与良好的社群体验，全社区所有社群已实现内容全域同步。近期发现不少伙伴同时加入多个同系列社群，导致信息冗余。<strong>倡议：保留 1 个常用社群即可</strong>，让出名额给新伙伴。感谢配合！
   </div>
-</div>
+</section>
 
-<!-- Footer -->
-<div class="footer">
-  <p>⚛️ AtomCollide-AI 智能体实验室 · 23款开源产品 · 100%上线可用</p>
-  <p style="margin-top:8px">for the learner，和学习者一起成长</p>
-</div>
+<!-- ════ Footer ════ -->
+<footer class="footer">
+  <p><strong>© 2026 元素碰撞 AtomCollide — AI 智能体实验室</strong></p>
+  <p style="margin-top:8px">使命：for the learner，和学习者一起成长</p>
+  <p style="margin-top:12px"><a href="https://github.com/503496348-ops">GitHub Organization</a></p>
+</footer>
 
-</div>
 </body>
 </html>
