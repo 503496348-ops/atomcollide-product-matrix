@@ -1,733 +1,501 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>元素碰撞 AtomCollide — AI 智能体实验室 · 技能矩阵全家福</title>
-<style>
-:root {
-  --bg: #0a0a0f;
-  --surface: #13131a;
-  --surface2: #1a1a24;
-  --border: #2a2a3a;
-  --text: #e8e8f0;
-  --text-muted: #8888a0;
-  --accent: #6c5ce7;
-  --accent2: #a29bfe;
-  --green: #00cec9;
-  --orange: #fdcb6e;
-  --pink: #fd79a8;
-  --blue: #74b9ff;
-  --red: #ff7675;
-  --radius: 12px;
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --mono: 'JetBrains Mono', 'Fira Code', monospace;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: var(--font);
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  min-height: 100vh;
-}
-
-/* ── Hero ── */
-.hero {
-  text-align: center;
-  padding: 80px 24px 60px;
-  background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0a1a2e 100%);
-  border-bottom: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at 30% 50%, rgba(108,92,231,0.08) 0%, transparent 50%),
-              radial-gradient(circle at 70% 50%, rgba(0,206,201,0.06) 0%, transparent 50%);
-  animation: drift 20s ease-in-out infinite;
-}
-@keyframes drift {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(-2%, 1%); }
-}
-.hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
-.hero h1 {
-  font-size: 2.8rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, var(--accent2), var(--green));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
-}
-.hero .subtitle {
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  font-weight: 400;
-}
-.hero .stats {
-  display: flex;
-  justify-content: center;
-  gap: 48px;
-  margin-top: 32px;
-}
-.hero .stat-num {
-  font-size: 2.4rem;
-  font-weight: 800;
-  font-family: var(--mono);
-  color: var(--accent2);
-}
-.hero .stat-label {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-top: 4px;
-}
-
-/* ── Section ── */
-.section {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 60px 24px;
-}
-.section-title {
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.section-desc {
-  color: var(--text-muted);
-  margin-bottom: 32px;
-  font-size: 0.95rem;
-}
-
-/* ── Product Grid ── */
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-}
-.product-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  transition: all 0.2s ease;
-  cursor: default;
-  position: relative;
-  overflow: hidden;
-}
-.product-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(108,92,231,0.15);
-}
-.product-card .num {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 0.75rem;
-  font-family: var(--mono);
-  color: var(--text-muted);
-  opacity: 0.5;
-}
-.product-card .name {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 2px;
-}
-.product-card .eng {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  font-family: var(--mono);
-  margin-bottom: 8px;
-}
-.product-card .tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 10px;
-}
-.tag {
-  font-size: 0.72rem;
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-weight: 500;
-}
-.tag-cat {
-  background: rgba(108,92,231,0.15);
-  color: var(--accent2);
-}
-.tag-status {
-  background: rgba(0,206,201,0.15);
-  color: var(--green);
-}
-.tag-archived {
-  background: rgba(136,136,160,0.15);
-  color: var(--text-muted);
-}
-.product-card .repo {
-  font-size: 0.75rem;
-  font-family: var(--mono);
-  color: var(--text-muted);
-  margin-top: 8px;
-  opacity: 0.6;
-}
-.product-card a {
-  color: var(--blue);
-  text-decoration: none;
-}
-.product-card a:hover { text-decoration: underline; }
-
-/* ── Category badges ── */
-.cat-badge {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 4px;
-}
-
-/* ── Recruitment Section ── */
-.recruit {
-  background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 40px;
-  margin-top: 40px;
-}
-.recruit h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 6px;
-  background: linear-gradient(135deg, var(--orange), var(--pink));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.recruit .mission {
-  font-size: 1rem;
-  color: var(--text-muted);
-  margin-bottom: 24px;
-  line-height: 1.8;
-}
-.recruit-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 32px;
-}
-@media (max-width: 768px) {
-  .recruit-columns { grid-template-columns: 1fr; }
-}
-.recruit-col {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px;
-}
-.recruit-col h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.recruit-col ul {
-  list-style: none;
-  padding: 0;
-}
-.recruit-col li {
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(42,42,58,0.5);
-  font-size: 0.9rem;
-  color: var(--text);
-  line-height: 1.6;
-}
-.recruit-col li:last-child { border-bottom: none; }
-.recruit-col li strong { color: var(--accent2); }
-
-/* ── Links Section ── */
-.links-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
-  margin-top: 24px;
-}
-.link-card {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 14px 16px;
-  text-align: center;
-  transition: all 0.2s;
-}
-.link-card:hover {
-  border-color: var(--accent);
-  background: var(--surface);
-}
-.link-card a {
-  color: var(--blue);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-.link-card .link-desc {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-top: 4px;
-}
-
-/* ── Knowledge Base ── */
-.kb-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 12px;
-  margin-top: 24px;
-}
-.kb-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-  transition: all 0.2s;
-}
-.kb-card:hover { border-color: var(--green); }
-.kb-card a {
-  color: var(--green);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-/* ── Notice ── */
-.notice {
-  background: rgba(253,203,110,0.08);
-  border: 1px solid rgba(253,203,110,0.2);
-  border-radius: var(--radius);
-  padding: 20px 24px;
-  margin-top: 32px;
-  font-size: 0.9rem;
-  line-height: 1.8;
-  color: var(--text);
-}
-.notice strong { color: var(--orange); }
-
-/* ── Footer ── */
-.footer {
-  text-align: center;
-  padding: 40px 24px;
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  border-top: 1px solid var(--border);
-}
-.footer a { color: var(--accent2); text-decoration: none; }
-.footer a:hover { text-decoration: underline; }
-
-/* ── Responsive ── */
-@media (max-width: 640px) {
-  .hero h1 { font-size: 1.8rem; }
-  .hero .stats { gap: 24px; }
-  .hero .stat-num { font-size: 1.6rem; }
-  .products-grid { grid-template-columns: 1fr; }
-  .recruit { padding: 24px; }
-}
-</style>
-</head>
-<body>
-
-<!-- ════ Hero ════ -->
-<header class="hero">
-  <div class="hero-content">
-    <h1>元素碰撞 · AtomCollide</h1>
-    <p class="subtitle">AI 智能体实验室 — 技能矩阵全家福</p>
-    <div class="stats">
-      <div>
-        <div class="stat-num">24</div>
-        <div class="stat-label">开源产品</div>
-      </div>
-      <div>
-        <div class="stat-num">21</div>
-        <div class="stat-label">技术分类</div>
-      </div>
-      <div>
-        <div class="stat-num">9K+</div>
-        <div class="stat-label">代码提交</div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<!-- ════ Products ════ -->
-<section class="section">
-  <h2 class="section-title">🧬 技能矩阵 · 24款产品</h2>
-  <p class="section-desc">全部开源，覆盖 AI Agent 全链路 — 从安全检测到内容创作，从多Agent协作到知识管理</p>
-
-  <div class="products-grid">
-
-    <div class="product-card">
-      <span class="num">#01</span>
-      <div class="name">裂变创作</div>
-      <div class="eng">Fission Creative</div>
-      <div class="tags">
-        <span class="tag tag-cat">长文创作</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/fission-creative">fission-creative</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#02</span>
-      <div class="name">别样觉醒</div>
-      <div class="eng">Awake Differently</div>
-      <div class="tags">
-        <span class="tag tag-cat">身份蒸馏</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/awake-differently">awake-differently</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#03</span>
-      <div class="name">白龙马医生</div>
-      <div class="eng">Bailongma Doctor</div>
-      <div class="tags">
-        <span class="tag tag-cat">智能体健康</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/hermes-doctor">hermes-doctor</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#04</span>
-      <div class="name">皮皮虾医生</div>
-      <div class="eng">PipiXia Doctor</div>
-      <div class="tags">
-        <span class="tag tag-cat">智能体健康</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/pipixia-doctor">pipixia-doctor</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#05</span>
-      <div class="name">深度方略</div>
-      <div class="eng">Stratapro</div>
-      <div class="tags">
-        <span class="tag tag-cat">量化投资</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/Stratapro">Stratapro</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#06</span>
-      <div class="name">灵感象限</div>
-      <div class="eng">Ideasphere</div>
-      <div class="tags">
-        <span class="tag tag-cat">视频剪辑</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/hermes-skill-ideasphere">hermes-skill-ideasphere</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#07</span>
-      <div class="name">有点东西</div>
-      <div class="eng">Nichecraft</div>
-      <div class="tags">
-        <span class="tag tag-cat">飞书白板设计+PPT</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/nichecraft">nichecraft</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#08</span>
-      <div class="name">破窗造视</div>
-      <div class="eng">Fractovision</div>
-      <div class="tags">
-        <span class="tag tag-cat">多媒体生成</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/fractovision">fractovision</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#09</span>
-      <div class="name">荒原序列</div>
-      <div class="eng">BarrenOrder</div>
-      <div class="tags">
-        <span class="tag tag-cat">多Agent协作</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/barren-order">barren-order</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#10</span>
-      <div class="name">艺游未境</div>
-      <div class="eng">Wanderix</div>
-      <div class="tags">
-        <span class="tag tag-cat">视觉创作</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/canvas-design">canvas-design</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#11</span>
-      <div class="name">奇点造物</div>
-      <div class="eng">Genesisix</div>
-      <div class="tags">
-        <span class="tag tag-cat">安全检测</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/hermes-security-suite">hermes-security-suite</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#12</span>
-      <div class="name">艺术生花</div>
-      <div class="eng">Aestheflow</div>
-      <div class="tags">
-        <span class="tag tag-cat">内容分析</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/hermes-skill-aestheflow">hermes-skill-aestheflow</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#13</span>
-      <div class="name">松弛有度</div>
-      <div class="eng">EasyRhythm</div>
-      <div class="tags">
-        <span class="tag tag-cat">智能客服</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/easyrhythm">easyrhythm</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#14</span>
-      <div class="name">他山之石</div>
-      <div class="eng">HerPeakGem</div>
-      <div class="tags">
-        <span class="tag tag-cat">智能教育</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/herpeakgem">herpeakgem</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#15</span>
-      <div class="name">自然良品</div>
-      <div class="eng">PurePicks</div>
-      <div class="tags">
-        <span class="tag tag-cat">电商推荐</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/purepicks">purepicks</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#16</span>
-      <div class="name">元气方程</div>
-      <div class="eng">Energsolve</div>
-      <div class="tags">
-        <span class="tag tag-cat">竞品分析</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/energsolve">energsolve</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#17</span>
-      <div class="name">召物少年</div>
-      <div class="eng">Summoner</div>
-      <div class="tags">
-        <span class="tag tag-cat">漫画生成</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/summoner">summoner</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#18</span>
-      <div class="name">此地无垠</div>
-      <div class="eng">Icilllimite</div>
-      <div class="tags">
-        <span class="tag tag-cat">体育分析</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/football-predictor">football-predictor</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#19</span>
-      <div class="name">绿茵智脑</div>
-      <div class="eng">WorldCup Predictor</div>
-      <div class="tags">
-        <span class="tag tag-cat">体育分析</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/worldcup-predictor">worldcup-predictor</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#20</span>
-      <div class="name">意识浓缩</div>
-      <div class="eng">Minddistill</div>
-      <div class="tags">
-        <span class="tag tag-cat">GEO诊断</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/minddistill">minddistill</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#21</span>
-      <div class="name">智脑星河</div>
-      <div class="eng">MindRiver</div>
-      <div class="tags">
-        <span class="tag tag-cat">Agent上下文</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/mindriver">mindriver</a></div>
-    </div>
-
-    <div class="product-card" style="opacity:0.5">
-      <span class="num">#22</span>
-      <div class="name">AtomGuard</div>
-      <div class="eng">AtomGuard</div>
-      <div class="tags">
-        <span class="tag tag-cat">安全检测</span>
-        <span class="tag tag-archived">🔒 已归档</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/atomguard">atomguard</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#23</span>
-      <div class="name">妙笔生花</div>
-      <div class="eng">ArtiPen</div>
-      <div class="tags">
-        <span class="tag tag-cat">内容创作</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/artipen">artipen</a></div>
-    </div>
-
-    <div class="product-card">
-      <span class="num">#24</span>
-      <div class="name">无限循环</div>
-      <div class="eng">Neverend</div>
-      <div class="tags">
-        <span class="tag tag-cat">知识管理</span>
-        <span class="tag tag-status">✅ 活跃</span>
-      </div>
-      <div class="repo"><a href="https://github.com/503496348-ops/neverend">neverend</a></div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ════ Recruitment ════ -->
-<section class="section">
-  <div class="recruit">
-    <h2>🚀 元素碰撞 AtomCollide — AI 智能体实验室 正式招募</h2>
-    <p class="mission">
-      我们的目标很纯粹：连接每一位测试工程师 / AI 使用探索与爱好者，让你在这里既能扎实打磨技术硬实力，也能打通职业晋升的新通路。这是一个专注于 AI 领域的开源组织，汇聚了众多优秀学习者。<br>
-      <strong style="color:var(--accent2)">使命 — for the learner，和学习者一起成长。</strong>
-    </p>
-    <p class="mission">
-      元素碰撞 AtomCollide — AI 智能体实验室聚集了来自全国各地、各大一线厂的测试从业者，大家在社群里深度投入 AI 赋能测试的落地研究，共同沉淀了《AtomCollide AI 测试实战知识库》，只输出对测试人真正有用、可直接落地的干货内容。今天诚邀你加入，两个核心价值，我想重点说给你听：
-    </p>
-
-    <div class="recruit-columns">
-      <div class="recruit-col">
-        <h3>💼 找工作：更省力，也更精准</h3>
-        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px">社群本身就是一个高浓度的行业资源池，帮你大幅缩短求职路径，少走弯路：</p>
-        <ul>
-          <li><strong>一线大厂内推通道</strong>：汇聚字节、阿里、腾讯等头部企业测试负责人与同行资源，岗位直达面试官，比海投简历效率高 3 倍以上</li>
-          <li><strong>全链路求职赋能包</strong>：专属整理的 AI 测试面试题库、简历优化模板、面试技巧与晋升指导，帮你在关键环节建立优势</li>
-          <li><strong>线下技术沙龙 & 人脉网络</strong>：不定期举办城市线下交流局，拓展靠谱行业人脉，很多机会往往藏在一次面对面的深度交流里</li>
-        </ul>
-      </div>
-      <div class="recruit-col">
-        <h3>🧪 学 AI 测试：真正落地，拒绝空谈</h3>
-        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px">如果你正在关注 AI，却不知道怎么把它用到实际测试工作中，这里会是你最好的起点：</p>
-        <ul>
-          <li><strong>从 0 到 1 实战落地体系</strong>：紧跟 Skills、MCP、Openclaw、RAG、AI IDE 等前沿技术，深度融合进接口测试、自动化测试、性能测试等全流程</li>
-          <li><strong>独家自研资料与工具矩阵</strong>：《AtomCollide AI 测试实战知识库》全套内容、AI 测试自研平台、系统视频教程、职场通用模板，拿来就能用</li>
-          <li><strong>前沿技术同步与提效方案</strong>：最新研究成果与行业动态分享，让你始终保持技术敏感度，走在 AI 测试的最前沿</li>
-        </ul>
-      </div>
-    </div>
-
-    <p style="font-size:0.9rem;line-height:1.8;color:var(--text)">
-      此外，社群还持续输出全栈测试技术干货、测试人转型路径、副业变现实操、项目复盘方法论与高效工作范式，覆盖从初级测试到测试专家的全成长周期。无论你是想精进技术、拓展收入边界，还是跳槽到更好的平台，都能在这里找到适配的成长路径。<br><br>
-      这是一个<strong style="color:var(--green)">拒绝水群、纯技术驱动、真诚互助的成长社群</strong>。你可以随时就技术难题、测试策略或职业困惑发起提问，每一位渴望成长的伙伴都会得到认真的回应。
-    </p>
-  </div>
-</section>
-
-<!-- ════ Knowledge Base ════ -->
-<section class="section">
-  <h2 class="section-title">📚 知识库（7席）</h2>
-  <p class="section-desc">AtomCollide Open Build 知识库体系</p>
-  <div class="kb-grid">
-    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank">📖 知识库入口 1</a></div>
-    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/LdIxwlrKGibFEVkWMocc2K9KnBh" target="_blank">📖 知识库入口 2</a></div>
-    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/K1RPwM8zji9ZchkxlOmcivUgnJe" target="_blank">📖 知识库入口 3</a></div>
-    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/CThswol0PiNJJbkhgT1cZIxanLb" target="_blank">📖 T3｜学习文档・组织升级</a></div>
-    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/KwGQwS2TciT2EdkSBBtcYnbsnSd" target="_blank">📖 知识库入口 5</a></div>
-    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/PDfpwqJZUibTyBkUa7TcZZ6Onpd" target="_blank">📖 知识库入口 6</a></div>
-    <div class="kb-card"><a href="https://vcnvmnln7wit.feishu.cn/wiki/MSEGwrdnTiiF9Dk8qCVcNW6InJg" target="_blank">📖 知识库入口 7</a></div>
-  </div>
-</section>
-
-<!-- ════ Chat Groups ════ -->
-<section class="section">
-  <h2 class="section-title">💬 社群入口（13席）</h2>
-  <p class="section-desc">所有社群内容全域同步，保留 1 个常用社群即可</p>
-  <div class="links-grid">
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=074vd565-6084-455c-ac52-9703e89a0697" target="_blank">AI 探索交流 1 区</a></div>
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=60bj94f0-1a67-48a7-abbb-9172b161c2b0" target="_blank">AI 探索交流 2 区</a></div>
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=13do1920-db46-4444-b635-005680beaf58" target="_blank">AI 探索交流 3 区</a></div>
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f17o1b86-06f6-4f10-911a-69a299a25fe3" target="_blank">AI 探索交流 4 区</a></div>
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=2bbh6ab6-22c2-4753-b973-74bb1a2edcc9" target="_blank">AI 探索交流 5 区</a></div>
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=d19r19f7-2f47-42ba-b1ec-cb0342cf2e80" target="_blank">AI 探索交流 6 区</a></div>
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=fe9vdacc-7316-4b4d-ae4a-fdbcf56315e6" target="_blank">AI 探索交流 7 区</a></div>
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=103kfae8-1fd7-424f-984f-d66c210e42d1" target="_blank">AI 探索交流 8 区</a></div>
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=239p3cad-2f83-4baa-a230-f40386067548" target="_blank">AI 探索交流 9 区</a></div>
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=880r7cf5-3638-45ff-afb9-7944de991872" target="_blank">AI 探索交流 10 区</a></div>
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=6a3v579b-ab43-4e1a-87f9-be63bab88da7" target="_blank">AI 探索交流 · 网文作家</a></div>
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=76at299e-73da-4eeb-9eba-32161e98f2f8" target="_blank">AI 探索交流群 · 音乐达人</a></div>
-    <div class="link-card"><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f2av73d0-6bb4-4a9f-9095-5fbbe83e49ec" target="_blank">AI 探索交流群 · 微笑驿站</a></div>
-  </div>
-
-  <div class="notice">
-    <strong>📢 社群公告：</strong>为保障充足的交流席位与良好的社群体验，全社区所有社群已实现内容全域同步。近期发现不少伙伴同时加入多个同系列社群，导致信息冗余。<strong>倡议：保留 1 个常用社群即可</strong>，让出名额给新伙伴。感谢配合！
-  </div>
-</section>
-
-<!-- ════ Footer ════ -->
-<footer class="footer">
-  <p><strong>© 2026 元素碰撞 AtomCollide — AI 智能体实验室</strong></p>
-  <p style="margin-top:8px">使命：for the learner，和学习者一起成长</p>
-  <p style="margin-top:12px"><a href="https://github.com/503496348-ops">GitHub Organization</a></p>
-</footer>
-
-</body>
-</html>
+1|<!DOCTYPE html>
+2|<html lang="zh-CN">
+3|<head>
+4|<meta charset="UTF-8">
+5|<meta name="viewport" content="width=device-width, initial-scale=1.0">
+6|<title>元素碰撞 AtomCollide — AI 智能体实验室 · 技能矩阵全家福</title>
+7|<style>
+8|:root {
+9|  --bg: #0a0a0f;
+10|  --surface: #13131a;
+11|  --surface2: #1a1a24;
+12|  --border: #2a2a3a;
+13|  --text: #e8e8f0;
+14|  --text-muted: #8888a0;
+15|  --accent: #6c5ce7;
+16|  --accent2: #a29bfe;
+17|  --green: #00cec9;
+18|  --orange: #fdcb6e;
+19|  --pink: #fd79a8;
+20|  --blue: #74b9ff;
+21|  --red: #ff7675;
+22|  --radius: 12px;
+23|  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+24|  --mono: 'JetBrains Mono', 'Fira Code', monospace;
+25|}
+26|
+27|* { margin: 0; padding: 0; box-sizing: border-box; }
+28|
+29|body {
+30|  font-family: var(--font);
+31|  background: var(--bg);
+32|  color: var(--text);
+33|  line-height: 1.6;
+34|  min-height: 100vh;
+35|}
+36|
+37|/* ── Hero ── */
+38|.hero {
+39|  text-align: center;
+40|  padding: 80px 24px 60px;
+41|  background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0a1a2e 100%);
+42|  border-bottom: 1px solid var(--border);
+43|  position: relative;
+44|  overflow: hidden;
+45|}
+46|.hero::before {
+47|  content: '';
+48|  position: absolute;
+49|  top: -50%;
+50|  left: -50%;
+51|  width: 200%;
+52|  height: 200%;
+53|  background: radial-gradient(circle at 30% 50%, rgba(108,92,231,0.08) 0%, transparent 50%),
+54|              radial-gradient(circle at 70% 50%, rgba(0,206,201,0.06) 0%, transparent 50%);
+55|  animation: drift 20s ease-in-out infinite;
+56|}
+57|@keyframes drift {
+58|  0%, 100% { transform: translate(0, 0); }
+59|  50% { transform: translate(-2%, 1%); }
+60|}
+61|.hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+62|.hero h1 {
+63|  font-size: 2.8rem;
+64|  font-weight: 800;
+65|  letter-spacing: -0.02em;
+66|  background: linear-gradient(135deg, var(--accent2), var(--green));
+67|  -webkit-background-clip: text;
+68|  -webkit-text-fill-color: transparent;
+69|  margin-bottom: 8px;
+70|}
+71|.hero .subtitle {
+72|  font-size: 1.1rem;
+73|  color: var(--text-muted);
+74|  font-weight: 400;
+75|}
+76|.hero .stats {
+77|  display: flex;
+78|  justify-content: center;
+79|  gap: 48px;
+80|  margin-top: 32px;
+81|}
+82|.hero .stat-num {
+83|  font-size: 2.4rem;
+84|  font-weight: 800;
+85|  font-family: var(--mono);
+86|  color: var(--accent2);
+87|}
+88|.hero .stat-label {
+89|  font-size: 0.85rem;
+90|  color: var(--text-muted);
+91|  margin-top: 4px;
+92|}
+93|
+94|/* ── Section ── */
+95|.section {
+96|  max-width: 1280px;
+97|  margin: 0 auto;
+98|  padding: 60px 24px;
+99|}
+100|.section-title {
+101|  font-size: 1.6rem;
+102|  font-weight: 700;
+103|  margin-bottom: 8px;
+104|  display: flex;
+105|  align-items: center;
+106|  gap: 12px;
+107|}
+108|.section-desc {
+109|  color: var(--text-muted);
+110|  margin-bottom: 32px;
+111|  font-size: 0.95rem;
+112|}
+113|
+114|/* ── Product Grid ── */
+115|.products-grid {
+116|  display: grid;
+117|  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+118|  gap: 16px;
+119|}
+120|.product-card {
+121|  background: var(--surface);
+122|  border: 1px solid var(--border);
+123|  border-radius: var(--radius);
+124|  padding: 20px;
+125|  transition: all 0.2s ease;
+126|  cursor: default;
+127|  position: relative;
+128|  overflow: hidden;
+129|}
+130|.product-card:hover {
+131|  border-color: var(--accent);
+132|  transform: translateY(-2px);
+133|  box-shadow: 0 8px 32px rgba(108,92,231,0.15);
+134|}
+135|.product-card .num {
+136|  position: absolute;
+137|  top: 12px;
+138|  right: 16px;
+139|  font-size: 0.75rem;
+140|  font-family: var(--mono);
+141|  color: var(--text-muted);
+142|  opacity: 0.5;
+143|}
+144|.product-card .name {
+145|  font-size: 1.1rem;
+146|  font-weight: 700;
+147|  margin-bottom: 2px;
+148|}
+149|.product-card .eng {
+150|  font-size: 0.8rem;
+151|  color: var(--text-muted);
+152|  font-family: var(--mono);
+153|  margin-bottom: 8px;
+154|}
+155|.product-card .tags {
+156|  display: flex;
+157|  flex-wrap: wrap;
+158|  gap: 6px;
+159|  margin-top: 10px;
+160|}
+161|.tag {
+162|  font-size: 0.72rem;
+163|  padding: 2px 8px;
+164|  border-radius: 6px;
+165|  font-weight: 500;
+166|}
+167|.tag-cat {
+168|  background: rgba(108,92,231,0.15);
+169|  color: var(--accent2);
+170|}
+171|.tag-status {
+172|  background: rgba(0,206,201,0.15);
+173|  color: var(--green);
+174|}
+175|.tag-archived {
+176|  background: rgba(136,136,160,0.15);
+177|  color: var(--text-muted);
+178|}
+179|.product-card .repo {
+180|  font-size: 0.75rem;
+181|  font-family: var(--mono);
+182|  color: var(--text-muted);
+183|  margin-top: 8px;
+184|  opacity: 0.6;
+185|}
+186|.product-card a {
+187|  color: var(--blue);
+188|  text-decoration: none;
+189|}
+190|.product-card a:hover { text-decoration: underline; }
+191|
+192|/* ── Category badges ── */
+193|.cat-badge {
+194|  display: inline-block;
+195|  width: 8px;
+196|  height: 8px;
+197|  border-radius: 50%;
+198|  margin-right: 4px;
+199|}
+200|
+201|/* ── Recruitment Section ── */
+202|.recruit {
+203|  background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+204|  border: 1px solid var(--border);
+205|  border-radius: var(--radius);
+206|  padding: 40px;
+207|  margin-top: 40px;
+208|}
+209|.recruit h2 {
+210|  font-size: 1.5rem;
+211|  font-weight: 700;
+212|  margin-bottom: 6px;
+213|  background: linear-gradient(135deg, var(--orange), var(--pink));
+214|  -webkit-background-clip: text;
+215|  -webkit-text-fill-color: transparent;
+216|}
+217|.recruit .mission {
+218|  font-size: 1rem;
+219|  color: var(--text-muted);
+220|  margin-bottom: 24px;
+221|  line-height: 1.8;
+222|}
+223|.recruit-columns {
+224|  display: grid;
+225|  grid-template-columns: 1fr 1fr;
+226|  gap: 24px;
+227|  margin-bottom: 32px;
+228|}
+229|@media (max-width: 768px) {
+230|  .recruit-columns { grid-template-columns: 1fr; }
+231|}
+232|.recruit-col {
+233|  background: var(--bg);
+234|  border: 1px solid var(--border);
+235|  border-radius: var(--radius);
+236|  padding: 24px;
+237|}
+238|.recruit-col h3 {
+239|  font-size: 1.1rem;
+240|  font-weight: 700;
+241|  margin-bottom: 12px;
+242|  display: flex;
+243|  align-items: center;
+244|  gap: 8px;
+245|}
+246|.recruit-col ul {
+247|  list-style: none;
+248|  padding: 0;
+249|}
+250|.recruit-col li {
+251|  padding: 8px 0;
+252|  border-bottom: 1px solid rgba(42,42,58,0.5);
+253|  font-size: 0.9rem;
+254|  color: var(--text);
+255|  line-height: 1.6;
+256|}
+257|.recruit-col li:last-child { border-bottom: none; }
+258|.recruit-col li strong { color: var(--accent2); }
+259|
+260|/* ── Links Section ── */
+261|.links-grid {
+262|  display: grid;
+263|  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+264|  gap: 12px;
+265|  margin-top: 24px;
+266|}
+267|.link-card {
+268|  background: var(--bg);
+269|  border: 1px solid var(--border);
+270|  border-radius: 8px;
+271|  padding: 14px 16px;
+272|  text-align: center;
+273|  transition: all 0.2s;
+274|}
+275|.link-card:hover {
+276|  border-color: var(--accent);
+277|  background: var(--surface);
+278|}
+279|.link-card a {
+280|  color: var(--blue);
+281|  text-decoration: none;
+282|  font-size: 0.9rem;
+283|  font-weight: 500;
+284|}
+285|.link-card .link-desc {
+286|  font-size: 0.75rem;
+287|  color: var(--text-muted);
+288|  margin-top: 4px;
+289|}
+290|
+291|/* ── Knowledge Base ── */
+292|.kb-grid {
+293|  display: grid;
+294|  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+295|  gap: 12px;
+296|  margin-top: 24px;
+297|}
+298|.kb-card {
+299|  background: var(--surface);
+300|  border: 1px solid var(--border);
+301|  border-radius: 8px;
+302|  padding: 16px;
+303|  transition: all 0.2s;
+304|}
+305|.kb-card:hover { border-color: var(--green); }
+306|.kb-card a {
+307|  color: var(--green);
+308|  text-decoration: none;
+309|  font-size: 0.9rem;
+310|  font-weight: 600;
+311|}
+312|
+313|/* ── Notice ── */
+314|.notice {
+315|  background: rgba(253,203,110,0.08);
+316|  border: 1px solid rgba(253,203,110,0.2);
+317|  border-radius: var(--radius);
+318|  padding: 20px 24px;
+319|  margin-top: 32px;
+320|  font-size: 0.9rem;
+321|  line-height: 1.8;
+322|  color: var(--text);
+323|}
+324|.notice strong { color: var(--orange); }
+325|
+326|/* ── Footer ── */
+327|.footer {
+328|  text-align: center;
+329|  padding: 40px 24px;
+330|  color: var(--text-muted);
+331|  font-size: 0.85rem;
+332|  border-top: 1px solid var(--border);
+333|}
+334|.footer a { color: var(--accent2); text-decoration: none; }
+335|.footer a:hover { text-decoration: underline; }
+336|
+337|/* ── Responsive ── */
+338|@media (max-width: 640px) {
+339|  .hero h1 { font-size: 1.8rem; }
+340|  .hero .stats { gap: 24px; }
+341|  .hero .stat-num { font-size: 1.6rem; }
+342|  .products-grid { grid-template-columns: 1fr; }
+343|  .recruit { padding: 24px; }
+344|}
+345|</style>
+346|</head>
+347|<body>
+348|
+349|<!-- ════ Hero ════ -->
+350|<header class="hero">
+351|  <div class="hero-content">
+352|    <h1>元素碰撞 · AtomCollide</h1>
+353|    <p class="subtitle">AI 智能体实验室 — 技能矩阵全家福</p>
+354|    <div class="stats">
+355|      <div>
+356|        <div class="stat-num">24</div>
+357|        <div class="stat-label">开源产品</div>
+358|      </div>
+359|      <div>
+360|        <div class="stat-num">21</div>
+361|        <div class="stat-label">技术分类</div>
+362|      </div>
+363|      <div>
+364|        <div class="stat-num">9K+</div>
+365|        <div class="stat-label">代码提交</div>
+366|      </div>
+367|    </div>
+368|  </div>
+369|</header>
+370|
+371|<!-- ════ Products ════ -->
+372|<section class="section">
+373|  <h2 class="section-title">🧬 技能矩阵 · 24款产品</h2>
+374|  <p class="section-desc">全部开源，覆盖 AI Agent 全链路 — 从安全检测到内容创作，从多Agent协作到知识管理</p>
+375|
+376|  <div class="products-grid">
+377|
+378|    <div class="product-card">
+379|      <span class="num">#01</span>
+380|      <div class="name">裂变创作</div>
+381|      <div class="eng">Fission Creative</div>
+382|      <div class="tags">
+383|        <span class="tag tag-cat">长文创作</span>
+384|        <span class="tag tag-status">✅ 活跃</span>
+385|      </div>
+386|      <div class="repo"><a href="https://github.com/503496348-ops/fission-creative">fission-creative</a></div>
+387|    </div>
+388|
+389|    <div class="product-card">
+390|      <span class="num">#02</span>
+391|      <div class="name">别样觉醒</div>
+392|      <div class="eng">Awake Differently</div>
+393|      <div class="tags">
+394|        <span class="tag tag-cat">身份蒸馏</span>
+395|        <span class="tag tag-status">✅ 活跃</span>
+396|      </div>
+397|      <div class="repo"><a href="https://github.com/503496348-ops/awake-differently">awake-differently</a></div>
+398|    </div>
+399|
+400|    <div class="product-card">
+401|      <span class="num">#03</span>
+402|      <div class="name">白龙马医生</div>
+403|      <div class="eng">Bailongma Doctor</div>
+404|      <div class="tags">
+405|        <span class="tag tag-cat">智能体健康</span>
+406|        <span class="tag tag-status">✅ 活跃</span>
+407|      </div>
+408|      <div class="repo"><a href="https://github.com/503496348-ops/hermes-doctor">hermes-doctor</a></div>
+409|    </div>
+410|
+411|    <div class="product-card">
+412|      <span class="num">#04</span>
+413|      <div class="name">皮皮虾医生</div>
+414|      <div class="eng">PipiXia Doctor</div>
+415|      <div class="tags">
+416|        <span class="tag tag-cat">智能体健康</span>
+417|        <span class="tag tag-status">✅ 活跃</span>
+418|      </div>
+419|      <div class="repo"><a href="https://github.com/503496348-ops/pipixia-doctor">pipixia-doctor</a></div>
+420|    </div>
+421|
+422|    <div class="product-card">
+423|      <span class="num">#05</span>
+424|      <div class="name">深度方略</div>
+425|      <div class="eng">Stratapro</div>
+426|      <div class="tags">
+427|        <span class="tag tag-cat">量化投资</span>
+428|        <span class="tag tag-status">✅ 活跃</span>
+429|      </div>
+430|      <div class="repo"><a href="https://github.com/503496348-ops/Stratapro">Stratapro</a></div>
+431|    </div>
+432|
+433|    <div class="product-card">
+434|      <span class="num">#06</span>
+435|      <div class="name">灵感象限</div>
+436|      <div class="eng">Ideasphere</div>
+437|      <div class="tags">
+438|        <span class="tag tag-cat">视频剪辑</span>
+439|        <span class="tag tag-status">✅ 活跃</span>
+440|      </div>
+441|      <div class="repo"><a href="https://github.com/503496348-ops/hermes-skill-ideasphere">hermes-skill-ideasphere</a></div>
+442|    </div>
+443|
+444|    <div class="product-card">
+445|      <span class="num">#07</span>
+446|      <div class="name">有点东西</div>
+447|      <div class="eng">Nichecraft</div>
+448|      <div class="tags">
+449|        <span class="tag tag-cat">飞书白板设计+PPT</span>
+450|        <span class="tag tag-status">✅ 活跃</span>
+451|      </div>
+452|      <div class="repo"><a href="https://github.com/503496348-ops/nichecraft">nichecraft</a></div>
+453|    </div>
+454|
+455|    <div class="product-card">
+456|      <span class="num">#08</span>
+457|      <div class="name">破窗造视</div>
+458|      <div class="eng">Fractovision</div>
+459|      <div class="tags">
+460|        <span class="tag tag-cat">多媒体生成</span>
+461|        <span class="tag tag-status">✅ 活跃</span>
+462|      </div>
+463|      <div class="repo"><a href="https://github.com/503496348-ops/fractovision">fractovision</a></div>
+464|    </div>
+465|
+466|    <div class="product-card">
+467|      <span class="num">#09</span>
+468|      <div class="name">荒原序列</div>
+469|      <div class="eng">BarrenOrder</div>
+470|      <div class="tags">
+471|        <span class="tag tag-cat">多Agent协作</span>
+472|        <span class="tag tag-status">✅ 活跃</span>
+473|      </div>
+474|      <div class="repo"><a href="https://github.com/503496348-ops/barren-order">barren-order</a></div>
+475|    </div>
+476|
+477|    <div class="product-card">
+478|      <span class="num">#10</span>
+479|      <div class="name">艺游未境</div>
+480|      <div class="eng">Wanderix</div>
+481|      <div class="tags">
+482|        <span class="tag tag-cat">视觉创作</span>
+483|        <span class="tag tag-status">✅ 活跃</span>
+484|      </div>
+485|      <div class="repo"><a href="https://github.com/503496348-ops/canvas-design">canvas-design</a></div>
+486|    </div>
+487|
+488|    <div class="product-card">
+489|      <span class="num">#11</span>
+490|      <div class="name">奇点造物</div>
+491|      <div class="eng">Genesisix</div>
+492|      <div class="tags">
+493|        <span class="tag tag-cat">安全检测</span>
+494|        <span class="tag tag-status">✅ 活跃</span>
+495|      </div>
+496|      <div class="repo"><a href="https://github.com/503496348-ops/hermes-security-suite">hermes-security-suite</a></div>
+497|    </div>
+498|
+499|    <div class="product-card">
+500|      <span class="num">#12</span>
+501|
