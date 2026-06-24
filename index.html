@@ -7,23 +7,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-deep: #08090a;
-  --bg-panel: #0f1011;
-  --bg-surface: #191a1b;
-  --bg-elevated: #28282c;
-  --text-primary: #f7f8f8;
-  --text-secondary: #d0d6e0;
-  --text-tertiary: #8a8f98;
-  --text-quaternary: #62666d;
-  --accent: #7170ff;
-  --accent-dim: #5e6ad2;
-  --accent-hover: #828fff;
-  --green: #00cec9;
-  --green-dim: #00a8a3;
+  --bg-deep: #0d1117;
+  --bg-panel: #161b22;
+  --bg-surface: #1c2128;
+  --bg-elevated: #2d333b;
+  --text-primary: #ffffff;
+  --text-secondary: #e6edf3;
+  --text-tertiary: #a8b2c0;
+  --text-quaternary: #8b949e;
+  --accent: #79c0ff;
+  --accent-dim: #58a6ff;
+  --accent-hover: #a5d6ff;
+  --green: #3fb950;
+  --green-dim: #238636;
   --orange: #fdcb6e;
-  --border-subtle: rgba(255,255,255,0.05);
-  --border: rgba(255,255,255,0.08);
-  --border-accent: rgba(113,112,255,0.2);
+  --border-subtle: rgba(255,255,255,0.1);
+  --border: rgba(255,255,255,0.15);
+  --border-accent: rgba(121,192,255,0.3);
   --radius: 8px;
   --radius-lg: 12px;
   --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -33,416 +33,110 @@
 html { scroll-behavior: smooth; }
 body { font-family: var(--font); background: var(--bg-deep); color: var(--text-primary); line-height: 1.5; overflow-x: hidden; }
 
-/* ═══ Grid Background ═══ */
+/* Grid Background */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
   background-size: 64px 64px;
   pointer-events: none;
   z-index: 0;
 }
 
-/* ═══ Glow Orbs ═══ */
-.glow-orb {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(120px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.4;
-}
-.glow-orb.purple { width: 600px; height: 600px; background: rgba(113,112,255,0.12); top: -200px; left: -100px; }
-.glow-orb.cyan { width: 500px; height: 500px; background: rgba(0,206,201,0.08); bottom: -150px; right: -100px; }
-.glow-orb.purple2 { width: 400px; height: 400px; background: rgba(113,112,255,0.06); bottom: 40%; left: 60%; }
+/* Glow Orbs */
+.glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.7; }
+.glow-orb.purple { width: 700px; height: 700px; background: rgba(88,166,255,0.25); top: -200px; left: -100px; }
+.glow-orb.cyan { width: 600px; height: 600px; background: rgba(63,185,80,0.18); bottom: -150px; right: -100px; }
+.glow-orb.purple2 { width: 500px; height: 500px; background: rgba(88,166,255,0.12); bottom: 40%; left: 60%; }
 
-/* ═══ Content Wrapper ═══ */
 .content { position: relative; z-index: 1; }
 
-/* ═══ Hero ═══ */
-.hero {
-  text-align: center;
-  padding: 120px 24px 100px;
-  position: relative;
-}
-.hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
-}
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border-radius: 9999px;
-  border: 1px solid var(--border-accent);
-  background: rgba(113,112,255,0.06);
-  font-size: 0.8rem;
-  color: var(--accent);
-  font-weight: 500;
-  letter-spacing: -0.13px;
-  margin-bottom: 32px;
-  font-feature-settings: "cv01","ss03";
-}
+/* Hero */
+.hero { text-align: center; padding: 120px 24px 100px; position: relative; }
+.hero::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80%; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 9999px; border: 1px solid var(--border-accent); background: rgba(88,166,255,0.1); font-size: 0.8rem; color: var(--accent); font-weight: 500; letter-spacing: -0.13px; margin-bottom: 32px; font-feature-settings: "cv01","ss03"; }
 .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-.hero h1 {
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  font-weight: 300;
-  letter-spacing: -1.056px;
-  line-height: 1.05;
-  color: var(--text-primary);
-  font-feature-settings: "cv01","ss03";
-  margin-bottom: 20px;
-}
+.hero h1 { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 300; letter-spacing: -1.056px; line-height: 1.05; color: var(--text-primary); font-feature-settings: "cv01","ss03"; margin-bottom: 20px; }
 .hero h1 strong { font-weight: 600; background: linear-gradient(135deg, var(--accent), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.hero .subtitle {
-  font-size: 1.1rem;
-  font-weight: 400;
-  color: var(--text-tertiary);
-  letter-spacing: -0.165px;
-  max-width: 600px;
-  margin: 0 auto 48px;
-  line-height: 1.6;
-  font-feature-settings: "cv01","ss03";
-}
+.hero .subtitle { font-size: 1.1rem; font-weight: 400; color: var(--text-tertiary); letter-spacing: -0.165px; max-width: 600px; margin: 0 auto 48px; line-height: 1.6; font-feature-settings: "cv01","ss03"; }
 
 /* Stats */
-.stats {
-  display: flex;
-  justify-content: center;
-  gap: 64px;
-}
+.stats { display: flex; justify-content: center; gap: 64px; }
 .stat { text-align: center; }
-.stat-num {
-  font-size: 2.8rem;
-  font-weight: 600;
-  letter-spacing: -0.704px;
-  font-family: var(--mono);
-  color: var(--text-primary);
-  line-height: 1;
-  font-feature-settings: "cv01","ss03";
-}
+.stat-num { font-size: 2.8rem; font-weight: 600; letter-spacing: -0.704px; font-family: var(--mono); color: var(--text-primary); line-height: 1; font-feature-settings: "cv01","ss03"; }
 .stat-num .unit { font-size: 1.4rem; color: var(--accent); font-weight: 500; }
-.stat-label {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-quaternary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-top: 8px;
-  font-feature-settings: "cv01","ss03";
-}
+.stat-label { font-size: 0.8rem; font-weight: 500; color: var(--text-quaternary); text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; font-feature-settings: "cv01","ss03"; }
 
-/* ═══ Section ═══ */
-.section {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 24px;
-}
-.section-header {
-  margin-bottom: 48px;
-}
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.704px;
-  color: var(--text-primary);
-  font-feature-settings: "cv01","ss03";
-  margin-bottom: 8px;
-}
-.section-desc {
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: var(--text-quaternary);
-  letter-spacing: -0.165px;
-  font-feature-settings: "cv01","ss03";
-}
+/* Section */
+.section { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+.section-header { margin-bottom: 48px; }
+.section-title { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.704px; color: var(--text-primary); font-feature-settings: "cv01","ss03"; margin-bottom: 8px; }
+.section-desc { font-size: 0.9rem; font-weight: 400; color: var(--text-quaternary); letter-spacing: -0.165px; font-feature-settings: "cv01","ss03"; }
 
-/* ═══ Products Grid ═══ */
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
-}
-.product-card {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-.product-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: var(--radius-lg);
-  padding: 1px;
-  background: linear-gradient(135deg, transparent 40%, rgba(113,112,255,0.3) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
+/* Products */
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.product-card { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+.product-card::before { content: ''; position: absolute; inset: 0; border-radius: var(--radius-lg); padding: 1px; background: linear-gradient(135deg, transparent 40%, rgba(88,166,255,0.5) 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity 0.3s; }
 .product-card:hover::before { opacity: 1; }
-.product-card:hover {
-  background: rgba(255,255,255,0.04);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(113,112,255,0.08);
-}
-.product-card .num {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--text-quaternary);
-  letter-spacing: 0.5px;
-  margin-bottom: 12px;
-}
-.product-card .name {
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: -0.24px;
-  color: var(--text-primary);
-  font-feature-settings: "cv01","ss03";
-  margin-bottom: 2px;
-}
-.product-card .eng {
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: var(--text-quaternary);
-  font-family: var(--mono);
-  margin-bottom: 12px;
-}
-.product-card .tags {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-.tag {
-  font-size: 0.65rem;
-  font-weight: 500;
-  padding: 3px 8px;
-  border-radius: 4px;
-  letter-spacing: 0.3px;
-  font-feature-settings: "cv01","ss03";
-}
-.tag-cat {
-  background: rgba(113,112,255,0.1);
-  color: var(--accent);
-  border: 1px solid rgba(113,112,255,0.15);
-}
-.tag-status {
-  background: rgba(0,206,201,0.1);
-  color: var(--green);
-  border: 1px solid rgba(0,206,201,0.15);
-}
-.tag-archive {
-  background: rgba(136,136,160,0.08);
-  color: var(--text-quaternary);
-  border: 1px solid rgba(136,136,160,0.1);
-}
-.product-card .repo a {
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: var(--text-tertiary);
-  text-decoration: none;
-  font-family: var(--mono);
-  transition: color 0.2s;
-}
+.product-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(88,166,255,0.15); }
+.product-card .num { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; color: var(--text-quaternary); letter-spacing: 0.5px; margin-bottom: 12px; }
+.product-card .name { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.24px; color: var(--text-primary); font-feature-settings: "cv01","ss03"; margin-bottom: 2px; }
+.product-card .eng { font-size: 0.75rem; font-weight: 400; color: var(--text-quaternary); font-family: var(--mono); margin-bottom: 12px; }
+.product-card .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.tag { font-size: 0.65rem; font-weight: 500; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.3px; font-feature-settings: "cv01","ss03"; }
+.tag-cat { background: rgba(121,192,255,0.15); color: var(--accent); border: 1px solid rgba(121,192,255,0.25); }
+.tag-status { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.25); }
+.tag-archive { background: rgba(136,136,160,0.1); color: var(--text-quaternary); border: 1px solid rgba(136,136,160,0.15); }
+.product-card .repo a { font-size: 0.75rem; font-weight: 400; color: var(--text-tertiary); text-decoration: none; font-family: var(--mono); transition: color 0.2s; }
 .product-card .repo a:hover { color: var(--accent); }
 
-/* ═══ Recruit ═══ */
-.recruit {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 40px;
-  margin-top: 16px;
-  position: relative;
-  overflow: hidden;
-}
-.recruit::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
-}
-.recruit h2 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  letter-spacing: -0.704px;
-  color: var(--text-primary);
-  font-feature-settings: "cv01","ss03";
-  margin-bottom: 16px;
-}
-.recruit h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: -0.24px;
-  color: var(--accent);
-  font-feature-settings: "cv01","ss03";
-  margin: 24px 0 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.recruit h3::before {
-  content: '';
-  width: 3px;
-  height: 16px;
-  background: var(--accent);
-  border-radius: 2px;
-}
-.recruit p {
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  margin-bottom: 12px;
-  letter-spacing: -0.165px;
-  font-feature-settings: "cv01","ss03";
-}
-.recruit-col {
-  list-style: none;
-  margin: 12px 0;
-  padding: 0;
-}
-.recruit-col li {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border-subtle);
-  font-size: 0.85rem;
-  line-height: 1.7;
-  color: var(--text-secondary);
-  font-feature-settings: "cv01","ss03";
-  display: flex;
-  gap: 8px;
-}
+/* Recruit */
+.recruit { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 40px; margin-top: 16px; position: relative; overflow: hidden; }
+.recruit::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+.recruit h2 { font-size: 1.3rem; font-weight: 600; letter-spacing: -0.704px; color: var(--text-primary); font-feature-settings: "cv01","ss03"; margin-bottom: 16px; }
+.recruit h3 { font-size: 1rem; font-weight: 600; letter-spacing: -0.24px; color: var(--accent); font-feature-settings: "cv01","ss03"; margin: 24px 0 12px; display: flex; align-items: center; gap: 8px; }
+.recruit h3::before { content: ''; width: 3px; height: 16px; background: var(--accent); border-radius: 2px; }
+.recruit p { font-size: 0.9rem; font-weight: 400; color: var(--text-secondary); line-height: 1.8; margin-bottom: 12px; letter-spacing: -0.165px; font-feature-settings: "cv01","ss03"; }
+.recruit-col { list-style: none; margin: 12px 0; padding: 0; }
+.recruit-col li { padding: 10px 0; border-bottom: 1px solid var(--border-subtle); font-size: 0.85rem; line-height: 1.7; color: var(--text-secondary); font-feature-settings: "cv01","ss03"; display: flex; gap: 8px; }
 .recruit-col li:last-child { border-bottom: none; }
-.recruit-col li::before {
-  content: '›';
-  color: var(--accent);
-  font-weight: 600;
-  flex-shrink: 0;
-}
+.recruit-col li::before { content: '›'; color: var(--accent); font-weight: 600; flex-shrink: 0; }
 .recruit-col li strong { color: var(--accent); font-weight: 600; }
 
-/* ═══ Knowledge Base ═══ */
-.kb-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 12px;
-}
-.kb-card {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px 20px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  transition: all 0.25s;
-  text-decoration: none;
-}
-.kb-card:hover {
-  background: rgba(255,255,255,0.04);
-  border-color: rgba(0,206,201,0.2);
-  transform: translateY(-1px);
-}
+/* Knowledge Base */
+.kb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.kb-card { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; display: flex; align-items: center; gap: 14px; transition: all 0.25s; text-decoration: none; }
+.kb-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(63,185,80,0.3); transform: translateY(-1px); }
 .kb-icon { font-size: 1.3rem; flex-shrink: 0; }
 .kb-info { flex: 1; }
-.kb-title {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  letter-spacing: -0.13px;
-  font-feature-settings: "cv01","ss03";
-}
-.kb-sub {
-  font-size: 0.7rem;
-  color: var(--text-quaternary);
-  font-family: var(--mono);
-  margin-top: 2px;
-}
+.kb-title { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); letter-spacing: -0.13px; font-feature-settings: "cv01","ss03"; }
+.kb-sub { font-size: 0.7rem; color: var(--text-quaternary); font-family: var(--mono); margin-top: 2px; }
 
-/* ═══ Groups ═══ */
-.group-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 10px;
-}
-.group-card {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  transition: all 0.25s;
-}
-.group-card:hover {
-  background: rgba(255,255,255,0.04);
-  border-color: var(--border-accent);
-  transform: translateY(-1px);
-}
+/* Groups */
+.group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.group-card { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; align-items: center; gap: 10px; text-decoration: none; transition: all 0.25s; }
+.group-card:hover { background: rgba(255,255,255,0.08); border-color: var(--border-accent); transform: translateY(-1px); }
 .group-icon { font-size: 1.1rem; }
 .group-name { color: var(--text-secondary); font-size: 0.8rem; font-weight: 500; flex: 1; letter-spacing: -0.13px; font-feature-settings: "cv01","ss03"; }
 .group-cta { color: var(--accent); font-size: 0.7rem; font-weight: 600; letter-spacing: -0.1px; font-feature-settings: "cv01","ss03"; }
 
-/* ═══ Notice ═══ */
-.notice {
-  background: rgba(253,203,110,0.04);
-  border: 1px solid rgba(253,203,110,0.12);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-top: 32px;
-  font-size: 0.85rem;
-  line-height: 1.8;
-  color: var(--text-secondary);
-  font-feature-settings: "cv01","ss03";
-}
+/* Notice */
+.notice { background: rgba(253,203,110,0.06); border: 1px solid rgba(253,203,110,0.2); border-radius: var(--radius-lg); padding: 24px; margin-top: 32px; font-size: 0.85rem; line-height: 1.8; color: var(--text-secondary); font-feature-settings: "cv01","ss03"; }
 .notice strong { color: var(--orange); font-weight: 600; }
 
-/* ═══ Divider ═══ */
-.divider {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-.divider-line {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
-}
+/* Divider */
+.divider { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.divider-line { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
 
-/* ═══ Footer ═══ */
-.footer {
-  text-align: center;
-  padding: 48px 24px;
-  color: var(--text-quaternary);
-  font-size: 0.8rem;
-  font-feature-settings: "cv01","ss03";
-}
+/* Footer */
+.footer { text-align: center; padding: 48px 24px; color: var(--text-quaternary); font-size: 0.8rem; font-feature-settings: "cv01","ss03"; }
 .footer a { color: var(--accent); text-decoration: none; }
 .footer a:hover { color: var(--accent-hover); }
 
-/* ═══ Responsive ═══ */
 @media (max-width: 640px) {
   .hero { padding: 80px 24px 60px; }
   .hero h1 { font-size: 2rem; }
@@ -457,14 +151,12 @@ body::before {
 </head>
 <body>
 
-<!-- Glow Orbs -->
 <div class="glow-orb purple"></div>
 <div class="glow-orb cyan"></div>
 <div class="glow-orb purple2"></div>
 
 <div class="content">
 
-<!-- ════ Hero ════ -->
 <header class="hero">
   <div class="hero-badge">
     <span class="dot"></span>
@@ -473,26 +165,13 @@ body::before {
   <h1><strong>元素碰撞 · AtomCollide</strong></h1>
   <p class="subtitle">专注 AI Agent 全链路的开源技术社区 — for the learner，和学习者一起成长</p>
   <div class="stats">
-    <div class="stat">
-      <div class="stat-num">24<span class="unit">款</span></div>
-      <div class="stat-label">开源产品</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">21</div>
-      <div class="stat-label">技术分类</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">9K<span class="unit">+</span></div>
-      <div class="stat-label">代码提交</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">14</div>
-      <div class="stat-label">社群入口</div>
-    </div>
+    <div class="stat"><div class="stat-num">24<span class="unit">款</span></div><div class="stat-label">开源产品</div></div>
+    <div class="stat"><div class="stat-num">21</div><div class="stat-label">技术分类</div></div>
+    <div class="stat"><div class="stat-num">9K<span class="unit">+</span></div><div class="stat-label">代码提交</div></div>
+    <div class="stat"><div class="stat-num">14</div><div class="stat-label">社群入口</div></div>
   </div>
 </header>
 
-<!-- ════ Products ════ -->
 <section class="section">
   <div class="section-header">
     <h2 class="section-title">🧬 技能矩阵 · 24 款产品</h2>
@@ -504,240 +183,168 @@ body::before {
       <div class="num">#01</div>
       <div class="name">裂变创作</div>
       <div class="eng">Fission Creative</div>
-      <div class="tags">
-        <span class="tag tag-cat">长文创作</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">长文创作</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/fission-creative">github/fission-creative</a></div>
     </div>
     <div class="product-card">
       <div class="num">#02</div>
       <div class="name">别样觉醒</div>
       <div class="eng">Awake Differently</div>
-      <div class="tags">
-        <span class="tag tag-cat">身份蒸馏</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">身份蒸馏</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/awake-differently">github/awake-differently</a></div>
     </div>
     <div class="product-card">
       <div class="num">#03</div>
       <div class="name">白龙马医生</div>
       <div class="eng">Bailongma Doctor</div>
-      <div class="tags">
-        <span class="tag tag-cat">智能体健康</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">智能体健康</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/hermes-doctor">github/hermes-doctor</a></div>
     </div>
     <div class="product-card">
       <div class="num">#04</div>
       <div class="name">皮皮虾医生</div>
       <div class="eng">PipiXia Doctor</div>
-      <div class="tags">
-        <span class="tag tag-cat">智能体健康</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">智能体健康</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/pipixia-doctor">github/pipixia-doctor</a></div>
     </div>
     <div class="product-card">
       <div class="num">#05</div>
       <div class="name">深度方略</div>
       <div class="eng">Stratapro</div>
-      <div class="tags">
-        <span class="tag tag-cat">量化投资</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">量化投资</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/Stratapro">github/Stratapro</a></div>
     </div>
     <div class="product-card">
       <div class="num">#06</div>
       <div class="name">灵感象限</div>
       <div class="eng">Ideasphere</div>
-      <div class="tags">
-        <span class="tag tag-cat">视频剪辑</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">视频剪辑</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/hermes-skill-ideasphere">github/hermes-skill-ideasphere</a></div>
     </div>
     <div class="product-card">
       <div class="num">#07</div>
       <div class="name">有点东西</div>
       <div class="eng">Nichecraft</div>
-      <div class="tags">
-        <span class="tag tag-cat">飞书白板+PPT</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">飞书白板+PPT</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/nichecraft">github/nichecraft</a></div>
     </div>
     <div class="product-card">
       <div class="num">#08</div>
       <div class="name">破窗造视</div>
       <div class="eng">Fractovision</div>
-      <div class="tags">
-        <span class="tag tag-cat">多媒体生成</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">多媒体生成</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/fractovision">github/fractovision</a></div>
     </div>
     <div class="product-card">
       <div class="num">#09</div>
       <div class="name">荒原序列</div>
       <div class="eng">BarrenOrder</div>
-      <div class="tags">
-        <span class="tag tag-cat">多Agent协作</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">多Agent协作</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/barren-order">github/barren-order</a></div>
     </div>
     <div class="product-card">
       <div class="num">#10</div>
       <div class="name">艺游未境</div>
       <div class="eng">Wanderix</div>
-      <div class="tags">
-        <span class="tag tag-cat">视觉创作</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">视觉创作</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/canvas-design">github/canvas-design</a></div>
     </div>
     <div class="product-card">
       <div class="num">#11</div>
       <div class="name">奇点造物</div>
       <div class="eng">Genesisix</div>
-      <div class="tags">
-        <span class="tag tag-cat">安全检测</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">安全检测</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/hermes-security-suite">github/hermes-security-suite</a></div>
     </div>
     <div class="product-card">
       <div class="num">#12</div>
       <div class="name">艺术生花</div>
       <div class="eng">AestheFlow</div>
-      <div class="tags">
-        <span class="tag tag-cat">文本分析</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">文本分析</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/hermes-skill-aestheflow">github/hermes-skill-aestheflow</a></div>
     </div>
     <div class="product-card">
       <div class="num">#13</div>
       <div class="name">松弛有度</div>
       <div class="eng">EasyRhythm</div>
-      <div class="tags">
-        <span class="tag tag-cat">日程管理</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">日程管理</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/easyrhythm">github/easyrhythm</a></div>
     </div>
     <div class="product-card">
       <div class="num">#14</div>
       <div class="name">他山之石</div>
       <div class="eng">HerPeakGem</div>
-      <div class="tags">
-        <span class="tag tag-cat">竞品分析</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">竞品分析</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/herpeakgem">github/herpeakgem</a></div>
     </div>
     <div class="product-card">
       <div class="num">#15</div>
       <div class="name">自然良品</div>
       <div class="eng">PurePicks</div>
-      <div class="tags">
-        <span class="tag tag-cat">选品推荐</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">选品推荐</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/purepicks">github/purepicks</a></div>
     </div>
     <div class="product-card">
       <div class="num">#16</div>
       <div class="name">元气方程</div>
       <div class="eng">EnergSolve</div>
-      <div class="tags">
-        <span class="tag tag-cat">学习路径</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">学习路径</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/energsolve">github/energsolve</a></div>
     </div>
     <div class="product-card">
       <div class="num">#17</div>
       <div class="name">召物少年</div>
       <div class="eng">Summoner</div>
-      <div class="tags">
-        <span class="tag tag-cat">需求解析</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">需求解析</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/summoner">github/summoner</a></div>
     </div>
     <div class="product-card">
       <div class="num">#18</div>
       <div class="name">此地无垠</div>
       <div class="eng">FootPredict</div>
-      <div class="tags">
-        <span class="tag tag-cat">体育分析</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">体育分析</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/football-predictor">github/football-predictor</a></div>
     </div>
     <div class="product-card">
       <div class="num">#19</div>
       <div class="name">绿茵智脑</div>
       <div class="eng">WorldCup Predictor</div>
-      <div class="tags">
-        <span class="tag tag-cat">体育分析</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">体育分析</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/worldcup-predictor">github/worldcup-predictor</a></div>
     </div>
     <div class="product-card">
       <div class="num">#20</div>
       <div class="name">意识浓缩</div>
       <div class="eng">MindDistill</div>
-      <div class="tags">
-        <span class="tag tag-cat">SEO诊断</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">SEO诊断</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/minddistill">github/minddistill</a></div>
     </div>
     <div class="product-card">
       <div class="num">#21</div>
       <div class="name">智脑星河</div>
       <div class="eng">MindRiver</div>
-      <div class="tags">
-        <span class="tag tag-cat">数据可视化</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">数据可视化</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/mindriver">github/mindriver</a></div>
     </div>
     <div class="product-card">
       <div class="num">#22</div>
       <div class="name">妙笔生花</div>
       <div class="eng">ArtiPen</div>
-      <div class="tags">
-        <span class="tag tag-cat">结构化写作</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">结构化写作</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/artipen">github/artipen</a></div>
     </div>
     <div class="product-card">
       <div class="num">#23</div>
       <div class="name">无限循环</div>
       <div class="eng">Neverend</div>
-      <div class="tags">
-        <span class="tag tag-cat">知识管理</span>
-        <span class="tag tag-status">● 活跃</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">知识管理</span><span class="tag tag-status">● 活跃</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/neverend">github/neverend</a></div>
     </div>
     <div class="product-card">
       <div class="num">#24</div>
       <div class="name">AtomGuard</div>
       <div class="eng">AtomGuard</div>
-      <div class="tags">
-        <span class="tag tag-cat">安全防护</span>
-        <span class="tag tag-archive">🔒 已归档</span>
-      </div>
+      <div class="tags"><span class="tag tag-cat">安全防护</span><span class="tag tag-archive">🔒 已归档</span></div>
       <div class="repo"><a href="https://github.com/503496348-ops/atomguard">github/atomguard</a></div>
     </div>
   </div>
@@ -745,27 +352,23 @@ body::before {
 
 <div class="divider"><div class="divider-line"></div></div>
 
-<!-- ════ Recruitment ════ -->
 <section class="section">
   <div class="recruit">
     <h2>🚀 元素碰撞 — AI 智能体实验室 正式招募</h2>
     <p>我们的目标很纯粹：连接每一位测试工程师/AI使用探索与爱好者，让你在这里既能扎实打磨技术硬实力，也能打通职业晋升的新通路。这是一个专注于AI领域的开源组织，汇聚了众多优秀学习者，<strong>使命 — for the learner，和学习者一起成长。</strong></p>
     <p>元素碰撞聚集了来自全国各地、各大一线厂的测试从业者，大家在社群里深度投入AI赋能测试的落地研究，共同沉淀了《AtomCollide AI测试实战知识库》，只输出对测试人真正有用、可直接落地的干货内容。</p>
-
     <h3>💼 找工作：更省力，也更精准</h3>
     <ul class="recruit-col">
       <li><strong>一线大厂内推通道</strong> — 汇聚字节、阿里、腾讯等头部企业测试负责人与同行资源，岗位直达面试官，比海投简历效率高 3 倍以上</li>
       <li><strong>全链路求职赋能包</strong> — 专属整理的 AI 测试面试题库、简历优化模板、面试技巧与晋升指导，帮你在关键环节建立优势</li>
       <li><strong>线下技术沙龙 & 人脉网络</strong> — 不定期举办城市线下交流局，拓展靠谱行业人脉，很多机会往往藏在一次面对面的深度交流里</li>
     </ul>
-
     <h3>🧪 学 AI 测试：真正落地，拒绝空谈</h3>
     <ul class="recruit-col">
       <li><strong>从 0 到 1 实战落地体系</strong> — 紧跟 Skills、MCP、Openclaw、RAG、AI IDE 等前沿技术，深度融合进接口测试、自动化测试、性能测试等全流程，零基础也能快速上手</li>
       <li><strong>独家自研资料与工具矩阵</strong> — 《AtomCollide AI测试实战知识库》全套内容、AI 测试自研平台、系统视频教程、职场通用模板，拿来就能用</li>
       <li><strong>前沿技术同步与提效方案</strong> — 毫无保留地分享最新研究成果与行业动态，让你始终保持技术敏感度，走在 AI 测试的最前沿</li>
     </ul>
-
     <p>此外，社群还持续输出全栈测试技术干货、测试人转型路径、副业变现实操、项目复盘方法论与高效工作范式，覆盖从初级测试到测试专家的全成长周期。</p>
     <p><strong>这是一个拒绝水群、纯技术驱动、真诚互助的成长社群。</strong>你可以随时就技术难题、测试策略或职业困惑发起提问，每一位渴望成长的伙伴都会得到认真的回应。</p>
   </div>
@@ -773,68 +376,24 @@ body::before {
 
 <div class="divider"><div class="divider-line"></div></div>
 
-<!-- ════ Knowledge Bases ════ -->
 <section class="section">
   <div class="section-header">
     <h2 class="section-title">📚 知识库（7 席）</h2>
     <p class="section-desc">覆盖踩坑经验 · 商业化案例 · 社区问答 · 组织升级 · 行业资料 · 技能智造 · 社群共建</p>
   </div>
   <div class="kb-grid">
-    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank">
-      <span class="kb-icon">🪐</span>
-      <div class="kb-info">
-        <div class="kb-title">T0 · 智能体经验知识库</div>
-        <div class="kb-sub">训练踩坑 · 故障修复 · 部署手册</div>
-      </div>
-    </a>
-    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/LdIxwlrKGibFEVkWMocc2K9KnBh" target="_blank">
-      <span class="kb-icon">🏆</span>
-      <div class="kb-info">
-        <div class="kb-title">T1 · 商业化案例知识库</div>
-        <div class="kb-sub">教培 · Token中转 · AI音乐变现</div>
-      </div>
-    </a>
-    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/K1RPwM8zji9ZchkxlOmcivUgnJe" target="_blank">
-      <span class="kb-icon">💫</span>
-      <div class="kb-info">
-        <div class="kb-title">T2 · 社区高频问题知识库</div>
-        <div class="kb-sub">问答科普 · 常见坑点</div>
-      </div>
-    </a>
-    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/CThswol0PiNJJbkhgT1cZIxanLb" target="_blank">
-      <span class="kb-icon">🎖️</span>
-      <div class="kb-info">
-        <div class="kb-title">T3 · Open Build 知识库</div>
-        <div class="kb-sub">组织升级 · 协作范式</div>
-      </div>
-    </a>
-    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/KwGQwS2TciT2EdkSBBtcYnbsnSd" target="_blank">
-      <span class="kb-icon">🔥</span>
-      <div class="kb-info">
-        <div class="kb-title">T4 · 全行业资料知识库</div>
-        <div class="kb-sub">报告归档 · 行业研究</div>
-      </div>
-    </a>
-    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/PDfpwqJZUibTyBkUa7TcZZ6Onpd" target="_blank">
-      <span class="kb-icon">🛠️</span>
-      <div class="kb-info">
-        <div class="kb-title">T5 · 智械工坊作品知识库</div>
-        <div class="kb-sub">技能智造 · 产品文档</div>
-      </div>
-    </a>
-    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/MSEGwrdnTiiF9Dk8qCVcNW6InJg" target="_blank">
-      <span class="kb-icon">🌌</span>
-      <div class="kb-info">
-        <div class="kb-title">T6 · 社群共建知识库</div>
-        <div class="kb-sub">治理运营 · 社区规范</div>
-      </div>
-    </a>
+    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank"><span class="kb-icon">🪐</span><div class="kb-info"><div class="kb-title">T0 · 智能体经验知识库</div><div class="kb-sub">训练踩坑 · 故障修复 · 部署手册</div></div></a>
+    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/LdIxwlrKGibFEVkWMocc2K9KnBh" target="_blank"><span class="kb-icon">🏆</span><div class="kb-info"><div class="kb-title">T1 · 商业化案例知识库</div><div class="kb-sub">教培 · Token中转 · AI音乐变现</div></div></a>
+    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/K1RPwM8zji9ZchkxlOmcivUgnJe" target="_blank"><span class="kb-icon">💫</span><div class="kb-info"><div class="kb-title">T2 · 社区高频问题知识库</div><div class="kb-sub">问答科普 · 常见坑点</div></div></a>
+    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/CThswol0PiNJJbkhgT1cZIxanLb" target="_blank"><span class="kb-icon">🎖️</span><div class="kb-info"><div class="kb-title">T3 · Open Build 知识库</div><div class="kb-sub">组织升级 · 协作范式</div></div></a>
+    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/KwGQwS2TciT2EdkSBBtcYnbsnSd" target="_blank"><span class="kb-icon">🔥</span><div class="kb-info"><div class="kb-title">T4 · 全行业资料知识库</div><div class="kb-sub">报告归档 · 行业研究</div></div></a>
+    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/PDfpwqJZUibTyBkUa7TcZZ6Onpd" target="_blank"><span class="kb-icon">🛠️</span><div class="kb-info"><div class="kb-title">T5 · 智械工坊作品知识库</div><div class="kb-sub">技能智造 · 产品文档</div></div></a>
+    <a class="kb-card" href="https://vcnvmnln7wit.feishu.cn/wiki/MSEGwrdnTiiF9Dk8qCVcNW6InJg" target="_blank"><span class="kb-icon">🌌</span><div class="kb-info"><div class="kb-title">T6 · 社群共建知识库</div><div class="kb-sub">治理运营 · 社区规范</div></div></a>
   </div>
 </section>
 
 <div class="divider"><div class="divider-line"></div></div>
 
-<!-- ════ Groups ════ -->
 <section class="section">
   <div class="section-header">
     <h2 class="section-title">💬 社群入口（14 席）</h2>
@@ -850,7 +409,7 @@ body::before {
     <a class="group-card" href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=fe9vdacc-7316-4b4d-ae4a-fdbcf56315e6" target="_blank"><span class="group-icon">💬</span><span class="group-name">AI 探索交流 7 区</span><span class="group-cta">加入 →</span></a>
     <a class="group-card" href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=103kfae8-1fd7-424f-984f-d66c210e42d1" target="_blank"><span class="group-icon">💬</span><span class="group-name">AI 探索交流 8 区</span><span class="group-cta">加入 →</span></a>
     <a class="group-card" href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=239p3cad-2f83-4baa-a230-f40386067548" target="_blank"><span class="group-icon">💬</span><span class="group-name">AI 探索交流 9 区</span><span class="group-cta">加入 →</span></a>
-    <a class="group-card" href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=880r7cf5-3638-455-afb9-7944de991872" target="_blank"><span class="group-icon">💬</span><span class="group-name">AI 探索交流 10 区</span><span class="group-cta">加入 →</span></a>
+    <a class="group-card" href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=880r7cf5-3638-45ff-afb9-7944de991872" target="_blank"><span class="group-icon">💬</span><span class="group-name">AI 探索交流 10 区</span><span class="group-cta">加入 →</span></a>
     <a class="group-card" href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=6a3v579b-ab43-4e1a-87f9-be63bab88da7" target="_blank"><span class="group-icon">✍️</span><span class="group-name">网文作家</span><span class="group-cta">加入 →</span></a>
     <a class="group-card" href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=76at299e-73da-4eeb-9eba-32161e98f2f8" target="_blank"><span class="group-icon">🎵</span><span class="group-name">音乐达人</span><span class="group-cta">加入 →</span></a>
     <a class="group-card" href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f2av73d0-6bb4-4a9f-9095-5fbbe83e49ec" target="_blank"><span class="group-icon">💌</span><span class="group-name">微笑驿站</span><span class="group-cta">加入 →</span></a>
@@ -863,7 +422,6 @@ body::before {
   </div>
 </section>
 
-<!-- ════ Footer ════ -->
 <footer class="footer">
   <p style="margin-bottom: 4px;">元素碰撞 · AtomCollide — AI 智能体实验室</p>
   <p style="margin-bottom: 12px; color: var(--text-quaternary);">使命：for the learner，和学习者一起成长</p>
