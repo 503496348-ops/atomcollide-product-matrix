@@ -4,233 +4,259 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>元素碰撞 AtomCollide — AI 智能体实验室</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #101114;
-  --bg-panel: #0f1011;
-  --bg-surface: #191a1b;
-  --bg-elevated: #28282c;
-  --text-1: #f7f8f8;
-  --text-2: #d0d6e0;
-  --text-3: #8a8f98;
-  --text-4: #62666d;
-  --accent: #5e6ad2;
-  --accent-bright: #7170ff;
-  --accent-hover: #828fff;
-  --green: #27a644;
-  --border-subtle: rgba(255,255,255,0.05);
-  --border: rgba(255,255,255,0.08);
-  --radius: 8px;
-  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, monospace;
-  --ff: 'cv01','ss03';
-}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:var(--font);background:var(--bg);color:var(--text-1);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased;font-feature-settings:var(--ff);position:relative}
-body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(94,106,210,0.45),transparent 70%),radial-gradient(ellipse 50% 40% at 85% 50%,rgba(113,112,255,0.2),transparent),radial-gradient(ellipse 50% 40% at 15% 70%,rgba(94,106,210,0.15),transparent);pointer-events:none;z-index:0}
-body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background-image:linear-gradient(rgba(255,255,255,0.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.12) 1px,transparent 1px);background-size:64px 64px;pointer-events:none;z-index:0;mask-image:radial-gradient(ellipse 90% 80% at 50% 40%,black 20%,transparent 80%)}
-nav,.wrap,footer{position:relative;z-index:1}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#0a0b1a;color:#e8eaf0;line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-/* Nav */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;align-items:center;backdrop-filter:blur(16px);background:rgba(8,9,10,0.8);border-bottom:1px solid var(--border-subtle)}
-nav .wrap{display:flex;align-items:center;justify-content:space-between;width:100%}
-.nav-logo{font-size:15px;font-weight:510;letter-spacing:-0.3px;color:var(--text-1)}
-.nav-links{display:flex;gap:24px;align-items:center}
-.nav-links a{font-size:13px;font-weight:510;color:var(--text-2);transition:color 0.15s;letter-spacing:-0.13px}
-.nav-links a:hover{color:var(--text-1)}
-.nav-cta{padding:6px 14px;border-radius:6px;background:var(--accent);color:#fff;font-size:13px;font-weight:510;transition:background 0.15s}
-.nav-cta:hover{background:var(--accent-hover)}
+/*=== STATUS BAR ===*/
+.status-bar{background:#080912;border-bottom:1px solid rgba(0,240,255,0.1);padding:6px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8a9bb5}
+.status-bar .inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center}
+.status-dot{width:6px;height:6px;border-radius:50%;background:#00f0a0;display:inline-block;margin-right:6px;box-shadow:0 0 6px #00f0a0}
+.status-bar .cyan{color:#00d4ff}
 
-/* Hero */
-.hero{padding:160px 0 80px;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:9999px;border:1px solid rgba(113,112,255,0.2);background:rgba(113,112,255,0.06);font-size:12px;font-weight:510;color:var(--accent-bright);margin-bottom:32px;letter-spacing:-0.1px}
-.hero-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--accent-bright);animation:pulse 2.5s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.hero h1{font-size:clamp(2.5rem,5vw,4rem);font-weight:510;letter-spacing:-1.4px;line-height:1.05;margin-bottom:20px;color:var(--text-1)}
-.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--accent-bright),var(--accent-hover));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero .sub{font-size:18px;font-weight:400;color:var(--text-3);max-width:480px;margin:0 auto;line-height:1.6;letter-spacing:-0.165px}
+/*=== NAV ===*/
+nav{position:sticky;top:0;z-index:100;background:rgba(10,11,26,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,212,255,0.08)}
+nav .inner{max-width:1200px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600;color:#fff;letter-spacing:-0.3px}
+.nav-logo svg{width:28px;height:28px}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{font-size:13px;font-weight:500;color:#8a9bb5;transition:color 0.2s;text-decoration:none}
+.nav-links a:hover{color:#00d4ff}
+.nav-gh{color:#00d4ff !important;font-weight:600}
 
-/* Stats */
-.stats{display:flex;justify-content:center;gap:56px;padding:40px 0;border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);margin-top:64px}
-.stat-n{font-size:32px;font-weight:510;font-family:var(--mono);letter-spacing:-0.7px;line-height:1;color:var(--text-1)}
-.stat-n span{font-size:16px;color:var(--text-3);font-weight:400}
-.stat-l{font-size:11px;font-weight:510;color:var(--text-4);text-transform:uppercase;letter-spacing:1.2px;margin-top:8px}
+/*=== HERO ===*/
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 60% 40% at 50% 40%,rgba(0,180,255,0.08),transparent 70%),radial-gradient(ellipse 40% 30% at 50% 45%,rgba(0,212,255,0.05),transparent);pointer-events:none}
 
-/* Section */
+/* Particle canvas */
+#particles{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+
+/* Atom orb */
+.atom-wrap{position:relative;z-index:1;margin-bottom:40px}
+.atom-orb{width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#00e5ff,#0077cc 40%,#003366 70%,transparent);box-shadow:0 0 80px rgba(0,212,255,0.3),0 0 160px rgba(0,180,255,0.15),inset 0 0 40px rgba(0,212,255,0.2);animation:orbPulse 4s ease-in-out infinite}
+@keyframes orbPulse{0%,100%{box-shadow:0 0 80px rgba(0,212,255,0.3),0 0 160px rgba(0,180,255,0.15)}50%{box-shadow:0 0 100px rgba(0,212,255,0.4),0 0 200px rgba(0,180,255,0.2)}}
+.atom-ring{position:absolute;top:50%;left:50%;border:1px solid rgba(0,212,255,0.2);border-radius:50%;transform:translate(-50%,-50%) rotateX(60deg)}
+.ring1{width:260px;height:260px;animation:spin 12s linear infinite}
+.ring2{width:320px;height:320px;border-color:rgba(0,180,255,0.12);animation:spin 18s linear infinite reverse}
+.ring3{width:380px;height:380px;border-color:rgba(0,150,255,0.06);animation:spin 25s linear infinite}
+@keyframes spin{from{transform:translate(-50%,-50%) rotateX(60deg) rotateZ(0deg)}to{transform:translate(-50%,-50%) rotateX(60deg) rotateZ(360deg)}}
+.ring-node{position:absolute;width:6px;height:6px;border-radius:50%;background:#00d4ff;box-shadow:0 0 10px #00d4ff;top:-3px;left:50%;margin-left:-3px}
+
+.hero-badge{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:9999px;border:1px solid rgba(0,212,255,0.2);background:rgba(0,212,255,0.06);font-size:13px;font-weight:500;color:#00d4ff;margin-bottom:32px;font-family:'JetBrains Mono',monospace}
+.hero-badge .bdot{width:5px;height:5px;border-radius:50%;background:#00f0a0;box-shadow:0 0 6px #00f0a0}
+
+.hero h1{position:relative;z-index:1;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:700;letter-spacing:-2px;line-height:1.05;color:#fff;margin-bottom:20px}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,#00d4ff,#7b61ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero .sub{position:relative;z-index:1;font-size:17px;color:#6a7b94;max-width:440px;margin:0 auto;line-height:1.7}
+
+/*=== STATS ===*/
+.stats-bar{position:relative;z-index:1;display:flex;justify-content:center;gap:48px;padding:40px 0;margin-top:48px;border-top:1px solid rgba(0,212,255,0.08);border-bottom:1px solid rgba(0,212,255,0.08)}
+.stat{text-align:center}
+.stat-val{font-size:36px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#fff;letter-spacing:-1px}
+.stat-val .unit{font-size:16px;font-weight:400;color:#4a5b73}
+.stat-label{font-size:11px;font-weight:600;color:#4a5b73;text-transform:uppercase;letter-spacing:1.5px;margin-top:6px}
+
+/*=== SECTIONS ===*/
+.content{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
 .section{padding:80px 0}
-.sh{margin-bottom:40px}
-.sh h2{font-size:24px;font-weight:400;letter-spacing:-0.29px;color:var(--text-1);margin-bottom:6px}
-.sh p{font-size:15px;color:var(--text-3);letter-spacing:-0.165px}
+.section-head{margin-bottom:36px}
+.section-head h2{font-size:22px;font-weight:600;color:#fff;letter-spacing:-0.3px;margin-bottom:6px}
+.section-head p{font-size:14px;color:#5a6b83}
 
-/* Product Grid */
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.card{display:flex;flex-direction:column;padding:20px;border-radius:var(--radius);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);transition:all 0.2s;cursor:pointer}
-.card:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.12);transform:translateY(-1px)}
-.card.archive{opacity:0.5}
-.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.num{font-family:var(--mono);font-size:11px;font-weight:400;color:var(--text-4);letter-spacing:0.5px}
-.badge{font-size:10px;font-weight:510;padding:2px 6px;border-radius:9999px}
-.badge.active{background:rgba(39,166,68,0.12);color:var(--green)}
-.badge.archive{background:rgba(255,255,255,0.05);color:var(--text-4)}
-.card-name{font-size:16px;font-weight:590;letter-spacing:-0.24px;color:var(--text-1);margin-bottom:2px}
-.card-eng{font-size:13px;font-weight:400;color:var(--text-4);font-family:var(--mono);margin-bottom:14px;letter-spacing:-0.1px}
-.card-cat{font-size:12px;font-weight:510;color:var(--text-3);padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.04);border:1px solid var(--border-subtle);align-self:flex-start}
+/*=== PRODUCT GRID ===*/
+.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.card{display:flex;flex-direction:column;padding:18px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(0,212,255,0.06);text-decoration:none;color:inherit;transition:all 0.25s;position:relative;overflow:hidden}
+.card:hover{background:rgba(0,212,255,0.06);border-color:rgba(0,212,255,0.15);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,180,255,0.1)}
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.card-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:#3a4b63;letter-spacing:0.5px}
+.badge{font-size:9px;font-weight:600;padding:2px 7px;border-radius:9999px;text-transform:uppercase;letter-spacing:0.5px}
+.badge.active{background:rgba(0,240,160,0.1);color:#00f0a0;border:1px solid rgba(0,240,160,0.15)}
+.badge.archive{background:rgba(255,255,255,0.04);color:#4a5b73;border:1px solid rgba(255,255,255,0.06)}
+.card-name{font-size:15px;font-weight:600;color:#fff;letter-spacing:-0.2px;margin-bottom:2px}
+.card-eng{font-size:12px;font-family:'JetBrains Mono',monospace;color:#3a4b63;margin-bottom:12px}
+.card-cat{font-size:11px;font-weight:500;color:#5a6b83;padding:3px 8px;border-radius:4px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.08);align-self:flex-start}
 
-/* Knowledge Base */
+/*=== KB GRID ===*/
 .kb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.kb{display:flex;align-items:center;gap:12px;padding:16px 18px;border-radius:var(--radius);background:rgba(255,255,255,0.02);border:1px solid var(--border);transition:all 0.2s}
-.kb:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.12)}
-.kb-icon{font-size:1.15rem;flex-shrink:0}
-.kb-title{font-size:13px;font-weight:590;letter-spacing:-0.13px;color:var(--text-1)}
-.kb-sub{font-size:11px;color:var(--text-4);font-family:var(--mono);margin-top:2px}
+.kb-card{display:flex;align-items:center;gap:12px;padding:16px 18px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(0,212,255,0.06);text-decoration:none;color:inherit;transition:all 0.25s}
+.kb-card:hover{background:rgba(0,212,255,0.06);border-color:rgba(0,212,255,0.15)}
+.kb-icon{font-size:1.2rem;flex-shrink:0}
+.kb-info{flex:1;min-width:0}
+.kb-title{font-size:13px;font-weight:600;color:#fff;letter-spacing:-0.1px}
+.kb-sub{font-size:11px;color:#3a4b63;font-family:'JetBrains Mono',monospace;margin-top:2px}
+.kb-arrow{font-size:14px;color:#3a4b63;transition:color 0.2s}
+.kb-card:hover .kb-arrow{color:#00d4ff}
 
-/* Groups */
-.grp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
-.grp{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--radius);background:rgba(255,255,255,0.02);border:1px solid var(--border);transition:all 0.2s}
-.grp:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.12)}
+/*=== GROUPS ===*/
+.grp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.grp-btn{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(0,212,255,0.06);text-decoration:none;color:inherit;transition:all 0.25s}
+.grp-btn:hover{background:rgba(0,212,255,0.06);border-color:rgba(0,212,255,0.15)}
 .grp-icon{font-size:1rem}
-.grp-name{flex:1;font-size:13px;font-weight:510;color:var(--text-2);letter-spacing:-0.1px}
-.grp-arrow{font-size:12px;color:var(--text-4);transition:color 0.15s}
-.grp:hover .grp-arrow{color:var(--accent-bright)}
+.grp-name{flex:1;font-size:12px;font-weight:500;color:#8a9bb5}
+.grp-arr{font-size:12px;color:#3a4b63;transition:all 0.2s}
+.grp-btn:hover .grp-arr{color:#00d4ff;transform:translateX(2px)}
 
-/* Recruit */
-.rc{padding:48px;border-radius:12px;background:var(--bg-panel);border:1px solid var(--border);position:relative}
-.rc h2{font-size:20px;font-weight:590;letter-spacing:-0.24px;margin-bottom:12px;color:var(--text-1)}
-.rc p{font-size:15px;color:var(--text-2);line-height:1.8;margin-bottom:12px;letter-spacing:-0.165px}
-.rc h3{font-size:15px;font-weight:590;color:var(--accent-bright);margin:24px 0 10px;letter-spacing:-0.165px}
-.rc ul{list-style:none;margin:8px 0 16px}
-.rc li{padding:8px 0;border-bottom:1px solid var(--border-subtle);font-size:14px;line-height:1.7;color:var(--text-2);display:flex;gap:8px}
-.rc li:last-child{border-bottom:none}
-.rc li::before{content:'›';color:var(--accent-bright);font-weight:600;flex-shrink:0}
-.rc li strong{color:var(--accent-bright);font-weight:590}
-.rc-cta{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:6px;background:var(--accent);color:#fff;font-size:14px;font-weight:510;transition:background 0.15s;margin-top:24px}
-.rc-cta:hover{background:var(--accent-hover)}
+/*=== NOTICE ===*/
+.notice{background:rgba(0,212,255,0.03);border:1px solid rgba(0,212,255,0.1);border-radius:10px;padding:18px 22px;margin-top:20px;font-size:13px;line-height:1.8;color:#6a7b94}
+.notice strong{color:#00d4ff;font-weight:600}
 
-/* Notice */
-.nt{background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);border-radius:var(--radius);padding:20px 24px;margin-top:24px;font-size:13px;line-height:1.8;color:var(--text-3)}
-.nt strong{color:var(--text-2);font-weight:590}
+/*=== DIVIDER ===*/
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,0.1),transparent);margin:0}
 
-/* Divider */
-.dv{height:1px;background:var(--border-subtle)}
+/*=== RECRUIT ===*/
+.recruit{padding:48px;border-radius:14px;background:rgba(0,212,255,0.02);border:1px solid rgba(0,212,255,0.08);position:relative;overflow:hidden}
+.recruit::before{content:'';position:absolute;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle,rgba(0,212,255,0.06),transparent 70%);pointer-events:none}
+.recruit h2{font-size:20px;font-weight:600;color:#fff;letter-spacing:-0.3px;margin-bottom:12px;position:relative}
+.recruit p{font-size:14px;color:#6a7b94;line-height:1.8;margin-bottom:12px;position:relative}
+.recruit h3{font-size:14px;font-weight:600;color:#00d4ff;margin:24px 0 10px;position:relative}
+.recruit ul{list-style:none;margin:8px 0 16px;position:relative}
+.recruit li{padding:8px 0;border-bottom:1px solid rgba(0,212,255,0.06);font-size:13px;line-height:1.7;color:#8a9bb5;display:flex;gap:8px}
+.recruit li:last-child{border-bottom:none}
+.recruit li::before{content:'›';color:#00d4ff;font-weight:700;flex-shrink:0}
+.recruit li strong{color:#00d4ff;font-weight:600}
+.recruit-cta{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:8px;background:linear-gradient(135deg,#0077cc,#00b4ff);color:#fff;font-size:13px;font-weight:600;text-decoration:none;transition:all 0.25s;margin-top:24px;position:relative;box-shadow:0 4px 16px rgba(0,180,255,0.2)}
+.recruit-cta:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,180,255,0.3)}
 
-/* Footer */
-.ft{text-align:center;padding:48px 0;color:var(--text-4);font-size:12px;letter-spacing:-0.1px}
-.ft a{color:var(--text-3)}
-.ft a:hover{color:var(--accent-bright)}
+/*=== FOOTER ===*/
+footer{text-align:center;padding:48px 0;position:relative;z-index:1}
+footer p{font-size:12px;color:#3a4b63}
+footer a{color:#5a6b83;text-decoration:none}
+footer a:hover{color:#00d4ff}
 
-/* Responsive */
-@media(max-width:768px){
-  .wrap{padding:0 20px}
-  .hero{padding:120px 0 60px}
-  .hero h1{font-size:2rem;letter-spacing:-1px}
-  .stats{gap:28px;flex-wrap:wrap}
-  .stat-n{font-size:24px}
-  .grid{grid-template-columns:1fr 1fr}
+/*=== RESPONSIVE ===*/
+@media(max-width:900px){
+  .prod-grid{grid-template-columns:repeat(2,1fr)}
   .kb-grid{grid-template-columns:1fr}
-  .grp-grid{grid-template-columns:1fr 1fr}
-  .rc{padding:28px}
-  .nav-links a:not(.nav-cta){display:none}
+  .stats-bar{gap:24px;flex-wrap:wrap}
+  .stat-val{font-size:28px}
+  .nav-links a:not(.nav-gh){display:none}
 }
-@media(max-width:480px){
-  .grid{grid-template-columns:1fr}
+@media(max-width:500px){
+  .prod-grid{grid-template-columns:1fr}
   .grp-grid{grid-template-columns:1fr}
+  .hero h1{font-size:2rem}
 }
 </style>
 </head>
 <body>
 
-<nav><div class="wrap"><span class="nav-logo">元素碰撞 · AtomCollide</span><div class="nav-links"><a href="#products">产品矩阵</a><a href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank">知识库</a><a href="https://github.com/503496348-ops" target="_blank">GitHub</a><a href="#community" class="nav-cta">加入社群</a></div></div></nav>
+<!-- Status Bar -->
+<div class="status-bar"><div class="inner"><div><span class="status-dot"></span>SYS.ONLINE &nbsp; NODES: 21 ACTIVE &nbsp; UPTIME: 99.97%</div><div class="cyan">CLUSTER: ATOMCOLLIDE-v3</div></div></div>
 
-<header class="hero"><div class="wrap">
-<div class="hero-badge"><span class="dot"></span><span>AI 智能体实验室 · 正式招募</span></div>
-<h1><em>元素碰撞 · AtomCollide</em></h1>
+<!-- Nav -->
+<nav><div class="inner">
+<div class="nav-logo">
+<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="5" fill="#00d4ff"/><ellipse cx="16" cy="16" rx="14" ry="6" stroke="#00d4ff" stroke-width="0.8" opacity="0.5"/><ellipse cx="16" cy="16" rx="14" ry="6" stroke="#00d4ff" stroke-width="0.8" opacity="0.3" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="14" ry="6" stroke="#00d4ff" stroke-width="0.8" opacity="0.3" transform="rotate(-60 16 16)"/></svg>
+AtomCollide
+</div>
+<div class="nav-links">
+<a href="#products">产品矩阵</a>
+<a href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank">知识树</a>
+<a href="#community">社群招募</a>
+<a href="https://github.com/503496348-ops" target="_blank" class="nav-gh">GitHub ↗</a>
+</div>
+</div></nav>
+
+<!-- Hero -->
+<section class="hero">
+<canvas id="particles"></canvas>
+<div class="atom-wrap">
+<div class="atom-orb"></div>
+<div class="atom-ring ring1"><span class="ring-node"></span></div>
+<div class="atom-ring ring2"><span class="ring-node"></span></div>
+<div class="atom-ring ring3"></div>
+</div>
+<div class="hero-badge"><span class="bdot"></span>ATOMCOLLIDE · 智械工坊</div>
+<h1><em>AI 智能体实验室</em></h1>
 <p class="sub">专注 AI Agent 全链路的开源技术社区<br>for the learner，和学习者一起成长</p>
-<div class="stats">
-<div><div class="stat-n">24<span>款</span></div><div class="stat-l">开源产品</div></div>
-<div><div class="stat-n">21</div><div class="stat-l">技术分类</div></div>
-<div><div class="stat-n">9K<span>+</span></div><div class="stat-l">代码提交</div></div>
-<div><div class="stat-n">14</div><div class="stat-l">社群入口</div></div>
+<div class="stats-bar">
+<div class="stat"><div class="stat-val">24<span class="unit">款</span></div><div class="stat-label">开源产品</div></div>
+<div class="stat"><div class="stat-val">21</div><div class="stat-label">技术分类</div></div>
+<div class="stat"><div class="stat-val">9K<span class="unit">+</span></div><div class="stat-label">代码提交</div></div>
+<div class="stat"><div class="stat-val">14</div><div class="stat-label">社群入口</div></div>
 </div>
-</div></header>
+</section>
 
-<div class="wrap">
+<div class="content">
 
+<!-- Products -->
 <section class="section" id="products">
-<div class="sh"><h2>🧬 技能矩阵 · 24 款产品</h2><p>全部开源 · 覆盖 AI Agent 全链路</p></div>
-<div class="grid">
-<a href="https://github.com/503496348-ops/fission-creative" target="_blank" class="card active"><div class="card-head"><span class="num">#01</span><span class="badge active">活跃</span></div><div class="card-name">裂变创作</div><div class="card-eng">Fission Creative</div><div class="card-cat">长文创作</div></a>
-<a href="https://github.com/503496348-ops/awake-differently" target="_blank" class="card active"><div class="card-head"><span class="num">#02</span><span class="badge active">活跃</span></div><div class="card-name">别样觉醒</div><div class="card-eng">Awake Differently</div><div class="card-cat">身份蒸馏</div></a>
-<a href="https://github.com/503496348-ops/hermes-doctor" target="_blank" class="card active"><div class="card-head"><span class="num">#03</span><span class="badge active">活跃</span></div><div class="card-name">白龙马医生</div><div class="card-eng">Bailongma Doctor</div><div class="card-cat">智能体健康</div></a>
-<a href="https://github.com/503496348-ops/pipixia-doctor" target="_blank" class="card active"><div class="card-head"><span class="num">#04</span><span class="badge active">活跃</span></div><div class="card-name">皮皮虾医生</div><div class="card-eng">PipiXia Doctor</div><div class="card-cat">智能体健康</div></a>
-<a href="https://github.com/503496348-ops/Stratapro" target="_blank" class="card active"><div class="card-head"><span class="num">#05</span><span class="badge active">活跃</span></div><div class="card-name">深度方略</div><div class="card-eng">Stratapro</div><div class="card-cat">量化投资</div></a>
-<a href="https://github.com/503496348-ops/hermes-skill-ideasphere" target="_blank" class="card active"><div class="card-head"><span class="num">#06</span><span class="badge active">活跃</span></div><div class="card-name">灵感象限</div><div class="card-eng">Ideasphere</div><div class="card-cat">视频剪辑</div></a>
-<a href="https://github.com/503496348-ops/nichecraft" target="_blank" class="card active"><div class="card-head"><span class="num">#07</span><span class="badge active">活跃</span></div><div class="card-name">有点东西</div><div class="card-eng">Nichecraft</div><div class="card-cat">飞书白板+PPT</div></a>
-<a href="https://github.com/503496348-ops/fractovision" target="_blank" class="card active"><div class="card-head"><span class="num">#08</span><span class="badge active">活跃</span></div><div class="card-name">破窗造视</div><div class="card-eng">Fractovision</div><div class="card-cat">多媒体生成</div></a>
-<a href="https://github.com/503496348-ops/barren-order" target="_blank" class="card active"><div class="card-head"><span class="num">#09</span><span class="badge active">活跃</span></div><div class="card-name">荒原序列</div><div class="card-eng">BarrenOrder</div><div class="card-cat">多Agent协作</div></a>
-<a href="https://github.com/503496348-ops/canvas-design" target="_blank" class="card active"><div class="card-head"><span class="num">#10</span><span class="badge active">活跃</span></div><div class="card-name">艺游未境</div><div class="card-eng">Wanderix</div><div class="card-cat">视觉创作</div></a>
-<a href="https://github.com/503496348-ops/hermes-security-suite" target="_blank" class="card active"><div class="card-head"><span class="num">#11</span><span class="badge active">活跃</span></div><div class="card-name">奇点造物</div><div class="card-eng">Genesisix</div><div class="card-cat">安全检测</div></a>
-<a href="https://github.com/503496348-ops/hermes-skill-aestheflow" target="_blank" class="card active"><div class="card-head"><span class="num">#12</span><span class="badge active">活跃</span></div><div class="card-name">艺术生花</div><div class="card-eng">AestheFlow</div><div class="card-cat">文本分析</div></a>
-<a href="https://github.com/503496348-ops/easyrhythm" target="_blank" class="card active"><div class="card-head"><span class="num">#13</span><span class="badge active">活跃</span></div><div class="card-name">松弛有度</div><div class="card-eng">EasyRhythm</div><div class="card-cat">日程管理</div></a>
-<a href="https://github.com/503496348-ops/herpeakgem" target="_blank" class="card active"><div class="card-head"><span class="num">#14</span><span class="badge active">活跃</span></div><div class="card-name">他山之石</div><div class="card-eng">HerPeakGem</div><div class="card-cat">竞品分析</div></a>
-<a href="https://github.com/503496348-ops/purepicks" target="_blank" class="card active"><div class="card-head"><span class="num">#15</span><span class="badge active">活跃</span></div><div class="card-name">自然良品</div><div class="card-eng">PurePicks</div><div class="card-cat">选品推荐</div></a>
-<a href="https://github.com/503496348-ops/energsolve" target="_blank" class="card active"><div class="card-head"><span class="num">#16</span><span class="badge active">活跃</span></div><div class="card-name">元气方程</div><div class="card-eng">EnergSolve</div><div class="card-cat">学习路径</div></a>
-<a href="https://github.com/503496348-ops/summoner" target="_blank" class="card active"><div class="card-head"><span class="num">#17</span><span class="badge active">活跃</span></div><div class="card-name">召物少年</div><div class="card-eng">Summoner</div><div class="card-cat">需求解析</div></a>
-<a href="https://github.com/503496348-ops/football-predictor" target="_blank" class="card active"><div class="card-head"><span class="num">#18</span><span class="badge active">活跃</span></div><div class="card-name">此地无垠</div><div class="card-eng">FootPredict</div><div class="card-cat">体育分析</div></a>
-<a href="https://github.com/503496348-ops/worldcup-predictor" target="_blank" class="card active"><div class="card-head"><span class="num">#19</span><span class="badge active">活跃</span></div><div class="card-name">绿茵智脑</div><div class="card-eng">WorldCup Predictor</div><div class="card-cat">体育分析</div></a>
-<a href="https://github.com/503496348-ops/minddistill" target="_blank" class="card active"><div class="card-head"><span class="num">#20</span><span class="badge active">活跃</span></div><div class="card-name">意识浓缩</div><div class="card-eng">MindDistill</div><div class="card-cat">SEO诊断</div></a>
-<a href="https://github.com/503496348-ops/mindriver" target="_blank" class="card active"><div class="card-head"><span class="num">#21</span><span class="badge active">活跃</span></div><div class="card-name">智脑星河</div><div class="card-eng">MindRiver</div><div class="card-cat">数据可视化</div></a>
-<a href="https://github.com/503496348-ops/artipen" target="_blank" class="card active"><div class="card-head"><span class="num">#22</span><span class="badge active">活跃</span></div><div class="card-name">妙笔生花</div><div class="card-eng">ArtiPen</div><div class="card-cat">结构化写作</div></a>
-<a href="https://github.com/503496348-ops/neverend" target="_blank" class="card active"><div class="card-head"><span class="num">#23</span><span class="badge active">活跃</span></div><div class="card-name">无限循环</div><div class="card-eng">Neverend</div><div class="card-cat">知识管理</div></a>
-<a href="https://github.com/503496348-ops/atomguard" target="_blank" class="card archive"><div class="card-head"><span class="num">#24</span><span class="badge archive">归档</span></div><div class="card-name">AtomGuard</div><div class="card-eng">AtomGuard</div><div class="card-cat">安全防护</div></a>
+<div class="section-head"><h2>🧬 技能矩阵 · 24 款产品</h2><p>全部开源 · 覆盖 AI Agent 全链路</p></div>
+<div class="prod-grid">
+<a href="https://github.com/503496348-ops/fission-creative" target="_blank" class="card"><div class="card-top"><span class="card-num">#01</span><span class="badge active">活跃</span></div><div class="card-name">裂变创作</div><div class="card-eng">Fission Creative</div><span class="card-cat">长文创作</span></a>
+<a href="https://github.com/503496348-ops/awake-differently" target="_blank" class="card"><div class="card-top"><span class="card-num">#02</span><span class="badge active">活跃</span></div><div class="card-name">别样觉醒</div><div class="card-eng">Awake Differently</div><span class="card-cat">身份蒸馏</span></a>
+<a href="https://github.com/503496348-ops/hermes-doctor" target="_blank" class="card"><div class="card-top"><span class="card-num">#03</span><span class="badge active">活跃</span></div><div class="card-name">白龙马医生</div><div class="card-eng">Bailongma Doctor</div><span class="card-cat">智能体健康</span></a>
+<a href="https://github.com/503496348-ops/pipixia-doctor" target="_blank" class="card"><div class="card-top"><span class="card-num">#04</span><span class="badge active">活跃</span></div><div class="card-name">皮皮虾医生</div><div class="card-eng">PipiXia Doctor</div><span class="card-cat">智能体健康</span></a>
+<a href="https://github.com/503496348-ops/Stratapro" target="_blank" class="card"><div class="card-top"><span class="card-num">#05</span><span class="badge active">活跃</span></div><div class="card-name">深度方略</div><div class="card-eng">Stratapro</div><span class="card-cat">量化投资</span></a>
+<a href="https://github.com/503496348-ops/hermes-skill-ideasphere" target="_blank" class="card"><div class="card-top"><span class="card-num">#06</span><span class="badge active">活跃</span></div><div class="card-name">灵感象限</div><div class="card-eng">Ideasphere</div><span class="card-cat">视频剪辑</span></a>
+<a href="https://github.com/503496348-ops/nichecraft" target="_blank" class="card"><div class="card-top"><span class="card-num">#07</span><span class="badge active">活跃</span></div><div class="card-name">有点东西</div><div class="card-eng">Nichecraft</div><span class="card-cat">飞书白板+PPT</span></a>
+<a href="https://github.com/503496348-ops/fractovision" target="_blank" class="card"><div class="card-top"><span class="card-num">#08</span><span class="badge active">活跃</span></div><div class="card-name">破窗造视</div><div class="card-eng">Fractovision</div><span class="card-cat">多媒体生成</span></a>
+<a href="https://github.com/503496348-ops/barren-order" target="_blank" class="card"><div class="card-top"><span class="card-num">#09</span><span class="badge active">活跃</span></div><div class="card-name">荒原序列</div><div class="card-eng">BarrenOrder</div><span class="card-cat">多Agent协作</span></a>
+<a href="https://github.com/503496348-ops/canvas-design" target="_blank" class="card"><div class="card-top"><span class="card-num">#10</span><span class="badge active">活跃</span></div><div class="card-name">艺游未境</div><div class="card-eng">Wanderix</div><span class="card-cat">视觉创作</span></a>
+<a href="https://github.com/503496348-ops/hermes-security-suite" target="_blank" class="card"><div class="card-top"><span class="card-num">#11</span><span class="badge active">活跃</span></div><div class="card-name">奇点造物</div><div class="card-eng">Genesisix</div><span class="card-cat">安全检测</span></a>
+<a href="https://github.com/503496348-ops/hermes-skill-aestheflow" target="_blank" class="card"><div class="card-top"><span class="card-num">#12</span><span class="badge active">活跃</span></div><div class="card-name">艺术生花</div><div class="card-eng">AestheFlow</div><span class="card-cat">文本分析</span></a>
+<a href="https://github.com/503496348-ops/easyrhythm" target="_blank" class="card"><div class="card-top"><span class="card-num">#13</span><span class="badge active">活跃</span></div><div class="card-name">松弛有度</div><div class="card-eng">EasyRhythm</div><span class="card-cat">日程管理</span></a>
+<a href="https://github.com/503496348-ops/herpeakgem" target="_blank" class="card"><div class="card-top"><span class="card-num">#14</span><span class="badge active">活跃</span></div><div class="card-name">他山之石</div><div class="card-eng">HerPeakGem</div><span class="card-cat">竞品分析</span></a>
+<a href="https://github.com/503496348-ops/purepicks" target="_blank" class="card"><div class="card-top"><span class="card-num">#15</span><span class="badge active">活跃</span></div><div class="card-name">自然良品</div><div class="card-eng">PurePicks</div><span class="card-cat">选品推荐</span></a>
+<a href="https://github.com/503496348-ops/energsolve" target="_blank" class="card"><div class="card-top"><span class="card-num">#16</span><span class="badge active">活跃</span></div><div class="card-name">元气方程</div><div class="card-eng">EnergSolve</div><span class="card-cat">学习路径</span></a>
+<a href="https://github.com/503496348-ops/summoner" target="_blank" class="card"><div class="card-top"><span class="card-num">#17</span><span class="badge active">活跃</span></div><div class="card-name">召物少年</div><div class="card-eng">Summoner</div><span class="card-cat">需求解析</span></a>
+<a href="https://github.com/503496348-ops/football-predictor" target="_blank" class="card"><div class="card-top"><span class="card-num">#18</span><span class="badge active">活跃</span></div><div class="card-name">此地无垠</div><div class="card-eng">FootPredict</div><span class="card-cat">体育分析</span></a>
+<a href="https://github.com/503496348-ops/worldcup-predictor" target="_blank" class="card"><div class="card-top"><span class="card-num">#19</span><span class="badge active">活跃</span></div><div class="card-name">绿茵智脑</div><div class="card-eng">WorldCup Predictor</div><span class="card-cat">体育分析</span></a>
+<a href="https://github.com/503496348-ops/minddistill" target="_blank" class="card"><div class="card-top"><span class="card-num">#20</span><span class="badge active">活跃</span></div><div class="card-name">意识浓缩</div><div class="card-eng">MindDistill</div><span class="card-cat">SEO诊断</span></a>
+<a href="https://github.com/503496348-ops/mindriver" target="_blank" class="card"><div class="card-top"><span class="card-num">#21</span><span class="badge active">活跃</span></div><div class="card-name">智脑星河</div><div class="card-eng">MindRiver</div><span class="card-cat">数据可视化</span></a>
+<a href="https://github.com/503496348-ops/artipen" target="_blank" class="card"><div class="card-top"><span class="card-num">#22</span><span class="badge active">活跃</span></div><div class="card-name">妙笔生花</div><div class="card-eng">ArtiPen</div><span class="card-cat">结构化写作</span></a>
+<a href="https://github.com/503496348-ops/neverend" target="_blank" class="card"><div class="card-top"><span class="card-num">#23</span><span class="badge active">活跃</span></div><div class="card-name">无限循环</div><div class="card-eng">Neverend</div><span class="card-cat">知识管理</span></a>
+<a href="https://github.com/503496348-ops/atomguard" target="_blank" class="card"><div class="card-top"><span class="card-num">#24</span><span class="badge archive">归档</span></div><div class="card-name">AtomGuard</div><div class="card-eng">AtomGuard</div><span class="card-cat">安全防护</span></a>
 </div>
 </section>
 
-<div class="dv"></div>
+<div class="divider"></div>
 
+<!-- KB -->
 <section class="section">
-<div class="sh"><h2>📚 知识库（7 席）</h2><p>覆盖踩坑经验 · 商业化案例 · 社区问答 · 组织升级 · 行业资料 · 技能智造 · 社群共建</p></div>
+<div class="section-head"><h2>📚 知识库（7 席）</h2><p>覆盖踩坑经验 · 商业化案例 · 社区问答 · 组织升级 · 行业资料 · 技能智造 · 社群共建</p></div>
 <div class="kb-grid">
-<a href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank" class="kb"><span class="kb-icon">🪐</span><div><div class="kb-title">T0 · 智能体经验知识库</div><div class="kb-sub">训练踩坑 · 故障修复 · 部署手册</div></div></a>
-<a href="https://vcnvmnln7wit.feishu.cn/wiki/LdIxwlrKGibFEVkWMocc2K9KnBh" target="_blank" class="kb"><span class="kb-icon">🏆</span><div><div class="kb-title">T1 · 商业化案例知识库</div><div class="kb-sub">教培 · Token中转 · AI音乐变现</div></div></a>
-<a href="https://vcnvmnln7wit.feishu.cn/wiki/K1RPwM8zji9ZchkxlOmcivUgnJe" target="_blank" class="kb"><span class="kb-icon">💫</span><div><div class="kb-title">T2 · 社区高频问题知识库</div><div class="kb-sub">问答科普 · 常见坑点</div></div></a>
-<a href="https://vcnvmnln7wit.feishu.cn/wiki/CThswol0PiNJJbkhgT1cZIxanLb" target="_blank" class="kb"><span class="kb-icon">🎖️</span><div><div class="kb-title">T3 · Open Build 知识库</div><div class="kb-sub">组织升级 · 协作范式</div></div></a>
-<a href="https://vcnvmnln7wit.feishu.cn/wiki/KwGQwS2TciT2EdkSBBtcYnbsnSd" target="_blank" class="kb"><span class="kb-icon">🔥</span><div><div class="kb-title">T4 · 全行业资料知识库</div><div class="kb-sub">报告归档 · 行业研究</div></div></a>
-<a href="https://vcnvmnln7wit.feishu.cn/wiki/PDfpwqJZUibTyBkUa7TcZZ6Onpd" target="_blank" class="kb"><span class="kb-icon">🛠️</span><div><div class="kb-title">T5 · 智械工坊作品知识库</div><div class="kb-sub">技能智造 · 产品文档</div></div></a>
-<a href="https://vcnvmnln7wit.feishu.cn/wiki/MSEGwrdnTiiF9Dk8qCVcNW6InJg" target="_blank" class="kb"><span class="kb-icon">🌌</span><div><div class="kb-title">T6 · 社群共建知识库</div><div class="kb-sub">治理运营 · 社区规范</div></div></a>
+<a href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank" class="kb-card"><span class="kb-icon">🪐</span><div class="kb-info"><div class="kb-title">T0 · 智能体经验知识库</div><div class="kb-sub">训练踩坑 · 故障修复 · 部署手册</div></div><span class="kb-arrow">↗</span></a>
+<a href="https://vcnvmnln7wit.feishu.cn/wiki/LdIxwlrKGibFEVkWMocc2K9KnBh" target="_blank" class="kb-card"><span class="kb-icon">🏆</span><div class="kb-info"><div class="kb-title">T1 · 商业化案例知识库</div><div class="kb-sub">教培 · Token中转 · AI音乐变现</div></div><span class="kb-arrow">↗</span></a>
+<a href="https://vcnvmnln7wit.feishu.cn/wiki/K1RPwM8zji9ZchkxlOmcivUgnJe" target="_blank" class="kb-card"><span class="kb-icon">💫</span><div class="kb-info"><div class="kb-title">T2 · 社区高频问题知识库</div><div class="kb-sub">问答科普 · 常见坑点</div></div><span class="kb-arrow">↗</span></a>
+<a href="https://vcnvmnln7wit.feishu.cn/wiki/CThswol0PiNJJbkhgT1cZIxanLb" target="_blank" class="kb-card"><span class="kb-icon">🎖️</span><div class="kb-info"><div class="kb-title">T3 · Open Build 知识库</div><div class="kb-sub">组织升级 · 协作范式</div></div><span class="kb-arrow">↗</span></a>
+<a href="https://vcnvmnln7wit.feishu.cn/wiki/KwGQwS2TciT2EdkSBBtcYnbsnSd" target="_blank" class="kb-card"><span class="kb-icon">🔥</span><div class="kb-info"><div class="kb-title">T4 · 全行业资料知识库</div><div class="kb-sub">报告归档 · 行业研究</div></div><span class="kb-arrow">↗</span></a>
+<a href="https://vcnvmnln7wit.feishu.cn/wiki/PDfpwqJZUibTyBkUa7TcZZ6Onpd" target="_blank" class="kb-card"><span class="kb-icon">🛠️</span><div class="kb-info"><div class="kb-title">T5 · 智械工坊作品知识库</div><div class="kb-sub">技能智造 · 产品文档</div></div><span class="kb-arrow">↗</span></a>
+<a href="https://vcnvmnln7wit.feishu.cn/wiki/MSEGwrdnTiiF9Dk8qCVcNW6InJg" target="_blank" class="kb-card"><span class="kb-icon">🌌</span><div class="kb-info"><div class="kb-title">T6 · 社群共建知识库</div><div class="kb-sub">治理运营 · 社区规范</div></div><span class="kb-arrow">↗</span></a>
 </div>
 </section>
 
-<div class="dv"></div>
+<div class="divider"></div>
 
+<!-- Groups -->
 <section class="section" id="community">
-<div class="sh"><h2>💬 社群入口（14 席）</h2><p>全社区内容全域同步 · 保留 1 个常用社群即可</p></div>
+<div class="section-head"><h2>💬 社群入口（14 席）</h2><p>全社区内容全域同步 · 保留 1 个常用社群即可</p></div>
 <div class="grp-grid">
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=074vd565-6084-455c-ac52-9703e89a0697" target="_blank" class="grp"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 1 区</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=60bj94f0-1a67-48a7-abbb-9172b161c2b0" target="_blank" class="grp"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 2 区</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=13do1920-db46-4444-b635-005680beaf58" target="_blank" class="grp"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 3 区</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f17o1b86-06f6-4f10-911a-69a299a25fe3" target="_blank" class="grp"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 4 区</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=2bbh6ab6-22c2-4753-b973-74bb1a2edcc9" target="_blank" class="grp"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 5 区</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=d19r19f7-2f47-42ba-b1ec-cb0342cf2e80" target="_blank" class="grp"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 6 区</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=fe9vdacc-7316-4b4d-ae4a-fdbcf56315e6" target="_blank" class="grp"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 7 区</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=103kfae8-1fd7-424f-984f-d66c210e42d1" target="_blank" class="grp"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 8 区</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=239p3cad-2f83-4baa-a230-f40386067548" target="_blank" class="grp"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 9 区</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=880r7cf5-3638-45ff-afb9-7944de991872" target="_blank" class="grp"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 10 区</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=6a3v579b-ab43-4e1a-87f9-be63bab88da7" target="_blank" class="grp"><span class="grp-icon">✍️</span><span class="grp-name">网文作家</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=76at299e-73da-4eeb-9eba-32161e98f2f8" target="_blank" class="grp"><span class="grp-icon">🎵</span><span class="grp-name">音乐达人</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f2av73d0-6bb4-4a9f-9095-5fbbe83e49ec" target="_blank" class="grp"><span class="grp-icon">💌</span><span class="grp-name">微笑驿站</span><span class="grp-arrow">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=5d8qa952-d8b8-4ee1-8232-0729916068b0" target="_blank" class="grp"><span class="grp-icon">📡</span><span class="grp-name">融媒矩阵</span><span class="grp-arrow">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=074vd565-6084-455c-ac52-9703e89a0697" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 1 区</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=60bj94f0-1a67-48a7-abbb-9172b161c2b0" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 2 区</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=13do1920-db46-4444-b635-005680beaf58" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 3 区</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f17o1b86-06f6-4f10-911a-69a299a25fe3" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 4 区</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=2bbh6ab6-22c2-4753-b973-74bb1a2edcc9" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 5 区</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=d19r19f7-2f47-42ba-b1ec-cb0342cf2e80" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 6 区</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=fe9vdacc-7316-4b4d-ae4a-fdbcf56315e6" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 7 区</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=103kfae8-1fd7-424f-984f-d66c210e42d1" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 8 区</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=239p3cad-2f83-4baa-a230-f40386067548" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 9 区</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=880r7cf5-3638-45ff-afb9-7944de991872" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 10 区</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=6a3v579b-ab43-4e1a-87f9-be63bab88da7" target="_blank" class="grp-btn"><span class="grp-icon">✍️</span><span class="grp-name">网文作家</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=76at299e-73da-4eeb-9eba-32161e98f2f8" target="_blank" class="grp-btn"><span class="grp-icon">🎵</span><span class="grp-name">音乐达人</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f2av73d0-6bb4-4a9f-9095-5fbbe83e49ec" target="_blank" class="grp-btn"><span class="grp-icon">💌</span><span class="grp-name">微笑驿站</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=5d8qa952-d8b8-4ee1-8232-0729916068b0" target="_blank" class="grp-btn"><span class="grp-icon">📡</span><span class="grp-name">融媒矩阵</span><span class="grp-arr">→</span></a>
 </div>
-<div class="nt"><strong>📢 社群公告：</strong>全社区所有社群已实现<strong>内容全域同步</strong>。所有通知、干货、活动公告均由机器人自动跨群搬运。<strong>请保留 1 个常用社群即可</strong>。</div>
+<div class="notice"><strong>📢 社群公告：</strong>全社区所有社群已实现<strong>内容全域同步</strong>。所有通知、干货、活动公告均由机器人自动跨群搬运。<strong>请保留 1 个常用社群即可</strong>。</div>
 </section>
 
-<div class="dv"></div>
+<div class="divider"></div>
 
+<!-- Recruit -->
 <section class="section">
-<div class="rc">
+<div class="recruit">
 <h2>🚀 元素碰撞 — AI 智能体实验室 正式招募</h2>
 <p>连接每一位测试工程师/AI探索爱好者，扎实打磨技术硬实力，打通职业晋升新通路。</p>
 <h3>💼 找工作：更省力，也更精准</h3>
@@ -238,12 +264,21 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;width:10
 <h3>🧪 学 AI 测试：真正落地，拒绝空谈</h3>
 <ul><li><strong>从 0 到 1 实战落地体系</strong> — 紧跟 Skills、MCP、RAG、AI IDE 等前沿技术</li><li><strong>独家自研资料与工具矩阵</strong> — 《AtomCollide AI测试实战知识库》全套内容</li><li><strong>前沿技术同步与提效方案</strong> — 最新研究成果与行业动态</li></ul>
 <p>拒绝水群、纯技术驱动、真诚互助的成长社群。</p>
-<a class="rc-cta" href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank">📖 浏览知识库</a>
+<a class="recruit-cta" href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank">📖 浏览知识库</a>
 </div>
 </section>
 
 </div>
 
-<footer class="ft"><div class="wrap"><p style="margin-bottom:4px">元素碰撞 · AtomCollide — AI 智能体实验室</p><p style="margin-bottom:12px">使命：for the learner，和学习者一起成长</p><p><a href="https://github.com/503496348-ops" target="_blank">GitHub Organization</a></p></div></footer>
+<footer><div class="content"><p style="margin-bottom:4px">元素碰撞 · AtomCollide — AI 智能体实验室</p><p style="margin-bottom:12px">使命：for the learner，和学习者一起成长</p><p><a href="https://github.com/503496348-ops" target="_blank">GitHub Organization</a></p></div></footer>
 
+<script>
+// Particle starfield
+const c=document.getElementById('particles'),ctx=c.getContext('2d');
+function resize(){c.width=innerWidth;c.height=innerHeight}
+resize();addEventListener('resize',resize);
+const stars=Array.from({length:120},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.2+0.3,a:Math.random(),s:Math.random()*0.3+0.05}));
+function draw(){ctx.clearRect(0,0,c.width,c.height);stars.forEach(s=>{s.a+=s.s*0.02*(Math.random()>0.5?1:-1);if(s.a>1)s.a=1;if(s.a<0.1)s.a=0.1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(0,212,255,'+s.a+')';ctx.fill()});requestAnimationFrame(draw)}
+draw();
+</script>
 </body></html>
