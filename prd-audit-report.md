@@ -1,80 +1,86 @@
-# PRD审计报告 — AtomCollide产品矩阵网站
+# PRD 审计报告 — 2026-06-26 03:20
 
-> 审计时间：2026-06-26 | PRD版本：v3.0 (revision 186) | 实现文件：index.html
+## 一、PRD（revision 193）与线上页面的关键不匹配
 
----
+| # | 不匹配项 | PRD现状 | 线上实际 | 影响 |
+|---|----------|---------|----------|------|
+| 1 | **ADR-005：M08暂缓** | ⏸️ 暂缓（ADR-005："暂不实现"） | ✅ 已实现（20人团队卡片+点击详情+虚位以待） | **严重**：智能体会误判M08不可编辑 |
+| 2 | **ENGINE模块（四驾马车）** | 不存在 | ✅ 已实现（2×2卡片+AIGC闭环链，data-module=M05） | **严重**：智能体不知道这个模块的存在和边界 |
+| 3 | **模块映射表** | "11个模块，7已实现，2暂缓（M05/M08）" | 实际12个模块（ENGINE新增），M08已实现，M05仍暂缓但M05被ENGINE复用slot | **高**：映射表与实际完全不一致 |
+| 4 | **SYS.ONLINE状态栏** | PRD定义了完整样式（背景、padding、字号等） | `display:none`（彻底隐藏） | **中**：智能体可能重新实现已隐藏的元素 |
+| 5 | **推广链接名称** | "5元Token" | "⚡ 模型服务" | **中**：智能体改回旧名 |
+| 6 | **CSS动画体系** | PRD只提到scrollReveal | 实际有6个动画（scan-beam/statPulse/valueBreath/dividerPulse/vacantPulse/scanBeam） | **中**：智能体不知道这些动画的存在和命名空间 |
+| 7 | **文本对齐** | PRD未指定 | vision/engine/loop-section全部左对齐（不是居中） | **低**：智能体可能改回居中 |
+| 8 | **HTML模块顺序** | PRD骨架：NAV→HERO→TEAM | 实际：NAV→HERO→VISION→ENGINE→TEAM→PRODUCTS→KB→COMMUNITY→RECRUIT→FOOTER | **高**：智能体不知道模块间插入顺序 |
+| 9 | **section-num隐藏** | PRD未提及 | `.section-num{display:none}` | **低**：智能体可能重新显示 |
+| 10 | **头像黑边处理** | PRD未提及 | 原图边缘像素处理+CSS 4px border+inset shadow | **低**：智能体替换头像时可能用原始未处理版本 |
+| 11 | **虚位以待卡片** | PRD未提及 | team-card-vacant+dashed边框+vacantPulse动画 | **中**：智能体可能删除 |
 
-## 审计维度与结果
+## 二、需要更新的PRD内容清单
 
-### C.1 结构与标记 ✅ 全部通过
+### 必须更新（P0级）
 
-| 检查项 | 结果 | 说明 |
-|--------|------|------|
-| CSS类`.module-`前缀 | ✅ | module-nav/hero/vision/products/kb/team/community/recruit/footer 全部带前缀 |
-| MODULE注释标记 | ✅ | 所有9个模块都有 `<!-- ========== MODULE: XXX START/END ========== -->` |
-| data-module属性 | ✅ | M02/M03/M04/M06/M07/M08/M09/M10/M11 全部标注 |
-| 锚点与section id对应 | ✅ | #products→id="products", #team→id="team", #community→id="community" |
-| 版权年份 | ✅ | © 2024-2026 |
+1. **撤销ADR-005** → 改为"已启用"，更新callout内容
+2. **新增ADR-006** → ENGINE模块定义（四驾马车+AIGC闭环）
+3. **更新模块映射表** → 12模块，M08✅，ENGINE新增
 
-### C.2 数据完整性 ✅ 全部满足（含偏差已标注）
+### 建议更新（P1级）
 
-| 检查项 | 结果 | 说明 |
-|--------|------|------|
-| 产品24款 | ✅ | 实际24款（zhixie17含1归档+openbuild5+acu2），与PRD占位名不同但数量匹配 |
-| 团队20人 | ✅ | 6发起人+6治安官+8贡献者=20人，PRD写19人但实际更新到20人 |
-| Hero 6项stats | ✅ | 社区成员/月活/产品/知识库/代码提交/核心团队 |
-| 社群16席 | ✅ | 10交流+4变现+2极客=16席 |
-| 知识库10席 | ✅ | T0-T9全部有真实飞书链接 |
+4. **新增3.12 ENGINE模块规范** → 2×2卡片+闭环链+左对齐+CSS命名空间
+5. **更新HTML骨架** → 反映真实模块顺序
+6. **新增3.13守卫规范** → 防止其他智能体破坏现有结构
 
-**偏差标注**：
-- PRD产品占位名(AI Writer等)与实际产品名(裂变创作等)不同 — 实际使用真实GitHub产品名
-- PRD avatar路径3处错误(404→404notfound, wanshou→wanshouge, liangqiang→likangqiang) — HTML文件名正确
-- PRD hero stats写"19人"但实际"20人" — 实现正确
+### 可选更新（P2级）
 
-### C.3 交互与动画 ✅ 已修复
+7. 更新CSS动画映射表（加入6个新增动画）
+8. 更新推广链接名称（"5元Token"→"⚡ 模型服务"）
+9. 记录SYS.ONLINE隐藏决策
+10. 记录头像黑边处理方案
 
-| 检查项 | 原状态 | 修复后 |
-|--------|--------|--------|
-| 社群已满状态 | ❌ 无区分 | ✅ group-full: opacity:0.5 + pointer-events:none |
-| 社群分类标题 | ❌ 平铺16个 | ✅ 3个category区块 + 分类标题描述 |
-| 招募3场景 | ❌ 只有2个 | ✅ 补充"🛠️ 做项目"第3场景 |
-| Hero数字滚动 | ✅ | IntersectionObserver + requestAnimationFrame |
-| 产品筛选过渡 | ✅ | filter-btn + card.hidden toggle |
-| 团队详情面板 | ✅ | click + overlay + ESC close |
-| Reveal动画 | ✅ | IntersectionObserver threshold 0.08 |
-| 社群鼠标光效 | ✅(仅open) | 改为只对group-open生效 |
+## 三、守卫规范建议（防破坏策略）
 
-### C.4 性能与降级 ✅ 已修复
+其他智能体运维时，必须遵守以下规则：
 
-| 检查项 | 原状态 | 修复后 |
-|--------|--------|--------|
-| 移动端粒子降级 | ❌ Canvas全平台运行 | ✅ isMobile检测，mobile隐藏Canvas依赖CSS |
-| 图片lazy loading | ❌ 无lazy属性 | ✅ 20个头像全部加loading="lazy" |
-| WebP格式 | ✅ | 所有头像使用.webp格式 |
+### 3.1 不可删除的结构标记
 
-### C.5 业务闭环 ✅
+```html
+<!-- ========== MODULE: X START/END ========== -->
+```
+这些标记是模块边界锚点，删除任何一个都会导致模块定位混乱。
 
-| 检查项 | 结果 |
-|--------|------|
-| 愿景传达核心定位 | ✅ "测试人AI转型第一站" |
-| 3色分类对应业务线 | ✅ zhixie/open/acu color coding |
-| 全域同步提示清晰可见 | ✅ notice区块 |
-| 招募3场景覆盖全路径 | ✅ 找工作/学AI测试/做项目 |
-| 叙事链连贯 | ✅ Hero→Vision→Products→Team→KB→Community→Recruit→Footer |
+### 3.2 CSS命名空间铁律
 
----
+所有CSS选择器必须以 `.module-X` 开头：
+- `.module-nav .status-bar{display:none}` ← 不可改为可见
+- `.module-hero .scan-beam` ← 不可删除动画
+- `.module-vision .vision-block{text-align:left}` ← 不可改回居中
+- `.module-engine .loop-chain` ← 新模块，不可改对齐方式
 
-## 推送状态
+### 3.3 已隐藏的元素清单（不可恢复）
 
-**代码已本地commit成功**（d2d7211），但GitHub HTTPS端口443当前连接超时。
-需要网络恢复后执行 `git push origin main` 推送到GitHub Pages。
+| 元素 | CSS规则 | 隐藏原因 |
+|------|---------|----------|
+| SYS.ONLINE状态栏 | `.module-nav .status-bar{display:none}` | 用户要求不显示 |
+| section-num标签 | `.section-num{display:none}` | 内部标记不应暴露 |
+| vision-label | `.module-vision .vision-label{display:none}` | 同上 |
+| recruit-tag | 同理 | 同上 |
+| ft-label | `.module-footer .ft-label{display:none}` | 同上 |
 
----
+### 3.4 已处理的素材（不可替换为原始版本）
 
-## 已知PRD偏差（不需修复，标注说明）
+- `assets/avatars/chenyufeng.webp` — 已做圆形遮罩+边缘暗色替换
+- `assets/avatars/jkl.webp` — 同上
+- `assets/avatars/liyuqiao.webp` — 同上
 
-1. **PRD产品数据为占位名** — 实际使用真实GitHub产品名和链接，更准确
-2. **PRD ADR-005说M08暂缓** — 实际已实现20人团队模块，PRD需更新此ADR
-3. **PRD hero stats "19人"** — 实际已更新为20人，PRD需更新
-4. **PRD footer缺少MISSION/VISION/VALUES** — 实现比PRD更丰富，添加了motto行补充
-5. **PRD导航label"技能矩阵"** — 实际使用"产品矩阵"更匹配内容
+替换这些头像时，必须用同样方法处理边缘像素，否则黑边会重现。
+
+### 3.5 模块间divider是结构元素
+
+```html
+<div class="divider"></div>
+```
+每个模块之间有divider，这是页面节奏控制元素，不可删除。divider自带脉冲动画(`dividerPulse`)。
+
+### 3.6 推广链接命名
+
+导航栏和页脚的推广链接固定显示为"⚡ 模型服务"，不可改回"5元Token"或任何其他名称。

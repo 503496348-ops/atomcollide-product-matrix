@@ -81,7 +81,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 /* ============================================================
    MODULE: HERO (M03 · P0)
    ============================================================ */
-.module-hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;overflow:hidden}
+.module-hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px 32px;overflow:hidden}
 .module-hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 60% 40% at 50% 35%,rgba(0,180,255,0.1),transparent 70%),radial-gradient(ellipse 40% 30% at 50% 45%,rgba(123,97,255,0.06),transparent);pointer-events:none}
 .module-hero::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,212,255,0.015) 3px,rgba(0,212,255,0.015) 4px);pointer-events:none;z-index:1}
 
@@ -121,7 +121,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 /* ============================================================
    MODULE: VISION (M04 · P0)
    ============================================================ */
-.module-vision{padding:32px 0 24px}
+.module-vision{padding:16px 0 12px}
 .module-vision .vision-block{text-align:left}
 .module-vision .vision-label{display:none}
 .module-vision .vision-text{font-size:16px;color:var(--text-secondary);line-height:1.8;max-width:100%}
@@ -244,7 +244,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 .module-team .team-card:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,180,255,0.1)}
 .module-team .team-card:hover::before{opacity:1}
 .module-team .avatar-wrapper{width:80px;height:80px;margin:0 auto 12px;position:relative}
-.module-team .team-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;border:4px solid rgba(0,212,255,0.5);box-shadow:inset 0 0 0 3px rgba(0,212,255,0.25),0 0 12px 3px rgba(0,212,255,0.18);transition:transform var(--transition-speed) var(--ease-out)}
+.module-team .team-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;border:5px solid rgba(0,212,255,0.5);clip-path:circle(42px at center);transition:transform var(--transition-speed) var(--ease-out)}
 .module-team .team-card:hover .team-avatar{transform:scale(1.125)}
 .module-team .avatar-glow{position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--member-color,var(--color-zhixie));opacity:0;transition:opacity var(--transition-speed);pointer-events:none}
 .module-team .team-card:hover .avatar-glow{opacity:0.4;box-shadow:0 0 20px 6px var(--member-color,var(--color-zhixie))}
@@ -265,7 +265,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 /* Team detail panel */
 .module-team .team-detail{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);width:min(420px,90vw);padding:32px;border-radius:16px;background:rgba(10,14,20,0.95);border:1px solid var(--border-glass-hover);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.3s var(--ease-out),transform 0.3s var(--ease-out);backdrop-filter:blur(30px)}
 .module-team .team-detail.active{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
-.module-team .team-detail .detail-avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:16px;border:3px solid var(--member-color,var(--color-zhixie));box-shadow:inset 0 0 0 3px rgba(0,212,255,0.2)}
+.module-team .team-detail .detail-avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:16px;border:5px solid var(--member-color,var(--color-zhixie));clip-path:circle(46px at center)}
 .module-team .team-detail .detail-name{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
 .module-team .team-detail .detail-career{font-size:13px;color:var(--text-tertiary);margin-bottom:12px}
 .module-team .team-detail .detail-roles{font-size:12px;color:var(--member-color,var(--color-zhixie));font-family:'JetBrains Mono',monospace;margin-bottom:12px}
@@ -494,39 +494,39 @@ AtomCollide
 <!-- ========== MODULE: TEAM START (M08 · P1) ========== -->
 <section class="section module-team reveal" id="team" data-module="M08">
 <div class="section-head"><h2>🌟 核心团队 · 20 人</h2><div class="head-line"></div></div>
-<div class="section-head" style="margin-top:-28px"><p>联合发起人 · 治安官 · 杰出贡献者</p></div>
+<div class="section-head" style="margin-top:-28px"><p>联合发起人 · 治安官 · 杰出贡献</p></div>
 
 <div class="team-group">
 <h3 class="group-title">联合发起人</h3>
 <div class="team-grid">
 <div class="team-card" data-member-id="t-001" style="--member-color:var(--color-zhixie)">
   <div class="avatar-wrapper"><img src="assets/avatars/chenyufeng.webp" alt="陈宇锋" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">陈宇锋</div><div class="member-role">社区联创 · 智械工坊创始人 · ACU校长</div>
+  <div class="member-name">陈宇锋</div><div class="member-role">AtomCollide社区-联合发起人</div>
   <div class="member-tags"><span class="member-tag">16年互联网大厂BU-VP</span><span class="member-tag">智械工坊创始人</span><span class="member-tag">ACU校长</span></div>
 </div>
 <div class="team-card" data-member-id="t-002" style="--member-color:var(--color-zhixie)">
   <div class="avatar-wrapper"><img src="assets/avatars/pr.webp" alt="PR" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">PR</div><div class="member-role">社区联创 · 智械工坊联合发起人</div>
+  <div class="member-name">PR</div><div class="member-role">AtomCollide社区-联合发起人</div>
   <div class="member-tags"><span class="member-tag">流行音乐老师</span><span class="member-tag">独立音乐人</span><span class="member-tag">智械工坊联合发起人</span></div>
 </div>
 <div class="team-card" data-member-id="t-003" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/jkl.webp" alt="JKL" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">JKL</div><div class="member-role">社区联创 · 智械工坊联创 · JKL神思记创始人</div>
+  <div class="member-name">JKL</div><div class="member-role">AtomCollide社区-联合发起人</div>
   <div class="member-tags"><span class="member-tag">国际教育顾问</span><span class="member-tag">JKL神思记创始人</span><span class="member-tag">智械工坊联创</span></div>
 </div>
 <div class="team-card" data-member-id="t-004" style="--member-color:var(--color-zhixie)">
   <div class="avatar-wrapper"><img src="assets/avatars/liyuqiao.webp" alt="李渔樵" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">李渔樵</div><div class="member-role">社区联创 · 智械工坊联创 · 首席治安官</div>
+  <div class="member-name">李渔樵</div><div class="member-role">AtomCollide社区-联合发起人</div>
   <div class="member-tags"><span class="member-tag">独立艺术摄影创作者</span><span class="member-tag">智械工坊联创</span><span class="member-tag">首席治安官</span></div>
 </div>
 <div class="team-card" data-member-id="t-005" style="--member-color:var(--color-acu)">
   <div class="avatar-wrapper"><img src="assets/avatars/huanxi.webp" alt="欢喜" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">欢喜</div><div class="member-role">社区联创</div>
+  <div class="member-name">欢喜</div><div class="member-role">AtomCollide社区-联合发起人</div>
   <div class="member-tags"><span class="member-tag">欢喜心灵驿站主理人</span><span class="member-tag">国际心理咨询师资质持牌人</span></div>
 </div>
 <div class="team-card" data-member-id="t-006" style="--member-color:var(--color-zhixie)">
   <div class="avatar-wrapper"><img src="assets/avatars/chenfeifei.webp" alt="陈飞飞" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">陈飞飞</div><div class="member-role">社区联创 · 治安官</div>
+  <div class="member-name">陈飞飞</div><div class="member-role">AtomCollide社区-联合发起人 · AtomCollide社区-治安官</div>
   <div class="member-tags"><span class="member-tag">数据资产集团CEO</span><span class="member-tag">独立投资人</span></div>
 </div>
 </div>
@@ -537,32 +537,32 @@ AtomCollide
 <div class="team-grid">
 <div class="team-card" data-member-id="t-007" style="--member-color:var(--color-acu)">
   <div class="avatar-wrapper"><img src="assets/avatars/jinglaoshi.webp" alt="井老师" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">井老师</div><div class="member-role">治安官</div>
+  <div class="member-name">井老师</div><div class="member-role">AtomCollide社区-治安官</div>
   <div class="member-tags"><span class="member-tag">国际珠宝石学家</span><span class="member-tag">珠宝鉴定师</span><span class="member-tag">NGTC认证讲师</span></div>
 </div>
 <div class="team-card" data-member-id="t-008" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/wujianjian.webp" alt="吴见见" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">吴见见</div><div class="member-role">治安官</div>
+  <div class="member-name">吴见见</div><div class="member-role">AtomCollide社区-治安官</div>
   <div class="member-tags"><span class="member-tag">新锐茶品牌</span><span class="member-tag">独立投资人</span><span class="member-tag">沉浸式动态视觉架构师</span></div>
 </div>
 <div class="team-card" data-member-id="t-009" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/jiangshimin.webp" alt="江诗敏" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">江诗敏</div><div class="member-role">治安官</div>
+  <div class="member-name">江诗敏</div><div class="member-role">AtomCollide社区-治安官</div>
   <div class="member-tags"><span class="member-tag">独立数学老师</span><span class="member-tag">三猫教辅SaaS创始人</span></div>
 </div>
 <div class="team-card" data-member-id="t-010" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/hanyin.webp" alt="瀚音" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">瀚音</div><div class="member-role">治安官</div>
+  <div class="member-name">瀚音</div><div class="member-role">AtomCollide社区-治安官</div>
   <div class="member-tags"><span class="member-tag">独立音乐制作人</span><span class="member-tag">音乐人</span></div>
 </div>
 <div class="team-card" data-member-id="t-011" style="--member-color:var(--color-zhixie)">
   <div class="avatar-wrapper"><img src="assets/avatars/maoge.webp" alt="猫哥" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">猫哥</div><div class="member-role">治安官</div>
+  <div class="member-name">猫哥</div><div class="member-role">AtomCollide社区-治安官</div>
   <div class="member-tags"><span class="member-tag">游戏主策</span><span class="member-tag">开发</span></div>
 </div>
 <div class="team-card" data-member-id="t-012" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/404notfound.webp" alt="404NotFound" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">404NotFound</div><div class="member-role">治安官 · 棱镜设计所主理人</div>
+  <div class="member-name">404NotFound</div><div class="member-role">AtomCollide社区-治安官</div>
   <div class="member-tags"><span class="member-tag">资深游戏平面视觉设计师</span><span class="member-tag">棱镜设计所主理人</span></div>
 </div>
 </div>
@@ -573,35 +573,35 @@ AtomCollide
 <div class="team-grid">
 <div class="team-card" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/thefuture.webp" alt="The Future" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">Tʜᴇ ғᴜᴛᴜʀᴇ</div>
+  <div class="member-name">Tʜᴇ ғᴜᴛᴜʀᴇ</div><div class="member-role">AtomCollide社区-杰出贡献</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-zhixie)">
   <div class="avatar-wrapper"><img src="assets/avatars/renbin.webp" alt="任斌" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">任斌</div>
+  <div class="member-name">任斌</div><div class="member-role">AtomCollide社区-杰出贡献</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/hongfeng.webp" alt="鸿枫技术栈" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">鸿枫技术栈</div>
+  <div class="member-name">鸿枫技术栈</div><div class="member-role">AtomCollide社区-杰出贡献</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-acu)">
   <div class="avatar-wrapper"><img src="assets/avatars/adgai.webp" alt="Adgai" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">Adgai</div>
+  <div class="member-name">Adgai</div><div class="member-role">AtomCollide社区-杰出贡献</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/will.webp" alt="Will" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">Will</div>
+  <div class="member-name">Will</div><div class="member-role">AtomCollide社区-杰出贡献</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-zhixie)">
   <div class="avatar-wrapper"><img src="assets/avatars/wanshouge.webp" alt="万手哥" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">万手哥</div>
+  <div class="member-name">万手哥</div><div class="member-role">AtomCollide社区-杰出贡献</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/zhaoning.webp" alt="昭宁" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">昭宁</div>
+  <div class="member-name">昭宁</div><div class="member-role">AtomCollide社区-杰出贡献</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-acu)">
   <div class="avatar-wrapper"><img src="assets/avatars/likangqiang.webp" alt="李康强" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">李康强</div>
+  <div class="member-name">李康强</div><div class="member-role">AtomCollide社区-杰出贡献</div>
 </div>
 <div class="team-card team-card-vacant" style="--member-color:var(--color-acu)">
   <div class="avatar-wrapper vacant-avatar"><div class="vacant-icon">✦</div></div>
@@ -789,28 +789,28 @@ AtomCollide
 // ============================================================
 const teamData = {
   core: [
-    { id:"t-001", name:"陈宇锋", career:"16年互联网大厂BU-VP", roles:["AtomCollide社区-联创","智械工坊-创始人","ACU-校长"], avatar:"assets/avatars/chenyufeng.webp", color:"#00d4ff" },
-    { id:"t-002", name:"PR", career:"流行音乐老师/独立音乐人", roles:["AtomCollide社区-联创","智械工坊-联合发起人"], avatar:"assets/avatars/pr.webp", color:"#00d4ff" },
-    { id:"t-003", name:"JKL", career:"国际教育顾问", roles:["JKL神思记-创始人","AtomCollide社区-联创","智械工坊-联创"], avatar:"assets/avatars/jkl.webp", color:"#7b61ff" },
-    { id:"t-004", name:"李渔樵", career:"独立艺术摄影创作者", roles:["AtomCollide社区-联创","智械工坊-联创","首席治安官"], avatar:"assets/avatars/liyuqiao.webp", color:"#00d4ff" },
-    { id:"t-005", name:"欢喜", career:"欢喜心灵驿站主理人/国际心理咨询师资质持牌人", roles:["AtomCollide社区-联创"], avatar:"assets/avatars/huanxi.webp", color:"#00f0a0" },
-    { id:"t-006", name:"陈飞飞", career:"数据资产集团CEO&独立投资人", roles:["AtomCollide社区-联创","治安官"], avatar:"assets/avatars/chenfeifei.webp", color:"#00d4ff" },
-    { id:"t-007", name:"井老师", career:"国际珠宝石学家/珠宝鉴定师/宝石/玉石/钻石珍珠鉴定师/NGTC认证讲师", roles:["治安官"], avatar:"assets/avatars/jinglaoshi.webp", color:"#00f0a0" },
-    { id:"t-008", name:"吴见见", career:"新锐茶品牌&独立投资人/沉浸式动态视觉架构师", roles:["治安官"], avatar:"assets/avatars/wujianjian.webp", color:"#7b61ff" },
-    { id:"t-009", name:"江诗敏", career:"独立数学老师/三猫教辅SaaS创始人", roles:["治安官"], avatar:"assets/avatars/jiangshimin.webp", color:"#7b61ff" },
-    { id:"t-010", name:"瀚音", career:"独立音乐制作人&音乐人", roles:["治安官"], avatar:"assets/avatars/hanyin.webp", color:"#7b61ff" },
-    { id:"t-011", name:"猫哥", career:"资深游戏主策与开发", roles:["治安官"], avatar:"assets/avatars/maoge.webp", color:"#00d4ff" },
-    { id:"t-012", name:"404NotFound", career:"资深游戏平面视觉设计师", roles:["治安官","棱镜设计所主理人"], avatar:"assets/avatars/404notfound.webp", color:"#7b61ff" },
+    { id:"t-001", name:"陈宇锋", career:"16年互联网大厂BU-VP", roles:["AtomCollide社区-联合发起人","智械工坊-创始人","ACU-校长"], avatar:"assets/avatars/chenyufeng.webp", color:"#00d4ff" },
+    { id:"t-002", name:"PR", career:"流行音乐老师/独立音乐人", roles:["AtomCollide社区-联合发起人","智械工坊-联合发起人"], avatar:"assets/avatars/pr.webp", color:"#00d4ff" },
+    { id:"t-003", name:"JKL", career:"国际教育顾问", roles:["AtomCollide社区-联合发起人","JKL神思记-创始人","智械工坊-联创"], avatar:"assets/avatars/jkl.webp", color:"#7b61ff" },
+    { id:"t-004", name:"李渔樵", career:"独立艺术摄影创作者", roles:["AtomCollide社区-联合发起人","智械工坊-联创","首席治安官"], avatar:"assets/avatars/liyuqiao.webp", color:"#00d4ff" },
+    { id:"t-005", name:"欢喜", career:"欢喜心灵驿站主理人/国际心理咨询师资质持牌人", roles:["AtomCollide社区-联合发起人"], avatar:"assets/avatars/huanxi.webp", color:"#00f0a0" },
+    { id:"t-006", name:"陈飞飞", career:"数据资产集团CEO&独立投资人", roles:["AtomCollide社区-联合发起人","AtomCollide社区-治安官"], avatar:"assets/avatars/chenfeifei.webp", color:"#00d4ff" },
+    { id:"t-007", name:"井老师", career:"国际珠宝石学家/珠宝鉴定师/宝石/玉石/钻石珍珠鉴定师/NGTC认证讲师", roles:["AtomCollide社区-治安官"], avatar:"assets/avatars/jinglaoshi.webp", color:"#00f0a0" },
+    { id:"t-008", name:"吴见见", career:"新锐茶品牌&独立投资人/沉浸式动态视觉架构师", roles:["AtomCollide社区-治安官"], avatar:"assets/avatars/wujianjian.webp", color:"#7b61ff" },
+    { id:"t-009", name:"江诗敏", career:"独立数学老师/三猫教辅SaaS创始人", roles:["AtomCollide社区-治安官"], avatar:"assets/avatars/jiangshimin.webp", color:"#7b61ff" },
+    { id:"t-010", name:"瀚音", career:"独立音乐制作人&音乐人", roles:["AtomCollide社区-治安官"], avatar:"assets/avatars/hanyin.webp", color:"#7b61ff" },
+    { id:"t-011", name:"猫哥", career:"资深游戏主策与开发", roles:["AtomCollide社区-治安官"], avatar:"assets/avatars/maoge.webp", color:"#00d4ff" },
+    { id:"t-012", name:"404NotFound", career:"资深游戏平面视觉设计师", roles:["AtomCollide社区-治安官","棱镜设计所主理人"], avatar:"assets/avatars/404notfound.webp", color:"#7b61ff" },
   ],
   contributors: [
-    { name:"Tʜᴇ ғᴜᴛᴜʀᴇ", avatar:"assets/avatars/thefuture.webp" },
-    { name:"任斌", avatar:"assets/avatars/renbin.webp" },
-    { name:"鸿枫技术栈", avatar:"assets/avatars/hongfeng.webp" },
-    { name:"Adgai", avatar:"assets/avatars/adgai.webp" },
-    { name:"Will", avatar:"assets/avatars/will.webp" },
-    { name:"万手哥", avatar:"assets/avatars/wanshouge.webp" },
-    { name:"昭宁", avatar:"assets/avatars/zhaoning.webp" },
-    { name:"李康强", avatar:"assets/avatars/likangqiang.webp" },
+    { name:"Tʜᴇ ғᴜᴛᴜʀᴇ", avatar:"assets/avatars/thefuture.webp", role:"AtomCollide社区-杰出贡献" },
+    { name:"任斌", avatar:"assets/avatars/renbin.webp", role:"AtomCollide社区-杰出贡献" },
+    { name:"鸿枫技术栈", avatar:"assets/avatars/hongfeng.webp", role:"AtomCollide社区-杰出贡献" },
+    { name:"Adgai", avatar:"assets/avatars/adgai.webp", role:"AtomCollide社区-杰出贡献" },
+    { name:"Will", avatar:"assets/avatars/will.webp", role:"AtomCollide社区-杰出贡献" },
+    { name:"万手哥", avatar:"assets/avatars/wanshouge.webp", role:"AtomCollide社区-杰出贡献" },
+    { name:"昭宁", avatar:"assets/avatars/zhaoning.webp", role:"AtomCollide社区-杰出贡献" },
+    { name:"李康强", avatar:"assets/avatars/likangqiang.webp", role:"AtomCollide社区-杰出贡献" },
   ]
 };
 
