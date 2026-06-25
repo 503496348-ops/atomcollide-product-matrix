@@ -28,27 +28,6 @@
   --radius-lg: 12px;
   --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, monospace;
-  --cat-writing: #f78166;
-  --cat-identity: #d2a8ff;
-  --cat-health: #7ee787;
-  --cat-quant: #ffd33d;
-  --cat-video: #ff7b72;
-  --cat-ppt: #79c0ff;
-  --cat-media: #a5d6ff;
-  --cat-agent: #d2a8ff;
-  --cat-visual: #ffa657;
-  --cat-security: #f0883e;
-  --cat-analysis: #79c0ff;
-  --cat-schedule: #7ee787;
-  --cat-compete: #ffd33d;
-  --cat-ecommerce: #3fb950;
-  --cat-learn: #a5d6ff;
-  --cat-sports: #ff7b72;
-  --cat-seo: #79c0ff;
-  --cat-data: #d2a8ff;
-  --cat-structure: #ffa657;
-  --cat-knowledge: #7ee787;
-  --cat-defense: #f0883e;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -99,11 +78,11 @@ body::before {
 .section-desc { font-size: 0.9rem; font-weight: 400; color: var(--text-quaternary); letter-spacing: -0.165px; font-feature-settings: "cv01","ss03"; }
 
 /* Products */
-.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-.product-card { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 20px; border-left: 3px solid var(--card-accent, var(--accent)); backdrop-filter: blur(8px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.product-card { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
 .product-card::before { content: ''; position: absolute; inset: 0; border-radius: var(--radius-lg); padding: 1px; background: linear-gradient(135deg, transparent 40%, rgba(88,166,255,0.5) 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity 0.3s; }
 .product-card:hover::before { opacity: 1; }
-.product-card:hover { background: rgba(255,255,255,0.07); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(88,166,255,0.12), 0 0 0 1px rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.25); }
+.product-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(88,166,255,0.15); }
 .product-card .num { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; color: var(--text-quaternary); letter-spacing: 0.5px; margin-bottom: 12px; }
 .product-card .name { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.24px; color: var(--text-primary); font-feature-settings: "cv01","ss03"; margin-bottom: 2px; }
 .product-card .eng { font-size: 0.75rem; font-weight: 400; color: var(--text-quaternary); font-family: var(--mono); margin-bottom: 12px; }
@@ -129,7 +108,7 @@ body::before {
 .recruit-col li strong { color: var(--accent); font-weight: 600; }
 
 /* Knowledge Base */
-.kb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.kb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
 .kb-card { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; display: flex; align-items: center; gap: 14px; transition: all 0.25s; text-decoration: none; }
 .kb-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(63,185,80,0.3); transform: translateY(-1px); }
 .kb-icon { font-size: 1.3rem; flex-shrink: 0; }
@@ -138,7 +117,7 @@ body::before {
 .kb-sub { font-size: 0.7rem; color: var(--text-quaternary); font-family: var(--mono); margin-top: 2px; }
 
 /* Groups */
-.group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
 .group-card { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; align-items: center; gap: 10px; text-decoration: none; transition: all 0.25s; }
 .group-card:hover { background: rgba(255,255,255,0.08); border-color: var(--border-accent); transform: translateY(-1px); }
 .group-icon { font-size: 1.1rem; }
@@ -168,25 +147,6 @@ body::before {
   .recruit { padding: 24px; }
   .section { padding: 48px 24px; }
 }
-
-.product-card, .kb-card, .group-card {
-  opacity: 0; transform: translateY(16px);
-  animation: cardReveal 0.5s ease forwards;
-}
-.product-card:nth-child(1),.product-card:nth-child(2),.product-card:nth-child(3),.product-card:nth-child(4) { animation-delay: 0.05s; }
-.product-card:nth-child(5),.product-card:nth-child(6),.product-card:nth-child(7),.product-card:nth-child(8) { animation-delay: 0.10s; }
-.product-card:nth-child(9),.product-card:nth-child(10),.product-card:nth-child(11),.product-card:nth-child(12) { animation-delay: 0.15s; }
-.product-card:nth-child(n+13) { animation-delay: 0.20s; }
-@keyframes cardReveal { to { opacity: 1; transform: translateY(0); } }
-.recruit-cta { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 8px; background: linear-gradient(135deg, var(--accent-dim), var(--accent)); color: #000; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: all 0.25s; margin-top: 20px; }
-.recruit-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(88,166,255,0.3); }
-.cat-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
-.cat-pill { font-size: 0.7rem; font-weight: 500; padding: 4px 10px; border-radius: 9999px; border: 1px solid; opacity: 0.8; }
-.section-header::after { content: ''; display: block; width: 48px; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); margin-top: 16px; border-radius: 1px; }
-.tag-cat { font-weight: 600; }
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-deep); }
-::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -216,28 +176,6 @@ body::before {
   <div class="section-header">
     <h2 class="section-title">🧬 技能矩阵 · 24 款产品</h2>
     <p class="section-desc">全部开源 · 覆盖 AI Agent 全链路 — 从安全检测到内容创作，从多 Agent 协作到知识管理</p>
-  </div>
-  <div class="cat-legend">
-    <span class="cat-pill" style="color:var(--cat-writing);border-color:var(--cat-writing);background:var(--cat-writing)15;">长文创作</span>
-    <span class="cat-pill" style="color:var(--cat-identity);border-color:var(--cat-identity);background:var(--cat-identity)15;">身份蒸馏</span>
-    <span class="cat-pill" style="color:var(--cat-health);border-color:var(--cat-health);background:var(--cat-health)15;">智能体健康</span>
-    <span class="cat-pill" style="color:var(--cat-quant);border-color:var(--cat-quant);background:var(--cat-quant)15;">量化投资</span>
-    <span class="cat-pill" style="color:var(--cat-video);border-color:var(--cat-video);background:var(--cat-video)15;">视频剪辑</span>
-    <span class="cat-pill" style="color:var(--cat-ppt);border-color:var(--cat-ppt);background:var(--cat-ppt)15;">飞书白板+PPT</span>
-    <span class="cat-pill" style="color:var(--cat-media);border-color:var(--cat-media);background:var(--cat-media)15;">多媒体生成</span>
-    <span class="cat-pill" style="color:var(--cat-agent);border-color:var(--cat-agent);background:var(--cat-agent)15;">多Agent协作</span>
-    <span class="cat-pill" style="color:var(--cat-visual);border-color:var(--cat-visual);background:var(--cat-visual)15;">视觉创作</span>
-    <span class="cat-pill" style="color:var(--cat-security);border-color:var(--cat-security);background:var(--cat-security)15;">安全检测</span>
-    <span class="cat-pill" style="color:var(--cat-analysis);border-color:var(--cat-analysis);background:var(--cat-analysis)15;">文本分析</span>
-    <span class="cat-pill" style="color:var(--cat-schedule);border-color:var(--cat-schedule);background:var(--cat-schedule)15;">日程管理</span>
-    <span class="cat-pill" style="color:var(--cat-compete);border-color:var(--cat-compete);background:var(--cat-compete)15;">竞品分析</span>
-    <span class="cat-pill" style="color:var(--cat-ecommerce);border-color:var(--cat-ecommerce);background:var(--cat-ecommerce)15;">选品推荐</span>
-    <span class="cat-pill" style="color:var(--cat-learn);border-color:var(--cat-learn);background:var(--cat-learn)15;">学习路径</span>
-    <span class="cat-pill" style="color:var(--cat-sports);border-color:var(--cat-sports);background:var(--cat-sports)15;">体育分析</span>
-    <span class="cat-pill" style="color:var(--cat-seo);border-color:var(--cat-seo);background:var(--cat-seo)15;">SEO诊断</span>
-    <span class="cat-pill" style="color:var(--cat-data);border-color:var(--cat-data);background:var(--cat-data)15;">数据可视化</span>
-    <span class="cat-pill" style="color:var(--cat-structure);border-color:var(--cat-structure);background:var(--cat-structure)15;">结构化写作</span>
-    <span class="cat-pill" style="color:var(--cat-knowledge);border-color:var(--cat-knowledge);background:var(--cat-knowledge)15;">知识管理</span>
   </div>
   <div class="products-grid">
 
@@ -433,7 +371,6 @@ body::before {
     </ul>
     <p>此外，社群还持续输出全栈测试技术干货、测试人转型路径、副业变现实操、项目复盘方法论与高效工作范式，覆盖从初级测试到测试专家的全成长周期。</p>
     <p><strong>这是一个拒绝水群、纯技术驱动、真诚互助的成长社群。</strong>你可以随时就技术难题、测试策略或职业困惑发起提问，每一位渴望成长的伙伴都会得到认真的回应。</p>
-    <div style="text-align:center;margin-top:28px;"><a class="recruit-cta" href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=074vd565-6084-455c-ac52-9703e89a0697" target="_blank">🚀 立即加入元素碰撞</a></div>
   </div>
 </section>
 
