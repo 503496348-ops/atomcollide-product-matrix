@@ -16,21 +16,21 @@
   --color-open: #7b61ff;       /* Open Build purple */
   --color-acu: #00f0a0;        /* ACU green */
 
-  /* Text hierarchy */
+  /* Text hierarchy — brightened for tech readability */
   --text-primary: #ffffff;
-  --text-secondary: #8a9bb5;
-  --text-tertiary: #5a6b83;
-  --text-muted: #3a4b63;
+  --text-secondary: #a8b8d0;
+  --text-tertiary: #7a8ba0;
+  --text-muted: #5a6b80;
 
-  /* Background layers */
-  --bg-base: #060713;
-  --bg-glass: rgba(255,255,255,0.025);
-  --bg-glass-hover: rgba(0,212,255,0.05);
-  --bg-glow: radial-gradient(circle at center, rgba(0,212,255,0.1) 0%, transparent 70%);
-  --border-glass: rgba(0,212,255,0.06);
-  --border-glass-hover: rgba(0,212,255,0.15);
-  --border-subtle: rgba(0,212,255,0.08);
-  --divider-color: rgba(0,212,255,0.12);
+  /* Background layers — brighter glass for depth */
+  --bg-base: #080a16;
+  --bg-glass: rgba(255,255,255,0.04);
+  --bg-glass-hover: rgba(0,212,255,0.08);
+  --bg-glow: radial-gradient(circle at center, rgba(0,212,255,0.12) 0%, transparent 70%);
+  --border-glass: rgba(0,212,255,0.08);
+  --border-glass-hover: rgba(0,212,255,0.2);
+  --border-subtle: rgba(0,212,255,0.1);
+  --divider-color: rgba(0,212,255,0.15);
 
   /* Animation standards */
   --transition-speed: 0.3s;
@@ -42,13 +42,16 @@
 html{scroll-behavior:smooth}
 body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg-base);color:var(--text-secondary);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-/* Background grid pattern */
-body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+/* Background grid pattern — brighter */
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(0,212,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.04) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+
+/* Scanline overlay for tech feel */
+body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,0.008) 2px,rgba(0,212,255,0.008) 4px);pointer-events:none;z-index:1}
 
 /* ============================================================
    MODULE: STATUS BAR (M02 sub-component)
    ============================================================ */
-.module-nav .status-bar{background:#040509;border-bottom:1px solid rgba(0,240,255,0.12);padding:7px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);position:relative;z-index:10}
+.module-nav .status-bar{background:#040509;border-bottom:1px solid rgba(0,240,255,0.15);padding:7px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-tertiary);position:relative;z-index:10}
 .module-nav .status-bar .inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center}
 .status-dot{width:6px;height:6px;border-radius:50%;background:var(--color-acu);display:inline-block;margin-right:6px;box-shadow:0 0 8px var(--color-acu);animation:blink 2s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
@@ -82,6 +85,10 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .module-hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 60% 40% at 50% 35%,rgba(0,180,255,0.1),transparent 70%),radial-gradient(ellipse 40% 30% at 50% 45%,rgba(123,97,255,0.06),transparent);pointer-events:none}
 .module-hero::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,212,255,0.015) 3px,rgba(0,212,255,0.015) 4px);pointer-events:none;z-index:1}
 
+/* Scan beam effect */
+.module-hero .scan-beam{position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,transparent,rgba(0,212,255,0.4),transparent);z-index:3;animation:scanBeam 6s linear infinite;opacity:0.6}
+@keyframes scanBeam{0%{top:0;opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{top:100%;opacity:0}}
+
 #particles{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
 
 /* Atom orb */
@@ -106,7 +113,8 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .module-hero .stats-bar{position:relative;z-index:2;display:flex;justify-content:center;gap:48px;padding:40px 0;margin-top:48px;border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle)}
 .stat{text-align:center;position:relative}
 .stat:not(:last-child)::after{content:'';position:absolute;right:-24px;top:20%;height:60%;width:1px;background:var(--border-subtle)}
-.stat-val{font-size:34px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text-primary);letter-spacing:-1px;text-shadow:0 0 20px rgba(0,212,255,0.3)}
+.stat-val{font-size:34px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text-primary);letter-spacing:-1px;text-shadow:0 0 20px rgba(0,212,255,0.3);animation:statPulse 3s ease-in-out infinite}
+@keyframes statPulse{0%,100%{text-shadow:0 0 20px rgba(0,212,255,0.3)}50%{text-shadow:0 0 30px rgba(0,212,255,0.5)}}
 .stat-val .unit{font-size:14px;font-weight:400;color:var(--text-muted)}
 .stat-label{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:6px}
 
@@ -115,11 +123,12 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
    ============================================================ */
 .module-vision{padding:48px 0 32px}
 .module-vision .vision-block{text-align:center}
-.module-vision .vision-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--color-zhixie);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.module-vision .vision-label{display:none}
 .module-vision .vision-text{font-size:16px;color:var(--text-secondary);line-height:1.8;max-width:560px;margin:0 auto}
 .module-vision .vision-text strong{color:var(--color-zhixie);font-weight:600}
 .module-vision .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
-.module-vision .value-card{padding:24px 20px;border-radius:12px;background:var(--bg-glass);border:1px solid var(--border-glass);text-align:center;transition:var(--transition-all);position:relative;overflow:hidden}
+.module-vision .value-card{padding:24px 20px;border-radius:12px;background:var(--bg-glass);border:1px solid var(--border-glass);text-align:center;transition:var(--transition-all);position:relative;overflow:hidden;animation:valueBreath 4s ease-in-out infinite}
+@keyframes valueBreath{0%,100%{border-color:var(--border-glass)}50%{border-color:var(--border-glass-hover)}}
 .module-vision .value-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,0.4),transparent);opacity:0;transition:opacity var(--transition-speed)}
 .module-vision .value-card:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,180,255,0.08)}
 .module-vision .value-card:hover::before{opacity:1}
@@ -135,10 +144,10 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 /* ============================================================
    SECTION COMMON
    ============================================================ */
-.section{padding:64px 0;position:relative}
-.section-head{margin-bottom:36px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
-.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--color-zhixie);opacity:0.5;letter-spacing:1px}
-.section-head h2{font-size:24px;font-weight:700;color:var(--text-primary);letter-spacing:-0.3px;margin-bottom:0}
+.section{padding:40px 0;position:relative}
+.section-head{margin-bottom:28px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.section-num{display:none}
+.section-head h2{font-size:24px;font-weight:700;color:var(--text-primary);letter-spacing:-0.3px;margin-bottom:0;text-shadow:0 0 20px rgba(0,212,255,0.15)}
 .section-head p{font-size:14px;color:var(--text-tertiary);flex-basis:100%;margin-top:4px}
 .section-head .head-line{flex:1;height:1px;background:linear-gradient(90deg,var(--divider-color),transparent);margin-left:8px;align-self:center}
 
@@ -191,7 +200,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 /* ============================================================
    MODULE: TEAM (M08 · P1) — 3-tier interaction
    ============================================================ */
-.module-team{padding:64px 0}
+.module-team{padding:40px 0}
 .module-team .team-group{margin-bottom:32px}
 .module-team .group-title{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--color-zhixie);letter-spacing:1px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .module-team .group-title::before{content:'';width:3px;height:14px;background:linear-gradient(180deg,var(--color-zhixie),var(--color-open));border-radius:2px}
@@ -201,7 +210,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .module-team .team-card:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,180,255,0.1)}
 .module-team .team-card:hover::before{opacity:1}
 .module-team .avatar-wrapper{width:80px;height:80px;margin:0 auto 12px;position:relative}
-.module-team .team-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;transition:transform var(--transition-speed) var(--ease-out)}
+.module-team .team-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,212,255,0.2);transition:transform var(--transition-speed) var(--ease-out)}
 .module-team .team-card:hover .team-avatar{transform:scale(1.125)}
 .module-team .avatar-glow{position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--member-color,var(--color-zhixie));opacity:0;transition:opacity var(--transition-speed);pointer-events:none}
 .module-team .team-card:hover .avatar-glow{opacity:0.4;box-shadow:0 0 20px 6px var(--member-color,var(--color-zhixie))}
@@ -270,7 +279,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .module-footer .footer-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;font-size:18px;font-weight:700;color:var(--text-primary)}
 .module-footer .footer-logo svg{width:24px;height:24px;opacity:0.6}
 .module-footer .footer-section{margin-bottom:8px}
-.module-footer .ft-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-right:6px}
+.module-footer .ft-label{display:none}
 .module-footer .ft-value{font-size:13px;color:var(--text-secondary)}
 .module-footer .ft-value strong{color:var(--color-zhixie);font-weight:600}
 .module-footer .footer-links{margin-top:16px;display:flex;justify-content:center;gap:24px}
@@ -285,7 +294,8 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
    DIVIDER
    ============================================================ */
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--divider-color),transparent);margin:0;position:relative}
-.divider::after{content:'';position:absolute;left:50%;top:-2px;width:4px;height:4px;border-radius:50%;background:var(--color-zhixie);transform:translateX(-50%);box-shadow:0 0 8px var(--color-zhixie)}
+.divider::after{content:'';position:absolute;left:50%;top:-2px;width:4px;height:4px;border-radius:50%;background:var(--color-zhixie);transform:translateX(-50%);box-shadow:0 0 8px var(--color-zhixie);animation:dividerPulse 2s ease-in-out infinite}
+@keyframes dividerPulse{0%,100%{box-shadow:0 0 8px var(--color-zhixie)}50%{box-shadow:0 0 16px var(--color-zhixie)}}
 
 /* ============================================================
    SCROLL REVEAL
@@ -339,7 +349,7 @@ AtomCollide
 <!-- ========== MODULE: PROMO START (M12 · P2) ========== -->
 <div class="nav-promo-links">
 <a href="https://cloud.tencent.com/act/pro/warmup-202606?from=29779&cps_key=c3102324fb3989336d42de76070a0cba&page=featured-202604&s_source=https%3A%2F%2Fcloud.tencent.com%2Fact%2Fpro%2Ffeatured-202604" target="_blank" class="nav-promo-link"><span class="promo-icon">☁️</span>腾讯云</a>
-<a href="https://5yuantoken.org/register?aff=R2YCECS7LKG4" target="_blank" class="nav-promo-link"><span class="promo-icon">🔗</span>5元Token</a>
+<a href="https://5yuantoken.org/register?aff=R2YCECS7LKG4" target="_blank" class="nav-promo-link"><span class="promo-icon">⚡</span>模型服务</a>
 </div>
 <!-- ========== MODULE: PROMO END ========== -->
 </div>
@@ -349,6 +359,7 @@ AtomCollide
 <!-- ========== MODULE: HERO START (M03 · P0) ========== -->
 <section class="module-hero" data-module="M03">
 <canvas id="particles"></canvas>
+<div class="scan-beam"></div>
 <div class="atom-wrap">
 <div class="atom-orb"></div>
 <div class="atom-ring ring1"><span class="ring-node"></span></div>
@@ -374,7 +385,6 @@ AtomCollide
 <!-- ========== MODULE: VISION START (M04 · P0) ========== -->
 <section class="module-vision reveal" data-module="M04">
 <div class="vision-block">
-<div class="vision-label">// VISION</div>
 <div class="vision-text">🎯 <strong>愿景</strong>：成为测试人 AI 转型的第一站，让每位成员都能在这里找到从 0 到 1 的成长路径，让 AI 技术触手可及。</div>
 <div class="values-grid">
 <div class="value-card" style="--value-color:var(--color-zhixie)"><div class="value-icon">🧠</div><div class="value-title">认知先行</div><div class="value-desc">我们相信认知升级是转型的起点<br>知识库不只是资料堆砌，而是结构化的认知地图</div></div>
@@ -385,50 +395,11 @@ AtomCollide
 </section>
 <!-- ========== MODULE: VISION END ========== -->
 
-<!-- ========== MODULE: PRODUCTS START (M06 · P1) ========== -->
-<section class="section module-products reveal" id="products" data-module="M06">
-<div class="section-head"><span class="section-num">[01]</span><h2>🧬 技能矩阵 · 24 款产品</h2><div class="head-line"></div></div>
-<div class="section-head" style="margin-top:-28px"><p>全部开源 · 覆盖 AI Agent 全链路</p></div>
-<div class="filter-bar">
-<button class="filter-btn active" data-cat="all">全部</button>
-<button class="filter-btn" data-cat="zhixie">🧬 智械工坊</button>
-<button class="filter-btn" data-cat="openbuild">🛠️ Open Build</button>
-<button class="filter-btn" data-cat="acu">🎓 ACU</button>
-</div>
-<div class="prod-grid">
-<a href="https://github.com/503496348-ops/fission-creative" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#01</span><span class="badge active">活跃</span></div><div class="card-name">裂变创作</div><div class="card-eng">Fission Creative</div><span class="card-cat" data-cat="zhixie">长文创作</span></a>
-<a href="https://github.com/503496348-ops/awake-differently" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#02</span><span class="badge active">活跃</span></div><div class="card-name">别样觉醒</div><div class="card-eng">Awake Differently</div><span class="card-cat" data-cat="zhixie">身份蒸馏</span></a>
-<a href="https://github.com/503496348-ops/hermes-doctor" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#03</span><span class="badge active">活跃</span></div><div class="card-name">白龙马医生</div><div class="card-eng">Bailongma Doctor</div><span class="card-cat" data-cat="zhixie">智能体健康</span></a>
-<a href="https://github.com/503496348-ops/pipixia-doctor" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#04</span><span class="badge active">活跃</span></div><div class="card-name">皮皮虾医生</div><div class="card-eng">PipiXia Doctor</div><span class="card-cat" data-cat="zhixie">智能体健康</span></a>
-<a href="https://github.com/503496348-ops/Stratapro" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#05</span><span class="badge active">活跃</span></div><div class="card-name">深度方略</div><div class="card-eng">Stratapro</div><span class="card-cat" data-cat="zhixie">量化投资</span></a>
-<a href="https://github.com/503496348-ops/hermes-skill-ideasphere" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#06</span><span class="badge active">活跃</span></div><div class="card-name">灵感象限</div><div class="card-eng">Ideasphere</div><span class="card-cat" data-cat="zhixie">视频剪辑</span></a>
-<a href="https://github.com/503496348-ops/nichecraft" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#07</span><span class="badge active">活跃</span></div><div class="card-name">有点东西</div><div class="card-eng">Nichecraft</div><span class="card-cat" data-cat="zhixie">飞书白板+PPT</span></a>
-<a href="https://github.com/503496348-ops/fractovision" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#08</span><span class="badge active">活跃</span></div><div class="card-name">破窗造视</div><div class="card-eng">Fractovision</div><span class="card-cat" data-cat="zhixie">多媒体生成</span></a>
-<a href="https://github.com/503496348-ops/barren-order" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#09</span><span class="badge active">活跃</span></div><div class="card-name">荒原序列</div><div class="card-eng">BarrenOrder</div><span class="card-cat" data-cat="zhixie">多Agent协作</span></a>
-<a href="https://github.com/503496348-ops/canvas-design" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#10</span><span class="badge active">活跃</span></div><div class="card-name">艺游未境</div><div class="card-eng">Wanderix</div><span class="card-cat" data-cat="zhixie">视觉创作</span></a>
-<a href="https://github.com/503496348-ops/hermes-security-suite" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#11</span><span class="badge active">活跃</span></div><div class="card-name">奇点造物</div><div class="card-eng">Genesisix</div><span class="card-cat" data-cat="zhixie">安全检测</span></a>
-<a href="https://github.com/503496348-ops/hermes-skill-aestheflow" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#12</span><span class="badge active">活跃</span></div><div class="card-name">艺术生花</div><div class="card-eng">AestheFlow</div><span class="card-cat" data-cat="zhixie">文本分析</span></a>
-<a href="https://github.com/503496348-ops/easyrhythm" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#13</span><span class="badge active">活跃</span></div><div class="card-name">松弛有度</div><div class="card-eng">EasyRhythm</div><span class="card-cat" data-cat="zhixie">日程管理</span></a>
-<a href="https://github.com/503496348-ops/herpeakgem" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#14</span><span class="badge active">活跃</span></div><div class="card-name">他山之石</div><div class="card-eng">HerPeakGem</div><span class="card-cat" data-cat="zhixie">竞品分析</span></a>
-<a href="https://github.com/503496348-ops/purepicks" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#15</span><span class="badge active">活跃</span></div><div class="card-name">自然良品</div><div class="card-eng">PurePicks</div><span class="card-cat" data-cat="zhixie">选品推荐</span></a>
-<a href="https://github.com/503496348-ops/energsolve" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#16</span><span class="badge active">活跃</span></div><div class="card-name">元气方程</div><div class="card-eng">EnergSolve</div><span class="card-cat" data-cat="zhixie">学习路径</span></a>
-<a href="https://github.com/503496348-ops/summoner" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#17</span><span class="badge active">活跃</span></div><div class="card-name">召物少年</div><div class="card-eng">Summoner</div><span class="card-cat" data-cat="openbuild">需求解析</span></a>
-<a href="https://github.com/503496348-ops/football-predictor" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#18</span><span class="badge active">活跃</span></div><div class="card-name">此地无垠</div><div class="card-eng">FootPredict</div><span class="card-cat" data-cat="openbuild">体育分析</span></a>
-<a href="https://github.com/503496348-ops/worldcup-predictor" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#19</span><span class="badge active">活跃</span></div><div class="card-name">绿茵智脑</div><div class="card-eng">WorldCup Predictor</div><span class="card-cat" data-cat="openbuild">体育分析</span></a>
-<a href="https://github.com/503496348-ops/minddistill" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#20</span><span class="badge active">活跃</span></div><div class="card-name">意识浓缩</div><div class="card-eng">MindDistill</div><span class="card-cat" data-cat="openbuild">SEO诊断</span></a>
-<a href="https://github.com/503496348-ops/mindriver" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#21</span><span class="badge active">活跃</span></div><div class="card-name">智脑星河</div><div class="card-eng">MindRiver</div><span class="card-cat" data-cat="openbuild">数据可视化</span></a>
-<a href="https://github.com/503496348-ops/artipen" target="_blank" class="card" data-category="acu"><div class="card-top"><span class="card-num">#22</span><span class="badge active">活跃</span></div><div class="card-name">妙笔生花</div><div class="card-eng">ArtiPen</div><span class="card-cat" data-cat="acu">结构化写作</span></a>
-<a href="https://github.com/503496348-ops/neverend" target="_blank" class="card" data-category="acu"><div class="card-top"><span class="card-num">#23</span><span class="badge active">活跃</span></div><div class="card-name">无限循环</div><div class="card-eng">Neverend</div><span class="card-cat" data-cat="acu">知识管理</span></a>
-<a href="https://github.com/503496348-ops/atomguard" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#24</span><span class="badge archive">归档</span></div><div class="card-name">AtomGuard</div><div class="card-eng">AtomGuard</div><span class="card-cat" data-cat="zhixie">安全防护</span></a>
-</div>
-</section>
-<!-- ========== MODULE: PRODUCTS END ========== -->
-
 <div class="divider"></div>
 
 <!-- ========== MODULE: TEAM START (M08 · P1) ========== -->
 <section class="section module-team reveal" id="team" data-module="M08">
-<div class="section-head"><span class="section-num">[02]</span><h2>🌟 核心团队 · 20 人</h2><div class="head-line"></div></div>
+<div class="section-head"><h2>🌟 核心团队 · 20 人</h2><div class="head-line"></div></div>
 <div class="section-head" style="margin-top:-28px"><p>联合发起人 · 治安官 · 杰出贡献者</p></div>
 
 <div class="team-group">
@@ -436,33 +407,33 @@ AtomCollide
 <div class="team-grid">
 <div class="team-card" data-member-id="t-001" style="--member-color:var(--color-zhixie)">
   <div class="avatar-wrapper"><img src="assets/avatars/chenyufeng.webp" alt="陈宇锋" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">陈宇锋</div><div class="member-role">联创 · 智械工坊创始人</div>
-  <div class="member-tags"><span class="member-tag">16年大厂</span><span class="member-tag">ACU校长</span></div>
+  <div class="member-name">陈宇锋</div><div class="member-role">社区联创 · 智械工坊创始人 · ACU校长</div>
+  <div class="member-tags"><span class="member-tag">16年互联网大厂BU-VP</span><span class="member-tag">智械工坊创始人</span><span class="member-tag">ACU校长</span></div>
 </div>
 <div class="team-card" data-member-id="t-002" style="--member-color:var(--color-zhixie)">
   <div class="avatar-wrapper"><img src="assets/avatars/pr.webp" alt="PR" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">PR</div><div class="member-role">联创 · 联合发起人</div>
-  <div class="member-tags"><span class="member-tag">音乐老师</span><span class="member-tag">独立音乐人</span></div>
+  <div class="member-name">PR</div><div class="member-role">社区联创 · 智械工坊联合发起人</div>
+  <div class="member-tags"><span class="member-tag">流行音乐老师</span><span class="member-tag">独立音乐人</span><span class="member-tag">智械工坊联合发起人</span></div>
 </div>
 <div class="team-card" data-member-id="t-003" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/jkl.webp" alt="JKL" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">JKL</div><div class="member-role">联创 · JKL神思记创始人</div>
-  <div class="member-tags"><span class="member-tag">国际教育</span></div>
+  <div class="member-name">JKL</div><div class="member-role">社区联创 · 智械工坊联创 · JKL神思记创始人</div>
+  <div class="member-tags"><span class="member-tag">国际教育顾问</span><span class="member-tag">JKL神思记创始人</span><span class="member-tag">智械工坊联创</span></div>
 </div>
 <div class="team-card" data-member-id="t-004" style="--member-color:var(--color-zhixie)">
   <div class="avatar-wrapper"><img src="assets/avatars/liyuqiao.webp" alt="李渔樵" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">李渔樵</div><div class="member-role">联创 · 首席治安官</div>
-  <div class="member-tags"><span class="member-tag">智械工坊联创</span></div>
+  <div class="member-name">李渔樵</div><div class="member-role">社区联创 · 智械工坊联创 · 首席治安官</div>
+  <div class="member-tags"><span class="member-tag">独立艺术摄影创作者</span><span class="member-tag">智械工坊联创</span><span class="member-tag">首席治安官</span></div>
 </div>
 <div class="team-card" data-member-id="t-005" style="--member-color:var(--color-acu)">
   <div class="avatar-wrapper"><img src="assets/avatars/huanxi.webp" alt="欢喜" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">欢喜</div><div class="member-role">联创</div>
-  <div class="member-tags"><span class="member-tag">心理咨询师</span><span class="member-tag">心灵驿站</span></div>
+  <div class="member-name">欢喜</div><div class="member-role">社区联创</div>
+  <div class="member-tags"><span class="member-tag">欢喜心灵驿站主理人</span><span class="member-tag">国际心理咨询师资质持牌人</span></div>
 </div>
 <div class="team-card" data-member-id="t-006" style="--member-color:var(--color-zhixie)">
   <div class="avatar-wrapper"><img src="assets/avatars/chenfeifei.webp" alt="陈飞飞" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
-  <div class="member-name">陈飞飞</div><div class="member-role">联创 · 治安官</div>
-  <div class="member-tags"><span class="member-tag">数据资产CEO</span><span class="member-tag">投资人</span></div>
+  <div class="member-name">陈飞飞</div><div class="member-role">社区联创 · 治安官</div>
+  <div class="member-tags"><span class="member-tag">数据资产集团CEO</span><span class="member-tag">独立投资人</span></div>
 </div>
 </div>
 </div>
@@ -473,22 +444,22 @@ AtomCollide
 <div class="team-card" data-member-id="t-007" style="--member-color:var(--color-acu)">
   <div class="avatar-wrapper"><img src="assets/avatars/jinglaoshi.webp" alt="井老师" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">井老师</div><div class="member-role">治安官</div>
-  <div class="member-tags"><span class="member-tag">珠宝鉴定师</span><span class="member-tag">NGTC讲师</span></div>
+  <div class="member-tags"><span class="member-tag">国际珠宝石学家</span><span class="member-tag">珠宝鉴定师</span><span class="member-tag">NGTC认证讲师</span></div>
 </div>
 <div class="team-card" data-member-id="t-008" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/wujianjian.webp" alt="吴见见" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">吴见见</div><div class="member-role">治安官</div>
-  <div class="member-tags"><span class="member-tag">茶品牌</span><span class="member-tag">投资人</span></div>
+  <div class="member-tags"><span class="member-tag">新锐茶品牌</span><span class="member-tag">独立投资人</span><span class="member-tag">沉浸式动态视觉架构师</span></div>
 </div>
 <div class="team-card" data-member-id="t-009" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/jiangshimin.webp" alt="江诗敏" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">江诗敏</div><div class="member-role">治安官</div>
-  <div class="member-tags"><span class="member-tag">数学老师</span><span class="member-tag">三猫教辅</span></div>
+  <div class="member-tags"><span class="member-tag">独立数学老师</span><span class="member-tag">三猫教辅SaaS创始人</span></div>
 </div>
 <div class="team-card" data-member-id="t-010" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/hanyin.webp" alt="瀚音" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">瀚音</div><div class="member-role">治安官</div>
-  <div class="member-tags"><span class="member-tag">AI Agent Lab</span></div>
+  <div class="member-tags"><span class="member-tag">独立音乐制作人</span><span class="member-tag">音乐人</span></div>
 </div>
 <div class="team-card" data-member-id="t-011" style="--member-color:var(--color-zhixie)">
   <div class="avatar-wrapper"><img src="assets/avatars/maoge.webp" alt="猫哥" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
@@ -498,7 +469,7 @@ AtomCollide
 <div class="team-card" data-member-id="t-012" style="--member-color:var(--color-open)">
   <div class="avatar-wrapper"><img src="assets/avatars/404notfound.webp" alt="404NotFound" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">404NotFound</div><div class="member-role">治安官 · 棱镜设计所主理人</div>
-  <div class="member-tags"><span class="member-tag">视觉设计</span><span class="member-tag">游戏美术</span></div>
+  <div class="member-tags"><span class="member-tag">资深游戏平面视觉设计师</span><span class="member-tag">棱镜设计所主理人</span></div>
 </div>
 </div>
 </div>
@@ -555,9 +526,50 @@ AtomCollide
 
 <div class="divider"></div>
 
+<!-- ========== MODULE: PRODUCTS START (M06 · P1) ========== -->
+<section class="section module-products reveal" id="products" data-module="M06">
+<div class="section-head"><h2>🧬 技能矩阵 · 24 款产品</h2><div class="head-line"></div></div>
+<div class="section-head" style="margin-top:-28px"><p>全部开源 · 覆盖 AI Agent 全链路</p></div>
+<div class="filter-bar">
+<button class="filter-btn active" data-cat="all">全部</button>
+<button class="filter-btn" data-cat="zhixie">🧬 智械工坊</button>
+<button class="filter-btn" data-cat="openbuild">🛠️ Open Build</button>
+<button class="filter-btn" data-cat="acu">🎓 ACU</button>
+</div>
+<div class="prod-grid">
+<a href="https://github.com/503496348-ops/fission-creative" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#01</span><span class="badge active">活跃</span></div><div class="card-name">裂变创作</div><div class="card-eng">Fission Creative</div><span class="card-cat" data-cat="zhixie">长文创作</span></a>
+<a href="https://github.com/503496348-ops/awake-differently" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#02</span><span class="badge active">活跃</span></div><div class="card-name">别样觉醒</div><div class="card-eng">Awake Differently</div><span class="card-cat" data-cat="zhixie">身份蒸馏</span></a>
+<a href="https://github.com/503496348-ops/hermes-doctor" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#03</span><span class="badge active">活跃</span></div><div class="card-name">白龙马医生</div><div class="card-eng">Bailongma Doctor</div><span class="card-cat" data-cat="zhixie">智能体健康</span></a>
+<a href="https://github.com/503496348-ops/pipixia-doctor" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#04</span><span class="badge active">活跃</span></div><div class="card-name">皮皮虾医生</div><div class="card-eng">PipiXia Doctor</div><span class="card-cat" data-cat="zhixie">智能体健康</span></a>
+<a href="https://github.com/503496348-ops/Stratapro" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#05</span><span class="badge active">活跃</span></div><div class="card-name">深度方略</div><div class="card-eng">Stratapro</div><span class="card-cat" data-cat="zhixie">量化投资</span></a>
+<a href="https://github.com/503496348-ops/hermes-skill-ideasphere" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#06</span><span class="badge active">活跃</span></div><div class="card-name">灵感象限</div><div class="card-eng">Ideasphere</div><span class="card-cat" data-cat="zhixie">视频剪辑</span></a>
+<a href="https://github.com/503496348-ops/nichecraft" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#07</span><span class="badge active">活跃</span></div><div class="card-name">有点东西</div><div class="card-eng">Nichecraft</div><span class="card-cat" data-cat="zhixie">飞书白板+PPT</span></a>
+<a href="https://github.com/503496348-ops/fractovision" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#08</span><span class="badge active">活跃</span></div><div class="card-name">破窗造视</div><div class="card-eng">Fractovision</div><span class="card-cat" data-cat="zhixie">多媒体生成</span></a>
+<a href="https://github.com/503496348-ops/barren-order" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#09</span><span class="badge active">活跃</span></div><div class="card-name">荒原序列</div><div class="card-eng">BarrenOrder</div><span class="card-cat" data-cat="zhixie">多Agent协作</span></a>
+<a href="https://github.com/503496348-ops/canvas-design" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#10</span><span class="badge active">活跃</span></div><div class="card-name">艺游未境</div><div class="card-eng">Wanderix</div><span class="card-cat" data-cat="zhixie">视觉创作</span></a>
+<a href="https://github.com/503496348-ops/hermes-security-suite" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#11</span><span class="badge active">活跃</span></div><div class="card-name">奇点造物</div><div class="card-eng">Genesisix</div><span class="card-cat" data-cat="zhixie">安全检测</span></a>
+<a href="https://github.com/503496348-ops/hermes-skill-aestheflow" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#12</span><span class="badge active">活跃</span></div><div class="card-name">艺术生花</div><div class="card-eng">AestheFlow</div><span class="card-cat" data-cat="zhixie">文本分析</span></a>
+<a href="https://github.com/503496348-ops/easyrhythm" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#13</span><span class="badge active">活跃</span></div><div class="card-name">松弛有度</div><div class="card-eng">EasyRhythm</div><span class="card-cat" data-cat="zhixie">日程管理</span></a>
+<a href="https://github.com/503496348-ops/herpeakgem" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#14</span><span class="badge active">活跃</span></div><div class="card-name">他山之石</div><div class="card-eng">HerPeakGem</div><span class="card-cat" data-cat="zhixie">竞品分析</span></a>
+<a href="https://github.com/503496348-ops/purepicks" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#15</span><span class="badge active">活跃</span></div><div class="card-name">自然良品</div><div class="card-eng">PurePicks</div><span class="card-cat" data-cat="zhixie">选品推荐</span></a>
+<a href="https://github.com/503496348-ops/energsolve" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#16</span><span class="badge active">活跃</span></div><div class="card-name">元气方程</div><div class="card-eng">EnergSolve</div><span class="card-cat" data-cat="zhixie">学习路径</span></a>
+<a href="https://github.com/503496348-ops/summoner" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#17</span><span class="badge active">活跃</span></div><div class="card-name">召物少年</div><div class="card-eng">Summoner</div><span class="card-cat" data-cat="openbuild">需求解析</span></a>
+<a href="https://github.com/503496348-ops/football-predictor" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#18</span><span class="badge active">活跃</span></div><div class="card-name">此地无垠</div><div class="card-eng">FootPredict</div><span class="card-cat" data-cat="openbuild">体育分析</span></a>
+<a href="https://github.com/503496348-ops/worldcup-predictor" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#19</span><span class="badge active">活跃</span></div><div class="card-name">绿茵智脑</div><div class="card-eng">WorldCup Predictor</div><span class="card-cat" data-cat="openbuild">体育分析</span></a>
+<a href="https://github.com/503496348-ops/minddistill" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#20</span><span class="badge active">活跃</span></div><div class="card-name">意识浓缩</div><div class="card-eng">MindDistill</div><span class="card-cat" data-cat="openbuild">SEO诊断</span></a>
+<a href="https://github.com/503496348-ops/mindriver" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#21</span><span class="badge active">活跃</span></div><div class="card-name">智脑星河</div><div class="card-eng">MindRiver</div><span class="card-cat" data-cat="openbuild">数据可视化</span></a>
+<a href="https://github.com/503496348-ops/artipen" target="_blank" class="card" data-category="acu"><div class="card-top"><span class="card-num">#22</span><span class="badge active">活跃</span></div><div class="card-name">妙笔生花</div><div class="card-eng">ArtiPen</div><span class="card-cat" data-cat="acu">结构化写作</span></a>
+<a href="https://github.com/503496348-ops/neverend" target="_blank" class="card" data-category="acu"><div class="card-top"><span class="card-num">#23</span><span class="badge active">活跃</span></div><div class="card-name">无限循环</div><div class="card-eng">Neverend</div><span class="card-cat" data-cat="acu">知识管理</span></a>
+<a href="https://github.com/503496348-ops/atomguard" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#24</span><span class="badge archive">归档</span></div><div class="card-name">AtomGuard</div><div class="card-eng">AtomGuard</div><span class="card-cat" data-cat="zhixie">安全防护</span></a>
+</div>
+</section>
+<!-- ========== MODULE: PRODUCTS END ========== -->
+
+<div class="divider"></div>
+
 <!-- ========== MODULE: KB START (M07 · P1) ========== -->
 <section class="section module-kb reveal" data-module="M07">
-<div class="section-head"><span class="section-num">[03]</span><h2>📚 知识库（10 席）</h2><div class="head-line"></div></div>
+<div class="section-head"><h2>📚 知识库（10 席）</h2><div class="head-line"></div></div>
 <div class="section-head" style="margin-top:-28px"><p>覆盖踩坑经验 · 商业化案例 · 社区问答 · 组织升级 · 行业资料 · 技能智造 · 社群共建 · 融媒矩阵 · AI教育 · 赛道观察</p></div>
 <div class="kb-grid">
 <a href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank" class="kb-card"><span class="kb-icon">🪐</span><div class="kb-info"><div class="kb-title">T0 · 智能体经验知识库</div><div class="kb-sub">训练踩坑 · 故障修复 · 部署手册</div></div><span class="kb-arrow">↗</span></a>
@@ -578,7 +590,7 @@ AtomCollide
 
 <!-- ========== MODULE: COMMUNITY START (M09 · P1) ========== -->
 <section class="section module-community reveal" id="community" data-module="M09">
-<div class="section-head"><span class="section-num">[04]</span><h2>💬 社群入口（16 席）</h2><div class="head-line"></div></div>
+<div class="section-head"><h2>💬 社群入口（16 席）</h2><div class="head-line"></div></div>
 <div class="section-head" style="margin-top:-28px"><p>全社区内容全域同步 · 保留 1 个常用社群即可</p></div>
 
 <!-- Category: AI 智能体踩坑交流 -->
@@ -630,7 +642,6 @@ AtomCollide
 <!-- ========== MODULE: RECRUIT START (M10 · P2) ========== -->
 <section class="section module-recruit reveal" data-module="M10">
 <div class="recruit">
-<div class="recruit-tag">// JOIN US</div>
 <h2>🚀 元素碰撞 — AI 智能体实验室 正式招募</h2>
 <p>连接每一位测试工程师/AI探索爱好者，扎实打磨技术硬实力，打通职业晋升新通路。</p>
 <h3>💼 找工作：更省力，也更精准</h3>
@@ -654,9 +665,9 @@ AtomCollide
 <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="5" fill="#00d4ff"/><ellipse cx="16" cy="16" rx="14" ry="6" stroke="#00d4ff" stroke-width="0.8" opacity="0.5"/><ellipse cx="16" cy="16" rx="14" ry="6" stroke="#00d4ff" stroke-width="0.8" opacity="0.3" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="14" ry="6" stroke="#00d4ff" stroke-width="0.8" opacity="0.3" transform="rotate(-60 16 16)"/></svg>
 AtomCollide
 </div>
-<div class="footer-section"><span class="ft-label">MISSION</span><span class="ft-value">for the learner，和学习者一起成长</span></div>
-<div class="footer-section"><span class="ft-label">VISION</span><span class="ft-value"><strong>成为测试人 AI 转型的第一站，让 AI 技术触手可及</strong></span></div>
-<div class="footer-section"><span class="ft-label">VALUES</span><span class="ft-value">🧠 认知先行 · 🛠️ 实战为王 · 🤝 开放共建</span></div>
+<div class="footer-section"><span class="ft-value">for the learner，和学习者一起成长</span></div>
+<div class="footer-section"><span class="ft-value"><strong>成为测试人 AI 转型的第一站，让 AI 技术触手可及</strong></span></div>
+<div class="footer-section"><span class="ft-value">🧠 认知先行 · 🛠️ 实战为王 · 🤝 开放共建</span></div>
 <div class="footer-links">
 <a href="https://github.com/503496348-ops" target="_blank">GitHub Organization</a>
 <a href="https://vcnvmnln7wit.feishu.cn/wiki/WpK2wAcV8i6P8tke8X9cLcmDnSh" target="_blank">知识库首页</a>
@@ -664,7 +675,7 @@ AtomCollide
 <!-- Mobile promo links (hidden on desktop, shown on mobile) -->
 <div class="footer-promo">
 <a href="https://cloud.tencent.com/act/pro/warmup-202606?from=29779&cps_key=c3102324fb3989336d42de76070a0cba&page=featured-202604&s_source=https%3A%2F%2Fcloud.tencent.com%2Fact%2Fpro%2Ffeatured-202604" target="_blank">☁️ 腾讯云服务器</a>
-<a href="https://5yuantoken.org/register?aff=R2YCECS7LKG4" target="_blank">🔗 5元Token API服务</a>
+<a href="https://5yuantoken.org/register?aff=R2YCECS7LKG4" target="_blank">⚡ 模型服务</a>
 </div>
 <div class="footer-copy">© 2024-2026 ATOMCOLLIDE · ALL SYSTEMS OPERATIONAL</div>
 <div class="footer-motto" style="font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;letter-spacing:2px;margin-top:6px">元素碰撞 · 智能涌现</div>
@@ -681,14 +692,14 @@ const teamData = {
   core: [
     { id:"t-001", name:"陈宇锋", career:"16年互联网大厂BU-VP", roles:["AtomCollide社区-联创","智械工坊-创始人","ACU-校长"], avatar:"assets/avatars/chenyufeng.webp", color:"#00d4ff" },
     { id:"t-002", name:"PR", career:"流行音乐老师/独立音乐人", roles:["AtomCollide社区-联创","智械工坊-联合发起人"], avatar:"assets/avatars/pr.webp", color:"#00d4ff" },
-    { id:"t-003", name:"JKL", career:"国际教育顾问", roles:["JKL神思记创始人","社区-联创","智械工坊-联创"], avatar:"assets/avatars/jkl.webp", color:"#7b61ff" },
-    { id:"t-004", name:"李渔樵", career:"", roles:["社区-联创","智械工坊-联创","首席治安官"], avatar:"assets/avatars/liyuqiao.webp", color:"#00d4ff" },
-    { id:"t-005", name:"欢喜", career:"欢喜心灵驿站主理人/国际心理咨询师", roles:["社区-联创"], avatar:"assets/avatars/huanxi.webp", color:"#00f0a0" },
-    { id:"t-006", name:"陈飞飞", career:"数据资产集团CEO&独立投资人", roles:["社区-联创","治安官"], avatar:"assets/avatars/chenfeifei.webp", color:"#00d4ff" },
-    { id:"t-007", name:"井老师", career:"国际珠宝石学家/NGTC认证讲师", roles:["治安官"], avatar:"assets/avatars/jinglaoshi.webp", color:"#00f0a0" },
-    { id:"t-008", name:"吴见见", career:"新锐茶品牌&独立投资人", roles:["治安官"], avatar:"assets/avatars/wujianjian.webp", color:"#7b61ff" },
+    { id:"t-003", name:"JKL", career:"国际教育顾问", roles:["JKL神思记-创始人","AtomCollide社区-联创","智械工坊-联创"], avatar:"assets/avatars/jkl.webp", color:"#7b61ff" },
+    { id:"t-004", name:"李渔樵", career:"独立艺术摄影创作者", roles:["AtomCollide社区-联创","智械工坊-联创","首席治安官"], avatar:"assets/avatars/liyuqiao.webp", color:"#00d4ff" },
+    { id:"t-005", name:"欢喜", career:"欢喜心灵驿站主理人/国际心理咨询师资质持牌人", roles:["AtomCollide社区-联创"], avatar:"assets/avatars/huanxi.webp", color:"#00f0a0" },
+    { id:"t-006", name:"陈飞飞", career:"数据资产集团CEO&独立投资人", roles:["AtomCollide社区-联创","治安官"], avatar:"assets/avatars/chenfeifei.webp", color:"#00d4ff" },
+    { id:"t-007", name:"井老师", career:"国际珠宝石学家/珠宝鉴定师/宝石/玉石/钻石珍珠鉴定师/NGTC认证讲师", roles:["治安官"], avatar:"assets/avatars/jinglaoshi.webp", color:"#00f0a0" },
+    { id:"t-008", name:"吴见见", career:"新锐茶品牌&独立投资人/沉浸式动态视觉架构师", roles:["治安官"], avatar:"assets/avatars/wujianjian.webp", color:"#7b61ff" },
     { id:"t-009", name:"江诗敏", career:"独立数学老师/三猫教辅SaaS创始人", roles:["治安官"], avatar:"assets/avatars/jiangshimin.webp", color:"#7b61ff" },
-    { id:"t-010", name:"瀚音", career:"", roles:["治安官"], avatar:"assets/avatars/hanyin.webp", color:"#7b61ff" },
+    { id:"t-010", name:"瀚音", career:"独立音乐制作人&音乐人", roles:["治安官"], avatar:"assets/avatars/hanyin.webp", color:"#7b61ff" },
     { id:"t-011", name:"猫哥", career:"资深游戏主策与开发", roles:["治安官"], avatar:"assets/avatars/maoge.webp", color:"#00d4ff" },
     { id:"t-012", name:"404NotFound", career:"资深游戏平面视觉设计师", roles:["治安官","棱镜设计所主理人"], avatar:"assets/avatars/404notfound.webp", color:"#7b61ff" },
   ],
@@ -705,7 +716,7 @@ const teamData = {
 };
 
 // ============================================================
-// Hero stats number rolling animation (M03)
+// Hero stats number rolling animation (M03) — with slow growth
 // ============================================================
 function animateNumbers() {
   document.querySelectorAll('.stat-val[data-target]').forEach(el => {
@@ -716,19 +727,38 @@ function animateNumbers() {
     function update(now) {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
       const current = Math.round(target * eased);
       el.innerHTML = current.toLocaleString() + '<span class="unit">' + unit + '</span>';
       if (progress < 1) requestAnimationFrame(update);
+      else el.dataset.current = target; // Store for growth
     }
     requestAnimationFrame(update);
   });
 }
 // Trigger when hero becomes visible
 const heroObserver = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting) { animateNumbers(); heroObserver.disconnect(); }
+  if (entries[0].isIntersecting) { animateNumbers(); heroObserver.disconnect(); startSlowGrowth(); }
 }, { threshold: 0.3 });
 heroObserver.observe(document.querySelector('.module-hero'));
+
+// Slow growth — makes community feel alive
+function startSlowGrowth() {
+  const membersEl = document.querySelector('.stat-val[data-target="10000"]');
+  const activeEl = document.querySelector('.stat-val[data-target="7000"]');
+  if (!membersEl || !activeEl) return;
+  setInterval(() => {
+    // Random small increment every 8s
+    const m = parseInt(membersEl.dataset.current || 10000);
+    const a = parseInt(activeEl.dataset.current || 7000);
+    const mInc = Math.floor(Math.random() * 3) + 1;
+    const aInc = Math.floor(Math.random() * 2) + 1;
+    membersEl.dataset.current = m + mInc;
+    activeEl.dataset.current = a + aInc;
+    membersEl.innerHTML = (m + mInc).toLocaleString() + '<span class="unit">+</span>';
+    activeEl.innerHTML = (a + aInc).toLocaleString() + '<span class="unit">+</span>';
+  }, 8000);
+}
 
 // ============================================================
 // Product category filter (M06)
