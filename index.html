@@ -51,12 +51,12 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 /* ============================================================
    MODULE: STATUS BAR (M02 sub-component)
    ============================================================ */
-.module-nav .status-bar{background:#040509;border-bottom:1px solid rgba(0,240,255,0.15);padding:7px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-tertiary);position:relative;z-index:10}
-.module-nav .status-bar .inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center}
+.module-nav .status-bar{display:none}
+.module-nav .status-bar .inner{display:none}
 .status-dot{width:6px;height:6px;border-radius:50%;background:var(--color-acu);display:inline-block;margin-right:6px;box-shadow:0 0 8px var(--color-acu);animation:blink 2s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
-.module-nav .status-bar .cyan{color:var(--color-zhixie)}
-.module-nav .status-bar .sep{color:#1a2b43;margin:0 8px}
+.module-nav .status-bar .cyan{display:none}
+.module-nav .status-bar .sep{display:none}
 
 /* ============================================================
    MODULE: NAV (M02 · P1) + Promo Links (M12 · P2)
@@ -121,10 +121,10 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 /* ============================================================
    MODULE: VISION (M04 · P0)
    ============================================================ */
-.module-vision{padding:48px 0 32px}
-.module-vision .vision-block{text-align:center}
+.module-vision{padding:32px 0 24px}
+.module-vision .vision-block{text-align:left}
 .module-vision .vision-label{display:none}
-.module-vision .vision-text{font-size:16px;color:var(--text-secondary);line-height:1.8;max-width:560px;margin:0 auto}
+.module-vision .vision-text{font-size:16px;color:var(--text-secondary);line-height:1.8;max-width:100%}
 .module-vision .vision-text strong{color:var(--color-zhixie);font-weight:600}
 .module-vision .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
 .module-vision .value-card{padding:24px 20px;border-radius:12px;background:var(--bg-glass);border:1px solid var(--border-glass);text-align:center;transition:var(--transition-all);position:relative;overflow:hidden;animation:valueBreath 4s ease-in-out infinite}
@@ -144,7 +144,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 /* ============================================================
    MODULE: ENGINE — 四驾马车 + AIGC 闭环
    ============================================================ */
-.module-engine .engine-intro{text-align:center;margin-bottom:32px;font-size:15px;color:var(--text-secondary);line-height:1.8;max-width:640px;margin-left:auto;margin-right:auto}
+.module-engine .engine-intro{text-align:left;margin-bottom:24px;font-size:15px;color:var(--text-secondary);line-height:1.8;max-width:100%}
 .module-engine .engine-intro strong{color:var(--color-zhixie);font-weight:600}
 .module-engine .engine-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:36px}
 .module-engine .engine-card{padding:28px 24px;border-radius:14px;background:var(--bg-glass);border:1px solid var(--border-glass);position:relative;overflow:hidden;transition:var(--transition-all)}
@@ -158,15 +158,15 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 .module-engine .engine-card-desc strong{color:var(--text-secondary);font-weight:600}
 
 /* AIGC Closed Loop */
-.module-engine .loop-section{text-align:center;margin-top:8px}
+.module-engine .loop-section{text-align:left;margin-top:8px}
 .module-engine .loop-title{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:20px}
 .module-engine .loop-title strong{color:var(--color-acu)}
-.module-engine .loop-chain{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;max-width:900px;margin:0 auto}
+.module-engine .loop-chain{display:flex;align-items:center;justify-content:flex-start;gap:8px;flex-wrap:wrap;max-width:100%}
 .module-engine .loop-node{padding:10px 16px;border-radius:8px;background:var(--bg-glass);border:1px solid var(--border-glass);font-size:12px;font-weight:600;color:var(--text-secondary);transition:var(--transition-all);position:relative}
 .module-engine .loop-node:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);color:var(--text-primary);transform:translateY(-2px)}
 .module-engine .loop-node .loop-emoji{font-size:1rem;margin-right:4px}
 .module-engine .loop-arrow{color:var(--color-acu);font-size:1rem;font-weight:700;opacity:0.6}
-.module-engine .loop-desc{font-size:12px;color:var(--text-tertiary);margin-top:16px;line-height:1.7;max-width:640px;margin-left:auto;margin-right:auto}
+.module-engine .loop-desc{font-size:12px;color:var(--text-tertiary);margin-top:16px;line-height:1.7;max-width:100%}
 .module-engine .loop-desc strong{color:var(--color-acu);font-weight:600}
 
 @media(max-width:900px){
@@ -244,7 +244,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 .module-team .team-card:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,180,255,0.1)}
 .module-team .team-card:hover::before{opacity:1}
 .module-team .avatar-wrapper{width:80px;height:80px;margin:0 auto 12px;position:relative}
-.module-team .team-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid rgba(0,212,255,0.35);box-shadow:0 0 8px 2px rgba(0,212,255,0.15);transition:transform var(--transition-speed) var(--ease-out)}
+.module-team .team-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;border:4px solid rgba(0,212,255,0.5);box-shadow:inset 0 0 0 3px rgba(0,212,255,0.25),0 0 12px 3px rgba(0,212,255,0.18);transition:transform var(--transition-speed) var(--ease-out)}
 .module-team .team-card:hover .team-avatar{transform:scale(1.125)}
 .module-team .avatar-glow{position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--member-color,var(--color-zhixie));opacity:0;transition:opacity var(--transition-speed);pointer-events:none}
 .module-team .team-card:hover .avatar-glow{opacity:0.4;box-shadow:0 0 20px 6px var(--member-color,var(--color-zhixie))}
@@ -265,7 +265,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 /* Team detail panel */
 .module-team .team-detail{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);width:min(420px,90vw);padding:32px;border-radius:16px;background:rgba(10,14,20,0.95);border:1px solid var(--border-glass-hover);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.3s var(--ease-out),transform 0.3s var(--ease-out);backdrop-filter:blur(30px)}
 .module-team .team-detail.active{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
-.module-team .team-detail .detail-avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:16px;border:2px solid var(--member-color,var(--color-zhixie))}
+.module-team .team-detail .detail-avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:16px;border:3px solid var(--member-color,var(--color-zhixie));box-shadow:inset 0 0 0 3px rgba(0,212,255,0.2)}
 .module-team .team-detail .detail-name{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
 .module-team .team-detail .detail-career{font-size:13px;color:var(--text-tertiary);margin-bottom:12px}
 .module-team .team-detail .detail-roles{font-size:12px;color:var(--member-color,var(--color-zhixie));font-family:'JetBrains Mono',monospace;margin-bottom:12px}
