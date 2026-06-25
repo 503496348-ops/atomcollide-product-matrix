@@ -6,10 +6,10 @@
 <title>元素碰撞 AtomCollide — AI 智能体实验室 · 技能矩阵全家福</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#08090a;--bg-r:#111214;--bg-c:rgba(255,255,255,0.04);--bg-ch:rgba(255,255,255,0.07);--t:#f7f8f8;--t2:#a8b2c0;--t3:#6e7681;--bd:rgba(255,255,255,0.08);--bdh:rgba(255,255,255,0.16);--ac:#79c0ff;--r:8px;--f:'Inter',-apple-system,system-ui,sans-serif;--m:'JetBrains Mono',ui-monospace,monospace}
+:root{--bg:#08090a;--bg2:#0d1117;--bg-r:#111214;--bg-c:rgba(255,255,255,0.04);--bg-ch:rgba(255,255,255,0.07);--t:#f7f8f8;--t2:#a8b2c0;--t3:#6e7681;--bd:rgba(255,255,255,0.08);--bdh:rgba(255,255,255,0.16);--ac:#79c0ff;--r:8px;--f:'Inter',-apple-system,system-ui,sans-serif;--m:'JetBrains Mono',ui-monospace,monospace}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:var(--f);background:var(--bg);color:var(--t);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{font-family:var(--f);background:var(--bg);background-image:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(121,192,255,0.05),transparent),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(126,231,135,0.03),transparent);color:var(--t);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
 
@@ -108,76 +108,32 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;width:10
 <div class="wrap">
 <div class="sb"><div class="sn"><div class="snn">24<span>款</span></div><div class="snl">开源产品</div></div><div class="sn"><div class="snn">21</div><div class="snl">技术分类</div></div><div class="sn"><div class="snn">9K<span>+</span></div><div class="snl">代码提交</div></div><div class="sn"><div class="snn">14</div><div class="snl">社群入口</div></div></div>
 
-<section class="section" id="products"><div class="sh"><h2>🧬 技能矩阵 · 24 款产品</h2><p>全部开源 · 覆盖 AI Agent 全链路</p></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#f78166"></span><span class="cat-label">长文创作</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/fission-creative" target="_blank" class="card" style="--accent:#f78166"><span class="card-num">#01</span><span class="card-name">裂变创作</span><span class="card-eng">Fission Creative</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#d2a8ff"></span><span class="cat-label">身份蒸馏</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/awake-differently" target="_blank" class="card" style="--accent:#d2a8ff"><span class="card-num">#02</span><span class="card-name">别样觉醒</span><span class="card-eng">Awake Differently</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#7ee787"></span><span class="cat-label">智能体健康</span><span class="cat-count">2</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/hermes-doctor" target="_blank" class="card" style="--accent:#7ee787"><span class="card-num">#03</span><span class="card-name">白龙马医生</span><span class="card-eng">Bailongma Doctor</span><span class="card-status tag-status">● 活跃</span></a>
-      <a href="https://github.com/503496348-ops/pipixia-doctor" target="_blank" class="card" style="--accent:#7ee787"><span class="card-num">#04</span><span class="card-name">皮皮虾医生</span><span class="card-eng">PipiXia Doctor</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#ffd33d"></span><span class="cat-label">量化投资</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/Stratapro" target="_blank" class="card" style="--accent:#ffd33d"><span class="card-num">#05</span><span class="card-name">深度方略</span><span class="card-eng">Stratapro</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#ff7b72"></span><span class="cat-label">视频剪辑</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/hermes-skill-ideasphere" target="_blank" class="card" style="--accent:#ff7b72"><span class="card-num">#06</span><span class="card-name">灵感象限</span><span class="card-eng">Ideasphere</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#79c0ff"></span><span class="cat-label">飞书白板+PPT</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/nichecraft" target="_blank" class="card" style="--accent:#79c0ff"><span class="card-num">#07</span><span class="card-name">有点东西</span><span class="card-eng">Nichecraft</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#a5d6ff"></span><span class="cat-label">多媒体生成</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/fractovision" target="_blank" class="card" style="--accent:#a5d6ff"><span class="card-num">#08</span><span class="card-name">破窗造视</span><span class="card-eng">Fractovision</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#d2a8ff"></span><span class="cat-label">多Agent协作</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/barren-order" target="_blank" class="card" style="--accent:#d2a8ff"><span class="card-num">#09</span><span class="card-name">荒原序列</span><span class="card-eng">BarrenOrder</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#ffa657"></span><span class="cat-label">视觉创作</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/canvas-design" target="_blank" class="card" style="--accent:#ffa657"><span class="card-num">#10</span><span class="card-name">艺游未境</span><span class="card-eng">Wanderix</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#f0883e"></span><span class="cat-label">安全检测</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/hermes-security-suite" target="_blank" class="card" style="--accent:#f0883e"><span class="card-num">#11</span><span class="card-name">奇点造物</span><span class="card-eng">Genesisix</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#79c0ff"></span><span class="cat-label">文本分析</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/hermes-skill-aestheflow" target="_blank" class="card" style="--accent:#79c0ff"><span class="card-num">#12</span><span class="card-name">艺术生花</span><span class="card-eng">AestheFlow</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#7ee787"></span><span class="cat-label">日程管理</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/easyrhythm" target="_blank" class="card" style="--accent:#7ee787"><span class="card-num">#13</span><span class="card-name">松弛有度</span><span class="card-eng">EasyRhythm</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#ffd33d"></span><span class="cat-label">竞品分析</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/herpeakgem" target="_blank" class="card" style="--accent:#ffd33d"><span class="card-num">#14</span><span class="card-name">他山之石</span><span class="card-eng">HerPeakGem</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#3fb950"></span><span class="cat-label">选品推荐</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/purepicks" target="_blank" class="card" style="--accent:#3fb950"><span class="card-num">#15</span><span class="card-name">自然良品</span><span class="card-eng">PurePicks</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#a5d6ff"></span><span class="cat-label">学习路径</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/energsolve" target="_blank" class="card" style="--accent:#a5d6ff"><span class="card-num">#16</span><span class="card-name">元气方程</span><span class="card-eng">EnergSolve</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#d2a8ff"></span><span class="cat-label">需求解析</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/summoner" target="_blank" class="card" style="--accent:#d2a8ff"><span class="card-num">#17</span><span class="card-name">召物少年</span><span class="card-eng">Summoner</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#ff7b72"></span><span class="cat-label">体育分析</span><span class="cat-count">2</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/football-predictor" target="_blank" class="card" style="--accent:#ff7b72"><span class="card-num">#18</span><span class="card-name">此地无垠</span><span class="card-eng">FootPredict</span><span class="card-status tag-status">● 活跃</span></a>
-      <a href="https://github.com/503496348-ops/worldcup-predictor" target="_blank" class="card" style="--accent:#ff7b72"><span class="card-num">#19</span><span class="card-name">绿茵智脑</span><span class="card-eng">WorldCup Predictor</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#79c0ff"></span><span class="cat-label">SEO诊断</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/minddistill" target="_blank" class="card" style="--accent:#79c0ff"><span class="card-num">#20</span><span class="card-name">意识浓缩</span><span class="card-eng">MindDistill</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#d2a8ff"></span><span class="cat-label">数据可视化</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/mindriver" target="_blank" class="card" style="--accent:#d2a8ff"><span class="card-num">#21</span><span class="card-name">智脑星河</span><span class="card-eng">MindRiver</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#ffa657"></span><span class="cat-label">结构化写作</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/artipen" target="_blank" class="card" style="--accent:#ffa657"><span class="card-num">#22</span><span class="card-name">妙笔生花</span><span class="card-eng">ArtiPen</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#7ee787"></span><span class="cat-label">知识管理</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/neverend" target="_blank" class="card" style="--accent:#7ee787"><span class="card-num">#23</span><span class="card-name">无限循环</span><span class="card-eng">Neverend</span><span class="card-status tag-status">● 活跃</span></a>
-    </div></div>
-    <div class="cat-section"><div class="cat-header"><span class="cat-dot" style="background:#8b949e"></span><span class="cat-label">安全防护</span><span class="cat-count">1</span></div><div class="cards-row">
-      <a href="https://github.com/503496348-ops/atomguard" target="_blank" class="card" style="--accent:#8b949e"><span class="card-num">#24</span><span class="card-name">AtomGuard</span><span class="card-eng">AtomGuard</span><span class="card-status tag-archive">🔒 归档</span></a>
-    </div></div>
-</section>
+<section class="section" id="products"><div class="sh"><h2>🧬 技能矩阵 · 24 款产品</h2><p>全部开源 · 覆盖 AI Agent 全链路</p></div><div class="grid">
+      <a href="https://github.com/503496348-ops/fission-creative" target="_blank" class="card" style="--ac:#f78166"><div class="card-top"><span class="cn">#01</span><span class="cst tag-status">●</span></div><span class="cna">裂变创作</span><span class="ce">Fission Creative</span><span class="cat-tag" style="color:#f78166;border-color:#f7816630;background:#f7816612">长文创作</span></a>
+      <a href="https://github.com/503496348-ops/awake-differently" target="_blank" class="card" style="--ac:#d2a8ff"><div class="card-top"><span class="cn">#02</span><span class="cst tag-status">●</span></div><span class="cna">别样觉醒</span><span class="ce">Awake Differently</span><span class="cat-tag" style="color:#d2a8ff;border-color:#d2a8ff30;background:#d2a8ff12">身份蒸馏</span></a>
+      <a href="https://github.com/503496348-ops/hermes-doctor" target="_blank" class="card" style="--ac:#7ee787"><div class="card-top"><span class="cn">#03</span><span class="cst tag-status">●</span></div><span class="cna">白龙马医生</span><span class="ce">Bailongma Doctor</span><span class="cat-tag" style="color:#7ee787;border-color:#7ee78730;background:#7ee78712">智能体健康</span></a>
+      <a href="https://github.com/503496348-ops/pipixia-doctor" target="_blank" class="card" style="--ac:#7ee787"><div class="card-top"><span class="cn">#04</span><span class="cst tag-status">●</span></div><span class="cna">皮皮虾医生</span><span class="ce">PipiXia Doctor</span><span class="cat-tag" style="color:#7ee787;border-color:#7ee78730;background:#7ee78712">智能体健康</span></a>
+      <a href="https://github.com/503496348-ops/Stratapro" target="_blank" class="card" style="--ac:#ffd33d"><div class="card-top"><span class="cn">#05</span><span class="cst tag-status">●</span></div><span class="cna">深度方略</span><span class="ce">Stratapro</span><span class="cat-tag" style="color:#ffd33d;border-color:#ffd33d30;background:#ffd33d12">量化投资</span></a>
+      <a href="https://github.com/503496348-ops/hermes-skill-ideasphere" target="_blank" class="card" style="--ac:#ff7b72"><div class="card-top"><span class="cn">#06</span><span class="cst tag-status">●</span></div><span class="cna">灵感象限</span><span class="ce">Ideasphere</span><span class="cat-tag" style="color:#ff7b72;border-color:#ff7b7230;background:#ff7b7212">视频剪辑</span></a>
+      <a href="https://github.com/503496348-ops/nichecraft" target="_blank" class="card" style="--ac:#79c0ff"><div class="card-top"><span class="cn">#07</span><span class="cst tag-status">●</span></div><span class="cna">有点东西</span><span class="ce">Nichecraft</span><span class="cat-tag" style="color:#79c0ff;border-color:#79c0ff30;background:#79c0ff12">飞书白板+PPT</span></a>
+      <a href="https://github.com/503496348-ops/fractovision" target="_blank" class="card" style="--ac:#a5d6ff"><div class="card-top"><span class="cn">#08</span><span class="cst tag-status">●</span></div><span class="cna">破窗造视</span><span class="ce">Fractovision</span><span class="cat-tag" style="color:#a5d6ff;border-color:#a5d6ff30;background:#a5d6ff12">多媒体生成</span></a>
+      <a href="https://github.com/503496348-ops/barren-order" target="_blank" class="card" style="--ac:#d2a8ff"><div class="card-top"><span class="cn">#09</span><span class="cst tag-status">●</span></div><span class="cna">荒原序列</span><span class="ce">BarrenOrder</span><span class="cat-tag" style="color:#d2a8ff;border-color:#d2a8ff30;background:#d2a8ff12">多Agent协作</span></a>
+      <a href="https://github.com/503496348-ops/canvas-design" target="_blank" class="card" style="--ac:#ffa657"><div class="card-top"><span class="cn">#10</span><span class="cst tag-status">●</span></div><span class="cna">艺游未境</span><span class="ce">Wanderix</span><span class="cat-tag" style="color:#ffa657;border-color:#ffa65730;background:#ffa65712">视觉创作</span></a>
+      <a href="https://github.com/503496348-ops/hermes-security-suite" target="_blank" class="card" style="--ac:#f0883e"><div class="card-top"><span class="cn">#11</span><span class="cst tag-status">●</span></div><span class="cna">奇点造物</span><span class="ce">Genesisix</span><span class="cat-tag" style="color:#f0883e;border-color:#f0883e30;background:#f0883e12">安全检测</span></a>
+      <a href="https://github.com/503496348-ops/hermes-skill-aestheflow" target="_blank" class="card" style="--ac:#79c0ff"><div class="card-top"><span class="cn">#12</span><span class="cst tag-status">●</span></div><span class="cna">艺术生花</span><span class="ce">AestheFlow</span><span class="cat-tag" style="color:#79c0ff;border-color:#79c0ff30;background:#79c0ff12">文本分析</span></a>
+      <a href="https://github.com/503496348-ops/easyrhythm" target="_blank" class="card" style="--ac:#7ee787"><div class="card-top"><span class="cn">#13</span><span class="cst tag-status">●</span></div><span class="cna">松弛有度</span><span class="ce">EasyRhythm</span><span class="cat-tag" style="color:#7ee787;border-color:#7ee78730;background:#7ee78712">日程管理</span></a>
+      <a href="https://github.com/503496348-ops/herpeakgem" target="_blank" class="card" style="--ac:#ffd33d"><div class="card-top"><span class="cn">#14</span><span class="cst tag-status">●</span></div><span class="cna">他山之石</span><span class="ce">HerPeakGem</span><span class="cat-tag" style="color:#ffd33d;border-color:#ffd33d30;background:#ffd33d12">竞品分析</span></a>
+      <a href="https://github.com/503496348-ops/purepicks" target="_blank" class="card" style="--ac:#3fb950"><div class="card-top"><span class="cn">#15</span><span class="cst tag-status">●</span></div><span class="cna">自然良品</span><span class="ce">PurePicks</span><span class="cat-tag" style="color:#3fb950;border-color:#3fb95030;background:#3fb95012">选品推荐</span></a>
+      <a href="https://github.com/503496348-ops/energsolve" target="_blank" class="card" style="--ac:#a5d6ff"><div class="card-top"><span class="cn">#16</span><span class="cst tag-status">●</span></div><span class="cna">元气方程</span><span class="ce">EnergSolve</span><span class="cat-tag" style="color:#a5d6ff;border-color:#a5d6ff30;background:#a5d6ff12">学习路径</span></a>
+      <a href="https://github.com/503496348-ops/summoner" target="_blank" class="card" style="--ac:#d2a8ff"><div class="card-top"><span class="cn">#17</span><span class="cst tag-status">●</span></div><span class="cna">召物少年</span><span class="ce">Summoner</span><span class="cat-tag" style="color:#d2a8ff;border-color:#d2a8ff30;background:#d2a8ff12">需求解析</span></a>
+      <a href="https://github.com/503496348-ops/football-predictor" target="_blank" class="card" style="--ac:#ff7b72"><div class="card-top"><span class="cn">#18</span><span class="cst tag-status">●</span></div><span class="cna">此地无垠</span><span class="ce">FootPredict</span><span class="cat-tag" style="color:#ff7b72;border-color:#ff7b7230;background:#ff7b7212">体育分析</span></a>
+      <a href="https://github.com/503496348-ops/worldcup-predictor" target="_blank" class="card" style="--ac:#ff7b72"><div class="card-top"><span class="cn">#19</span><span class="cst tag-status">●</span></div><span class="cna">绿茵智脑</span><span class="ce">WorldCup Predictor</span><span class="cat-tag" style="color:#ff7b72;border-color:#ff7b7230;background:#ff7b7212">体育分析</span></a>
+      <a href="https://github.com/503496348-ops/minddistill" target="_blank" class="card" style="--ac:#79c0ff"><div class="card-top"><span class="cn">#20</span><span class="cst tag-status">●</span></div><span class="cna">意识浓缩</span><span class="ce">MindDistill</span><span class="cat-tag" style="color:#79c0ff;border-color:#79c0ff30;background:#79c0ff12">SEO诊断</span></a>
+      <a href="https://github.com/503496348-ops/mindriver" target="_blank" class="card" style="--ac:#d2a8ff"><div class="card-top"><span class="cn">#21</span><span class="cst tag-status">●</span></div><span class="cna">智脑星河</span><span class="ce">MindRiver</span><span class="cat-tag" style="color:#d2a8ff;border-color:#d2a8ff30;background:#d2a8ff12">数据可视化</span></a>
+      <a href="https://github.com/503496348-ops/artipen" target="_blank" class="card" style="--ac:#ffa657"><div class="card-top"><span class="cn">#22</span><span class="cst tag-status">●</span></div><span class="cna">妙笔生花</span><span class="ce">ArtiPen</span><span class="cat-tag" style="color:#ffa657;border-color:#ffa65730;background:#ffa65712">结构化写作</span></a>
+      <a href="https://github.com/503496348-ops/neverend" target="_blank" class="card" style="--ac:#7ee787"><div class="card-top"><span class="cn">#23</span><span class="cst tag-status">●</span></div><span class="cna">无限循环</span><span class="ce">Neverend</span><span class="cat-tag" style="color:#7ee787;border-color:#7ee78730;background:#7ee78712">知识管理</span></a>
+      <a href="https://github.com/503496348-ops/atomguard" target="_blank" class="card" style="--ac:#8b949e"><div class="card-top"><span class="cn">#24</span><span class="cst tag-archive">🔒 归档</span></div><span class="cna">AtomGuard</span><span class="ce">AtomGuard</span><span class="cat-tag" style="color:#8b949e;border-color:#8b949e30;background:#8b949e12">安全防护</span></a>
+    </div></section>
 
 <div class="dv"></div>
 
