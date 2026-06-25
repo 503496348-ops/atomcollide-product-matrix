@@ -6,217 +6,343 @@
 <title>元素碰撞 AtomCollide — AI 智能体实验室</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ============================================================
+   GLOBAL DESIGN SYSTEM (M12 · P0)
+   All colors/transitions must use CSS variables — NO hardcoding
+   ============================================================ */
+:root {
+  /* Core brand colors */
+  --color-zhixie: #00d4ff;     /* 智械工坊 cyan */
+  --color-open: #7b61ff;       /* Open Build purple */
+  --color-acu: #00f0a0;        /* ACU green */
+
+  /* Text hierarchy */
+  --text-primary: #ffffff;
+  --text-secondary: #8a9bb5;
+  --text-tertiary: #5a6b83;
+  --text-muted: #3a4b63;
+
+  /* Background layers */
+  --bg-base: #060713;
+  --bg-glass: rgba(255,255,255,0.025);
+  --bg-glass-hover: rgba(0,212,255,0.05);
+  --bg-glow: radial-gradient(circle at center, rgba(0,212,255,0.1) 0%, transparent 70%);
+  --border-glass: rgba(0,212,255,0.06);
+  --border-glass-hover: rgba(0,212,255,0.15);
+  --border-subtle: rgba(0,212,255,0.08);
+  --divider-color: rgba(0,212,255,0.12);
+
+  /* Animation standards */
+  --transition-speed: 0.3s;
+  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#060713;color:#e8eaf0;line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg-base);color:var(--text-secondary);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
 /* Background grid pattern */
 body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
 
-/*=== STATUS BAR ===*/
-.status-bar{background:#040509;border-bottom:1px solid rgba(0,240,255,0.12);padding:7px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6a7b94;position:relative;z-index:10}
-.status-bar .inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center}
-.status-dot{width:6px;height:6px;border-radius:50%;background:#00f0a0;display:inline-block;margin-right:6px;box-shadow:0 0 8px #00f0a0;animation:blink 2s ease-in-out infinite}
+/* ============================================================
+   MODULE: STATUS BAR (M02 sub-component)
+   ============================================================ */
+.module-nav .status-bar{background:#040509;border-bottom:1px solid rgba(0,240,255,0.12);padding:7px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);position:relative;z-index:10}
+.module-nav .status-bar .inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--color-acu);display:inline-block;margin-right:6px;box-shadow:0 0 8px var(--color-acu);animation:blink 2s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
-.status-bar .cyan{color:#00d4ff}
-.status-bar .sep{color:#1a2b43;margin:0 8px}
+.module-nav .status-bar .cyan{color:var(--color-zhixie)}
+.module-nav .status-bar .sep{color:#1a2b43;margin:0 8px}
 
-/*=== NAV ===*/
-nav{position:sticky;top:0;z-index:100;background:rgba(6,7,19,0.8);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,212,255,0.08)}
-nav .inner{max-width:1200px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;color:#fff;letter-spacing:-0.3px}
+/* ============================================================
+   MODULE: NAV (M02 · P1) + Promo Links (M12 · P2)
+   ============================================================ */
+.module-nav{position:sticky;top:0;z-index:100;background:rgba(6,7,19,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-subtle)}
+.module-nav .nav-main{max-width:1200px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;color:var(--text-primary);letter-spacing:-0.3px}
 .nav-logo svg{width:28px;height:28px;filter:drop-shadow(0 0 6px rgba(0,212,255,0.4))}
-.nav-links{display:flex;gap:28px;align-items:center}
-.nav-links a{font-size:13px;font-weight:500;color:#7a8ba5;transition:color 0.2s;text-decoration:none;position:relative}
-.nav-links a:hover{color:#00d4ff}
-.nav-links a:not(.nav-gh)::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:#00d4ff;transition:width 0.3s}
-.nav-links a:not(.nav-gh):hover::after{width:100%}
-.nav-gh{color:#00d4ff !important;font-weight:600}
+.nav-center{display:flex;gap:28px;align-items:center}
+.nav-center a{font-size:13px;font-weight:500;color:var(--text-secondary);transition:color var(--transition-speed);text-decoration:none;position:relative}
+.nav-center a:hover{color:var(--color-zhixie)}
+.nav-center a:not(.nav-gh)::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--color-zhixie);transition:width var(--transition-speed)}
+.nav-center a:not(.nav-gh):hover::after{width:100%}
+.nav-gh{color:var(--color-zhixie) !important;font-weight:600}
 
-/*=== HERO ===*/
-.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;overflow:hidden}
-.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 60% 40% at 50% 35%,rgba(0,180,255,0.1),transparent 70%),radial-gradient(ellipse 40% 30% at 50% 45%,rgba(123,97,255,0.06),transparent);pointer-events:none}
+/* Promo Links (M12) */
+.nav-promo-links{display:flex;gap:0.5rem;align-items:center;padding-left:1rem;border-left:1px solid var(--border-glass)}
+.nav-promo-link{font-size:0.7rem;font-family:'JetBrains Mono',monospace;color:var(--text-muted);text-decoration:none;padding:0.25rem 0.6rem;border-radius:4px;transition:color 0.2s,background 0.2s;display:flex;align-items:center;gap:4px}
+.nav-promo-link:hover{color:var(--color-zhixie);background:var(--bg-glass)}
+.nav-promo-link .promo-icon{font-size:0.75rem}
 
-/* Hero scan lines */
-.hero::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,212,255,0.015) 3px,rgba(0,212,255,0.015) 4px);pointer-events:none;z-index:1}
+/* ============================================================
+   MODULE: HERO (M03 · P0)
+   ============================================================ */
+.module-hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;overflow:hidden}
+.module-hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 60% 40% at 50% 35%,rgba(0,180,255,0.1),transparent 70%),radial-gradient(ellipse 40% 30% at 50% 45%,rgba(123,97,255,0.06),transparent);pointer-events:none}
+.module-hero::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,212,255,0.015) 3px,rgba(0,212,255,0.015) 4px);pointer-events:none;z-index:1}
 
 #particles{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
 
 /* Atom orb */
 .atom-wrap{position:relative;z-index:2;margin-bottom:40px}
-.atom-orb{width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#00e5ff,#0077cc 40%,#003366 70%,transparent);box-shadow:0 0 80px rgba(0,212,255,0.3),0 0 160px rgba(0,180,255,0.15),inset 0 0 40px rgba(0,212,255,0.2);animation:orbPulse 4s ease-in-out infinite}
+.atom-orb{width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 40% 35%,var(--color-zhixie),#0077cc 40%,#003366 70%,transparent);box-shadow:0 0 80px rgba(0,212,255,0.3),0 0 160px rgba(0,180,255,0.15),inset 0 0 40px rgba(0,212,255,0.2);animation:orbPulse 4s ease-in-out infinite}
 @keyframes orbPulse{0%,100%{box-shadow:0 0 80px rgba(0,212,255,0.3),0 0 160px rgba(0,180,255,0.15)}50%{box-shadow:0 0 100px rgba(0,212,255,0.4),0 0 200px rgba(0,180,255,0.2)}}
 .atom-ring{position:absolute;top:50%;left:50%;border:1px solid rgba(0,212,255,0.2);border-radius:50%;transform:translate(-50%,-50%) rotateX(60deg)}
 .ring1{width:260px;height:260px;animation:spin 12s linear infinite}
 .ring2{width:320px;height:320px;border-color:rgba(0,180,255,0.12);animation:spin 18s linear infinite reverse}
 .ring3{width:380px;height:380px;border-color:rgba(0,150,255,0.06);animation:spin 25s linear infinite}
 @keyframes spin{from{transform:translate(-50%,-50%) rotateX(60deg) rotateZ(0deg)}to{transform:translate(-50%,-50%) rotateX(60deg) rotateZ(360deg)}}
-.ring-node{position:absolute;width:6px;height:6px;border-radius:50%;background:#00d4ff;box-shadow:0 0 10px #00d4ff;top:-3px;left:50%;margin-left:-3px}
+.ring-node{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--color-zhixie);box-shadow:0 0 10px var(--color-zhixie);top:-3px;left:50%;margin-left:-3px}
 
-.hero-badge{position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border-radius:9999px;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.06);font-size:13px;font-weight:500;color:#00d4ff;margin-bottom:32px;font-family:'JetBrains Mono',monospace;backdrop-filter:blur(10px)}
-.hero-badge .bdot{width:5px;height:5px;border-radius:50%;background:#00f0a0;box-shadow:0 0 6px #00f0a0}
+.hero-badge{position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border-radius:9999px;border:1px solid rgba(0,212,255,0.25);background:rgba(0,212,255,0.06);font-size:13px;font-weight:500;color:var(--color-zhixie);margin-bottom:32px;font-family:'JetBrains Mono',monospace;backdrop-filter:blur(10px)}
+.hero-badge .bdot{width:5px;height:5px;border-radius:50%;background:var(--color-acu);box-shadow:0 0 6px var(--color-acu)}
 
-.hero h1{position:relative;z-index:2;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;letter-spacing:-2px;line-height:1.05;color:#fff;margin-bottom:20px}
-.hero h1 em{font-style:normal;background:linear-gradient(135deg,#00d4ff,#7b61ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero .sub{position:relative;z-index:2;font-size:17px;color:#6a7b94;max-width:440px;margin:0 auto;line-height:1.7}
+.module-hero h1{position:relative;z-index:2;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--text-primary);margin-bottom:20px}
+.module-hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--color-zhixie),var(--color-open));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.module-hero .sub{position:relative;z-index:2;font-size:17px;color:var(--text-secondary);max-width:440px;margin:0 auto;line-height:1.7}
 
-/*=== STATS ===*/
-.stats-bar{position:relative;z-index:2;display:flex;justify-content:center;gap:56px;padding:40px 0;margin-top:48px;border-top:1px solid rgba(0,212,255,0.1);border-bottom:1px solid rgba(0,212,255,0.1)}
+/* Hero Stats - 6 items */
+.module-hero .stats-bar{position:relative;z-index:2;display:flex;justify-content:center;gap:48px;padding:40px 0;margin-top:48px;border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle)}
 .stat{text-align:center;position:relative}
-.stat:not(:last-child)::after{content:'';position:absolute;right:-28px;top:20%;height:60%;width:1px;background:rgba(0,212,255,0.08)}
-.stat-val{font-size:38px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#fff;letter-spacing:-1px;text-shadow:0 0 20px rgba(0,212,255,0.3)}
-.stat-val .unit{font-size:16px;font-weight:400;color:#4a5b73}
-.stat-label{font-size:11px;font-weight:600;color:#4a5b73;text-transform:uppercase;letter-spacing:1.5px;margin-top:6px}
+.stat:not(:last-child)::after{content:'';position:absolute;right:-24px;top:20%;height:60%;width:1px;background:var(--border-subtle)}
+.stat-val{font-size:34px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text-primary);letter-spacing:-1px;text-shadow:0 0 20px rgba(0,212,255,0.3)}
+.stat-val .unit{font-size:14px;font-weight:400;color:var(--text-muted)}
+.stat-label{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:6px}
 
-/*=== VISION & VALUES ===*/
-.vision-section{padding:48px 0 32px}
-.vision-block{text-align:center}
-.vision-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:#00d4ff;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
-.vision-text{font-size:16px;color:#8a9bb5;line-height:1.8;max-width:560px;margin:0 auto}
-.vision-text strong{color:#00d4ff;font-weight:600}
-.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
-.value-card{padding:24px 20px;border-radius:12px;background:rgba(255,255,255,0.025);border:1px solid rgba(0,212,255,0.08);text-align:center;transition:all 0.3s;position:relative;overflow:hidden}
-.value-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,0.4),transparent);opacity:0;transition:opacity 0.3s}
-.value-card:hover{background:rgba(0,212,255,0.05);border-color:rgba(0,212,255,0.2);transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,180,255,0.08)}
-.value-card:hover::before{opacity:1}
-.value-icon{font-size:1.6rem;margin-bottom:10px}
-.value-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:6px;font-family:'JetBrains Mono',monospace}
-.value-desc{font-size:12px;color:#5a6b83;line-height:1.6}
+/* ============================================================
+   MODULE: VISION (M04 · P0)
+   ============================================================ */
+.module-vision{padding:48px 0 32px}
+.module-vision .vision-block{text-align:center}
+.module-vision .vision-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--color-zhixie);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.module-vision .vision-text{font-size:16px;color:var(--text-secondary);line-height:1.8;max-width:560px;margin:0 auto}
+.module-vision .vision-text strong{color:var(--color-zhixie);font-weight:600}
+.module-vision .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
+.module-vision .value-card{padding:24px 20px;border-radius:12px;background:var(--bg-glass);border:1px solid var(--border-glass);text-align:center;transition:var(--transition-all);position:relative;overflow:hidden}
+.module-vision .value-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,0.4),transparent);opacity:0;transition:opacity var(--transition-speed)}
+.module-vision .value-card:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,180,255,0.08)}
+.module-vision .value-card:hover::before{opacity:1}
+.module-vision .value-icon{font-size:1.6rem;margin-bottom:10px}
+.module-vision .value-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:6px;font-family:'JetBrains Mono',monospace}
+.module-vision .value-desc{font-size:12px;color:var(--text-tertiary);line-height:1.6}
 
-/*=== CONTENT WRAPPER ===*/
+/* ============================================================
+   CONTENT WRAPPER
+   ============================================================ */
 .content{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:2}
 
-/*=== SECTION ===*/
+/* ============================================================
+   SECTION COMMON
+   ============================================================ */
 .section{padding:64px 0;position:relative}
 .section-head{margin-bottom:36px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
-.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:#00d4ff;opacity:0.5;letter-spacing:1px}
-.section-head h2{font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.3px;margin-bottom:0}
-.section-head p{font-size:14px;color:#5a6b83;flex-basis:100%;margin-top:4px}
-.section-head .head-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(0,212,255,0.15),transparent);margin-left:8px;align-self:center}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--color-zhixie);opacity:0.5;letter-spacing:1px}
+.section-head h2{font-size:24px;font-weight:700;color:var(--text-primary);letter-spacing:-0.3px;margin-bottom:0}
+.section-head p{font-size:14px;color:var(--text-tertiary);flex-basis:100%;margin-top:4px}
+.section-head .head-line{flex:1;height:1px;background:linear-gradient(90deg,var(--divider-color),transparent);margin-left:8px;align-self:center}
 
-/*=== PRODUCT GRID ===*/
-.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.card{display:flex;flex-direction:column;padding:20px;border-radius:12px;background:rgba(255,255,255,0.025);border:1px solid rgba(0,212,255,0.06);text-decoration:none;color:inherit;transition:all 0.3s;position:relative;overflow:hidden}
-.card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00d4ff,transparent);transform:scaleX(0);transition:transform 0.4s}
-.card:hover{background:rgba(0,212,255,0.05);border-color:rgba(0,212,255,0.15);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,180,255,0.1)}
-.card:hover::after{transform:scaleX(1)}
+/* ============================================================
+   MODULE: PRODUCTS (M06 · P1) with Category Filter
+   ============================================================ */
+.module-products .filter-bar{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.module-products .filter-btn{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 14px;border-radius:8px;border:1px solid var(--border-glass);background:var(--bg-glass);color:var(--text-tertiary);cursor:pointer;transition:var(--transition-all)}
+.module-products .filter-btn:hover,.module-products .filter-btn.active{color:var(--text-primary);background:var(--bg-glass-hover);border-color:var(--border-glass-hover)}
+.module-products .filter-btn.active[data-cat="zhixie"]{color:var(--color-zhixie);border-color:rgba(0,212,255,0.25)}
+.module-products .filter-btn.active[data-cat="openbuild"]{color:var(--color-open);border-color:rgba(123,97,255,0.25)}
+.module-products .filter-btn.active[data-cat="acu"]{color:var(--color-acu);border-color:rgba(0,240,160,0.25)}
+.module-products .filter-btn.active[data-cat="all"]{color:var(--text-primary)}
+
+.module-products .prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.module-products .card{display:flex;flex-direction:column;padding:20px;border-radius:12px;background:var(--bg-glass);border:1px solid var(--border-glass);text-decoration:none;color:inherit;transition:var(--transition-all);position:relative;overflow:hidden}
+.module-products .card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--color-zhixie),transparent);transform:scaleX(0);transition:transform 0.4s}
+.module-products .card:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,180,255,0.1)}
+.module-products .card:hover::after{transform:scaleX(1)}
+.module-products .card.hidden{opacity:0.15;pointer-events:none;transform:scale(0.95)}
 .card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.card-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:#3a4b63;letter-spacing:0.5px}
+.card-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.5px}
 .badge{font-size:9px;font-weight:600;padding:2px 8px;border-radius:9999px;text-transform:uppercase;letter-spacing:0.5px}
-.badge.active{background:rgba(0,240,160,0.1);color:#00f0a0;border:1px solid rgba(0,240,160,0.15)}
-.badge.archive{background:rgba(255,255,255,0.04);color:#4a5b73;border:1px solid rgba(255,255,255,0.06)}
-.card-name{font-size:15px;font-weight:600;color:#fff;letter-spacing:-0.2px;margin-bottom:2px}
-.card-eng{font-size:11px;font-family:'JetBrains Mono',monospace;color:#3a4b63;margin-bottom:12px}
-.card-cat{font-size:11px;font-weight:500;color:#5a6b83;padding:3px 8px;border-radius:4px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.08);align-self:flex-start}
+.badge.active{background:rgba(0,240,160,0.1);color:var(--color-acu);border:1px solid rgba(0,240,160,0.15)}
+.badge.archive{background:rgba(255,255,255,0.04);color:var(--text-muted);border:1px solid rgba(255,255,255,0.06)}
+.card-name{font-size:15px;font-weight:600;color:var(--text-primary);letter-spacing:-0.2px;margin-bottom:2px}
+.card-eng{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);margin-bottom:12px}
+.card-cat{font-size:11px;font-weight:500;color:var(--text-tertiary);padding:3px 8px;border-radius:4px;background:rgba(0,212,255,0.04);border:1px solid var(--border-glass);align-self:flex-start}
 
-/*=== KB GRID ===*/
-.kb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.kb-card{display:flex;align-items:center;gap:14px;padding:18px 20px;border-radius:12px;background:rgba(255,255,255,0.025);border:1px solid rgba(0,212,255,0.06);text-decoration:none;color:inherit;transition:all 0.3s;position:relative;overflow:hidden}
-.kb-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#00d4ff,#7b61ff);opacity:0;transition:opacity 0.3s}
-.kb-card:hover{background:rgba(0,212,255,0.05);border-color:rgba(0,212,255,0.15);transform:translateX(4px)}
-.kb-card:hover::before{opacity:1}
+/* Category color coding for card-cat */
+.card-cat[data-cat="zhixie"]{color:var(--color-zhixie);border-color:rgba(0,212,255,0.12)}
+.card-cat[data-cat="openbuild"]{color:var(--color-open);border-color:rgba(123,97,255,0.12)}
+.card-cat[data-cat="acu"]{color:var(--color-acu);border-color:rgba(0,240,160,0.12)}
+
+/* ============================================================
+   MODULE: KB (M07 · P1)
+   ============================================================ */
+.module-kb .kb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.module-kb .kb-card{display:flex;align-items:center;gap:14px;padding:18px 20px;border-radius:12px;background:var(--bg-glass);border:1px solid var(--border-glass);text-decoration:none;color:inherit;transition:var(--transition-all);position:relative;overflow:hidden}
+.module-kb .kb-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--color-zhixie),var(--color-open));opacity:0;transition:opacity var(--transition-speed)}
+.module-kb .kb-card:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateX(4px)}
+.module-kb .kb-card:hover::before{opacity:1}
 .kb-icon{font-size:1.3rem;flex-shrink:0}
 .kb-info{flex:1;min-width:0}
-.kb-title{font-size:13px;font-weight:600;color:#fff;letter-spacing:-0.1px}
-.kb-sub{font-size:11px;color:#3a4b63;font-family:'JetBrains Mono',monospace;margin-top:3px}
-.kb-arrow{font-size:14px;color:#3a4b63;transition:all 0.3s}
-.kb-card:hover .kb-arrow{color:#00d4ff;transform:translateX(3px)}
+.kb-title{font-size:13px;font-weight:600;color:var(--text-primary);letter-spacing:-0.1px}
+.kb-sub{font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;margin-top:3px}
+.kb-arrow{font-size:14px;color:var(--text-muted);transition:var(--transition-all)}
+.module-kb .kb-card:hover .kb-arrow{color:var(--color-zhixie);transform:translateX(3px)}
 
-/*=== GROUPS ===*/
-.grp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
-.grp-btn{display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:10px;background:rgba(255,255,255,0.025);border:1px solid rgba(0,212,255,0.06);text-decoration:none;color:inherit;transition:all 0.3s;position:relative;overflow:hidden}
-.grp-btn::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(0,212,255,0.08),transparent 50%);opacity:0;transition:opacity 0.3s}
-.grp-btn:hover{background:rgba(0,212,255,0.05);border-color:rgba(0,212,255,0.15);transform:translateY(-1px)}
-.grp-btn:hover::before{opacity:1}
+/* ============================================================
+   MODULE: TEAM (M08 · P1) — 3-tier interaction
+   ============================================================ */
+.module-team{padding:64px 0}
+.module-team .team-group{margin-bottom:32px}
+.module-team .group-title{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--color-zhixie);letter-spacing:1px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.module-team .group-title::before{content:'';width:3px;height:14px;background:linear-gradient(180deg,var(--color-zhixie),var(--color-open));border-radius:2px}
+.module-team .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
+.module-team .team-card{padding:20px 16px;border-radius:12px;background:var(--bg-glass);border:1px solid var(--border-glass);text-align:center;transition:var(--transition-all);cursor:pointer;position:relative;overflow:hidden}
+.module-team .team-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--member-color,var(--color-zhixie)),transparent);opacity:0;transition:opacity var(--transition-speed)}
+.module-team .team-card:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,180,255,0.1)}
+.module-team .team-card:hover::before{opacity:1}
+.module-team .avatar-wrapper{width:80px;height:80px;margin:0 auto 12px;position:relative}
+.module-team .team-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;transition:transform var(--transition-speed) var(--ease-out)}
+.module-team .team-card:hover .team-avatar{transform:scale(1.125)}
+.module-team .avatar-glow{position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--member-color,var(--color-zhixie));opacity:0;transition:opacity var(--transition-speed);pointer-events:none}
+.module-team .team-card:hover .avatar-glow{opacity:0.4;box-shadow:0 0 20px 6px var(--member-color,var(--color-zhixie))}
+.module-team .member-name{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:2px}
+.module-team .member-role{font-size:11px;color:var(--member-color,var(--color-zhixie));font-family:'JetBrains Mono',monospace}
+.module-team .member-tags{display:flex;gap:4px;justify-content:center;margin-top:8px;opacity:0;transform:translateY(6px);transition:var(--transition-all)}
+.module-team .team-card:hover .member-tags{opacity:1;transform:translateY(0)}
+.module-team .member-tag{font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid var(--border-glass);color:var(--text-tertiary)}
+
+/* Team detail panel */
+.module-team .team-detail{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);width:min(420px,90vw);padding:32px;border-radius:16px;background:rgba(10,14,20,0.95);border:1px solid var(--border-glass-hover);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.3s var(--ease-out),transform 0.3s var(--ease-out);backdrop-filter:blur(30px)}
+.module-team .team-detail.active{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+.module-team .team-detail .detail-avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:16px;border:2px solid var(--member-color,var(--color-zhixie))}
+.module-team .team-detail .detail-name{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
+.module-team .team-detail .detail-career{font-size:13px;color:var(--text-tertiary);margin-bottom:12px}
+.module-team .team-detail .detail-roles{font-size:12px;color:var(--member-color,var(--color-zhixie));font-family:'JetBrains Mono',monospace;margin-bottom:12px}
+.module-team .team-detail .detail-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;border:1px solid var(--border-glass);background:var(--bg-glass);color:var(--text-secondary);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:var(--transition-all)}
+.module-team .team-detail .detail-close:hover{background:var(--bg-glass-hover);color:var(--text-primary)}
+.module-team .detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.module-team .detail-overlay.active{opacity:1;pointer-events:auto}
+
+/* ============================================================
+   MODULE: COMMUNITY (M09 · P1)
+   ============================================================ */
+.module-community .grp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.module-community .grp-btn{display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:10px;background:var(--bg-glass);border:1px solid var(--border-glass);text-decoration:none;color:inherit;transition:var(--transition-all);position:relative;overflow:hidden}
+.module-community .grp-btn::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(0,212,255,0.08),transparent 50%);opacity:0;transition:opacity var(--transition-speed)}
+.module-community .grp-btn:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateY(-1px)}
+.module-community .grp-btn:hover::before{opacity:1}
 .grp-icon{font-size:1rem;position:relative;z-index:1}
-.grp-name{flex:1;font-size:12px;font-weight:500;color:#8a9bb5;position:relative;z-index:1}
-.grp-btn:hover .grp-name{color:#c0d0e8}
-.grp-arr{font-size:12px;color:#3a4b63;transition:all 0.3s;position:relative;z-index:1}
-.grp-btn:hover .grp-arr{color:#00d4ff;transform:translateX(3px)}
+.grp-name{flex:1;font-size:12px;font-weight:500;color:var(--text-secondary);position:relative;z-index:1}
+.module-community .grp-btn:hover .grp-name{color:#c0d0e8}
+.grp-arr{font-size:12px;color:var(--text-muted);transition:var(--transition-all);position:relative;z-index:1}
+.module-community .grp-btn:hover .grp-arr{color:var(--color-zhixie);transform:translateX(3px)}
+.module-community .notice{background:rgba(0,212,255,0.03);border:1px solid rgba(0,212,255,0.1);border-radius:12px;padding:18px 22px;margin-top:20px;font-size:13px;line-height:1.8;color:var(--text-muted);display:flex;align-items:flex-start;gap:10px}
+.module-community .notice strong{color:var(--color-zhixie);font-weight:600}
 
-/*=== NOTICE ===*/
-.notice{background:rgba(0,212,255,0.03);border:1px solid rgba(0,212,255,0.1);border-radius:12px;padding:18px 22px;margin-top:20px;font-size:13px;line-height:1.8;color:#6a7b94;display:flex;align-items:flex-start;gap:10px}
-.notice strong{color:#00d4ff;font-weight:600}
-
-/*=== DIVIDER ===*/
-.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,0.12),transparent);margin:0;position:relative}
-.divider::after{content:'';position:absolute;left:50%;top:-2px;width:4px;height:4px;border-radius:50%;background:#00d4ff;transform:translateX(-50%);box-shadow:0 0 8px #00d4ff}
-
-/*=== RECRUIT ===*/
-.recruit{padding:48px;border-radius:16px;background:linear-gradient(135deg,rgba(0,212,255,0.04),rgba(123,97,255,0.03));border:1px solid rgba(0,212,255,0.1);position:relative;overflow:hidden}
-.recruit::before{content:'';position:absolute;top:0;right:0;width:400px;height:400px;background:radial-gradient(circle,rgba(0,212,255,0.06),transparent 70%);pointer-events:none}
-.recruit::after{content:'';position:absolute;bottom:0;left:0;width:300px;height:300px;background:radial-gradient(circle,rgba(123,97,255,0.04),transparent 70%);pointer-events:none}
-.recruit-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:#00d4ff;border:1px solid rgba(0,212,255,0.2);padding:3px 10px;border-radius:4px;margin-bottom:16px;position:relative}
-.recruit h2{font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.3px;margin-bottom:12px;position:relative}
-.recruit p{font-size:14px;color:#6a7b94;line-height:1.8;margin-bottom:12px;position:relative}
-.recruit h3{font-size:15px;font-weight:600;color:#00d4ff;margin:24px 0 10px;position:relative;display:flex;align-items:center;gap:8px}
-.recruit h3::before{content:'';width:3px;height:14px;background:linear-gradient(180deg,#00d4ff,#7b61ff);border-radius:2px}
-.recruit ul{list-style:none;margin:8px 0 16px;position:relative}
-.recruit li{padding:10px 0;border-bottom:1px solid rgba(0,212,255,0.06);font-size:13px;line-height:1.7;color:#8a9bb5;display:flex;gap:10px;align-items:flex-start}
-.recruit li:last-child{border-bottom:none}
-.recruit li::before{content:'›';color:#00d4ff;font-weight:700;flex-shrink:0;font-size:16px;line-height:1.4}
-.recruit li strong{color:#00d4ff;font-weight:600}
-.recruit-cta{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:10px;background:linear-gradient(135deg,#0077cc,#00b4ff);color:#fff;font-size:14px;font-weight:600;text-decoration:none;transition:all 0.3s;margin-top:24px;position:relative;box-shadow:0 4px 20px rgba(0,180,255,0.25)}
+/* ============================================================
+   MODULE: RECRUIT (M10 · P2)
+   ============================================================ */
+.module-recruit .recruit{padding:48px;border-radius:16px;background:linear-gradient(135deg,rgba(0,212,255,0.04),rgba(123,97,255,0.03));border:1px solid rgba(0,212,255,0.1);position:relative;overflow:hidden}
+.module-recruit .recruit::before{content:'';position:absolute;top:0;right:0;width:400px;height:400px;background:radial-gradient(circle,rgba(0,212,255,0.06),transparent 70%);pointer-events:none}
+.module-recruit .recruit::after{content:'';position:absolute;bottom:0;left:0;width:300px;height:300px;background:radial-gradient(circle,rgba(123,97,255,0.04),transparent 70%);pointer-events:none}
+.module-recruit .recruit-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--color-zhixie);border:1px solid rgba(0,212,255,0.2);padding:3px 10px;border-radius:4px;margin-bottom:16px;position:relative}
+.module-recruit .recruit h2{font-size:22px;font-weight:700;color:var(--text-primary);letter-spacing:-0.3px;margin-bottom:12px;position:relative}
+.module-recruit .recruit p{font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:12px;position:relative}
+.module-recruit .recruit h3{font-size:15px;font-weight:600;color:var(--color-zhixie);margin:24px 0 10px;position:relative;display:flex;align-items:center;gap:8px}
+.module-recruit .recruit h3::before{content:'';width:3px;height:14px;background:linear-gradient(180deg,var(--color-zhixie),var(--color-open));border-radius:2px}
+.module-recruit .recruit ul{list-style:none;margin:8px 0 16px;position:relative}
+.module-recruit .recruit li{padding:10px 0;border-bottom:1px solid rgba(0,212,255,0.06);font-size:13px;line-height:1.7;color:var(--text-secondary);display:flex;gap:10px;align-items:flex-start}
+.module-recruit .recruit li:last-child{border-bottom:none}
+.module-recruit .recruit li::before{content:'›';color:var(--color-zhixie);font-weight:700;flex-shrink:0;font-size:16px;line-height:1.4}
+.module-recruit .recruit li strong{color:var(--color-zhixie);font-weight:600}
+.recruit-cta{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:10px;background:linear-gradient(135deg,#0077cc,#00b4ff);color:var(--text-primary);font-size:14px;font-weight:600;text-decoration:none;transition:var(--transition-all);margin-top:24px;position:relative;box-shadow:0 4px 20px rgba(0,180,255,0.25)}
 .recruit-cta:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,180,255,0.35)}
 
-/*=== FOOTER ===*/
-footer{text-align:center;padding:56px 0 48px;position:relative;z-index:2;border-top:1px solid rgba(0,212,255,0.06)}
-footer::before{content:'';position:absolute;top:0;left:50%;width:120px;height:1px;background:linear-gradient(90deg,transparent,#00d4ff,transparent);transform:translateX(-50%)}
-.footer-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;font-size:18px;font-weight:700;color:#fff}
-.footer-logo svg{width:24px;height:24px;opacity:0.6}
-.footer-section{margin-bottom:8px}
-.footer-section .ft-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:#3a4b63;text-transform:uppercase;letter-spacing:1px;margin-right:6px}
-.footer-section .ft-value{font-size:13px;color:#7a8ba5}
-.footer-section .ft-value strong{color:#00d4ff;font-weight:600}
-.footer-links{margin-top:16px;display:flex;justify-content:center;gap:24px}
-footer a{color:#5a6b83;text-decoration:none;font-size:12px;transition:color 0.2s}
-footer a:hover{color:#00d4ff}
-.footer-copy{margin-top:20px;font-size:11px;color:#2a3b53;font-family:'JetBrains Mono',monospace}
+/* ============================================================
+   MODULE: FOOTER (M11 · P2)
+   ============================================================ */
+.module-footer{text-align:center;padding:56px 0 48px;position:relative;z-index:2;border-top:1px solid var(--border-glass)}
+.module-footer::before{content:'';position:absolute;top:0;left:50%;width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--color-zhixie),transparent);transform:translateX(-50%)}
+.module-footer .footer-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;font-size:18px;font-weight:700;color:var(--text-primary)}
+.module-footer .footer-logo svg{width:24px;height:24px;opacity:0.6}
+.module-footer .footer-section{margin-bottom:8px}
+.module-footer .ft-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-right:6px}
+.module-footer .ft-value{font-size:13px;color:var(--text-secondary)}
+.module-footer .ft-value strong{color:var(--color-zhixie);font-weight:600}
+.module-footer .footer-links{margin-top:16px;display:flex;justify-content:center;gap:24px}
+.module-footer .footer-promo{margin-top:20px;display:none;gap:16px;justify-content:center}
+.module-footer .footer-promo a{font-size:11px;color:var(--text-muted);text-decoration:none;font-family:'JetBrains Mono',monospace;transition:color 0.2s}
+.module-footer .footer-promo a:hover{color:var(--color-zhixie)}
+.module-footer a{color:var(--text-tertiary);text-decoration:none;font-size:12px;transition:color 0.2s}
+.module-footer a:hover{color:var(--color-zhixie)}
+.module-footer .footer-copy{margin-top:20px;font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace}
 
-/*=== SCROLL REVEAL ===*/
+/* ============================================================
+   DIVIDER
+   ============================================================ */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--divider-color),transparent);margin:0;position:relative}
+.divider::after{content:'';position:absolute;left:50%;top:-2px;width:4px;height:4px;border-radius:50%;background:var(--color-zhixie);transform:translateX(-50%);box-shadow:0 0 8px var(--color-zhixie)}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
-/*=== RESPONSIVE ===*/
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 @media(max-width:900px){
-  .prod-grid{grid-template-columns:repeat(2,1fr)}
-  .kb-grid{grid-template-columns:repeat(2,1fr)}
-  .values-grid{grid-template-columns:1fr}
-  .stats-bar{gap:24px;flex-wrap:wrap}
+  .module-products .prod-grid{grid-template-columns:repeat(2,1fr)}
+  .module-kb .kb-grid{grid-template-columns:repeat(2,1fr)}
+  .module-vision .values-grid{grid-template-columns:1fr}
+  .module-hero .stats-bar{gap:24px;flex-wrap:wrap}
   .stat-val{font-size:28px}
   .stat:not(:last-child)::after{display:none}
-  .nav-links a:not(.nav-gh){display:none}
-  .recruit{padding:32px 24px}
+  .nav-center a:not(.nav-gh){display:none}
+  .module-recruit .recruit{padding:32px 24px}
   .section-head .head-line{display:none}
+  .nav-promo-links{display:none}
+  .module-footer .footer-promo{display:flex}
+  .module-team .team-grid{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:500px){
-  .prod-grid{grid-template-columns:1fr}
-  .grp-grid{grid-template-columns:1fr}
-  .hero h1{font-size:2rem}
+  .module-products .prod-grid{grid-template-columns:1fr}
+  .module-community .grp-grid{grid-template-columns:1fr}
+  .module-hero h1{font-size:2rem}
+  .module-team .team-grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
 <body>
 
-<!-- Status Bar -->
+<!-- ========== MODULE: NAV START (M02 · P1) ========== -->
+<nav class="module-nav" data-module="M02">
 <div class="status-bar"><div class="inner"><div><span class="status-dot"></span>SYS.ONLINE<span class="sep">|</span>NODES: 23 ACTIVE<span class="sep">|</span>UPTIME: 99.97%</div><div class="cyan">CLUSTER: ATOMCOLLIDE-v3</div></div></div>
-
-<!-- Nav -->
-<nav><div class="inner">
+<div class="nav-main">
 <div class="nav-logo">
 <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="5" fill="#00d4ff"/><ellipse cx="16" cy="16" rx="14" ry="6" stroke="#00d4ff" stroke-width="0.8" opacity="0.5"/><ellipse cx="16" cy="16" rx="14" ry="6" stroke="#00d4ff" stroke-width="0.8" opacity="0.3" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="14" ry="6" stroke="#00d4ff" stroke-width="0.8" opacity="0.3" transform="rotate(-60 16 16)"/></svg>
 AtomCollide
 </div>
-<div class="nav-links">
+<div class="nav-center">
 <a href="#products">产品矩阵</a>
+<a href="#team">核心团队</a>
 <a href="https://vcnvmnln7wit.feishu.cn/wiki/WpK2wAcV8i6P8tke8X9cLcmDnSh" target="_blank">知识库</a>
-<a href="#community">社群招募</a>
+<a href="#community">社群入口</a>
 <a href="https://github.com/503496348-ops" target="_blank" class="nav-gh">GitHub ↗</a>
 </div>
-</div></nav>
+<!-- ========== MODULE: PROMO START (M12 · P2) ========== -->
+<div class="nav-promo-links">
+<a href="https://cloud.tencent.com/act/pro/warmup-202606?from=29779&cps_key=c3102324fb3989336d42de76070a0cba&page=featured-202604&s_source=https%3A%2F%2Fcloud.tencent.com%2Fact%2Fpro%2Ffeatured-202604" target="_blank" class="nav-promo-link"><span class="promo-icon">☁️</span>腾讯云</a>
+<a href="https://5yuantoken.org/register?aff=R2YCECS7LKG4" target="_blank" class="nav-promo-link"><span class="promo-icon">🔗</span>5元Token</a>
+</div>
+<!-- ========== MODULE: PROMO END ========== -->
+</div>
+</nav>
+<!-- ========== MODULE: NAV END ========== -->
 
-<!-- Hero -->
-<section class="hero">
+<!-- ========== MODULE: HERO START (M03 · P0) ========== -->
+<section class="module-hero" data-module="M03">
 <canvas id="particles"></canvas>
 <div class="atom-wrap">
 <div class="atom-orb"></div>
@@ -228,17 +354,20 @@ AtomCollide
 <h1><em>AI 智能体实验室</em></h1>
 <p class="sub">专注 AI Agent 全链路的开源技术社区<br>for the learner，和学习者一起成长</p>
 <div class="stats-bar">
+<div class="stat"><div class="stat-val" data-target="10000">0<span class="unit">+</span></div><div class="stat-label">社区成员</div></div>
+<div class="stat"><div class="stat-val" data-target="7000">0<span class="unit">+</span></div><div class="stat-label">月活用户</div></div>
 <div class="stat"><div class="stat-val">24<span class="unit">款</span></div><div class="stat-label">开源产品</div></div>
-<div class="stat"><div class="stat-val">10</div><div class="stat-label">知识库</div></div>
-<div class="stat"><div class="stat-val">9K<span class="unit">+</span></div><div class="stat-label">代码提交</div></div>
-<div class="stat"><div class="stat-val">16</div><div class="stat-label">社群入口</div></div>
+<div class="stat"><div class="stat-val">10<span class="unit">大</span></div><div class="stat-label">实战知识库</div></div>
+<div class="stat"><div class="stat-val" data-target="9">0<span class="unit">K+</span></div><div class="stat-label">代码提交</div></div>
+<div class="stat"><div class="stat-val">20<span class="unit">人</span></div><div class="stat-label">核心团队</div></div>
 </div>
 </section>
+<!-- ========== MODULE: HERO END ========== -->
 
 <div class="content">
 
-<!-- Vision & Values -->
-<section class="vision-section reveal">
+<!-- ========== MODULE: VISION START (M04 · P0) ========== -->
+<section class="module-vision reveal" data-module="M04">
 <div class="vision-block">
 <div class="vision-label">// VISION</div>
 <div class="vision-text">🎯 <strong>愿景</strong>：成为测试人 AI 转型的第一站，让每位成员都能在这里找到从 0 到 1 的成长路径，让 AI 技术触手可及。</div>
@@ -249,44 +378,181 @@ AtomCollide
 </div>
 </div>
 </section>
+<!-- ========== MODULE: VISION END ========== -->
 
-<!-- Products -->
-<section class="section reveal" id="products">
+<!-- ========== MODULE: PRODUCTS START (M06 · P1) ========== -->
+<section class="section module-products reveal" id="products" data-module="M06">
 <div class="section-head"><span class="section-num">[01]</span><h2>🧬 技能矩阵 · 24 款产品</h2><div class="head-line"></div></div>
 <div class="section-head" style="margin-top:-28px"><p>全部开源 · 覆盖 AI Agent 全链路</p></div>
+<div class="filter-bar">
+<button class="filter-btn active" data-cat="all">全部</button>
+<button class="filter-btn" data-cat="zhixie">🧬 智械工坊</button>
+<button class="filter-btn" data-cat="openbuild">🛠️ Open Build</button>
+<button class="filter-btn" data-cat="acu">🎓 ACU</button>
+</div>
 <div class="prod-grid">
-<a href="https://github.com/503496348-ops/fission-creative" target="_blank" class="card"><div class="card-top"><span class="card-num">#01</span><span class="badge active">活跃</span></div><div class="card-name">裂变创作</div><div class="card-eng">Fission Creative</div><span class="card-cat">长文创作</span></a>
-<a href="https://github.com/503496348-ops/awake-differently" target="_blank" class="card"><div class="card-top"><span class="card-num">#02</span><span class="badge active">活跃</span></div><div class="card-name">别样觉醒</div><div class="card-eng">Awake Differently</div><span class="card-cat">身份蒸馏</span></a>
-<a href="https://github.com/503496348-ops/hermes-doctor" target="_blank" class="card"><div class="card-top"><span class="card-num">#03</span><span class="badge active">活跃</span></div><div class="card-name">白龙马医生</div><div class="card-eng">Bailongma Doctor</div><span class="card-cat">智能体健康</span></a>
-<a href="https://github.com/503496348-ops/pipixia-doctor" target="_blank" class="card"><div class="card-top"><span class="card-num">#04</span><span class="badge active">活跃</span></div><div class="card-name">皮皮虾医生</div><div class="card-eng">PipiXia Doctor</div><span class="card-cat">智能体健康</span></a>
-<a href="https://github.com/503496348-ops/Stratapro" target="_blank" class="card"><div class="card-top"><span class="card-num">#05</span><span class="badge active">活跃</span></div><div class="card-name">深度方略</div><div class="card-eng">Stratapro</div><span class="card-cat">量化投资</span></a>
-<a href="https://github.com/503496348-ops/hermes-skill-ideasphere" target="_blank" class="card"><div class="card-top"><span class="card-num">#06</span><span class="badge active">活跃</span></div><div class="card-name">灵感象限</div><div class="card-eng">Ideasphere</div><span class="card-cat">视频剪辑</span></a>
-<a href="https://github.com/503496348-ops/nichecraft" target="_blank" class="card"><div class="card-top"><span class="card-num">#07</span><span class="badge active">活跃</span></div><div class="card-name">有点东西</div><div class="card-eng">Nichecraft</div><span class="card-cat">飞书白板+PPT</span></a>
-<a href="https://github.com/503496348-ops/fractovision" target="_blank" class="card"><div class="card-top"><span class="card-num">#08</span><span class="badge active">活跃</span></div><div class="card-name">破窗造视</div><div class="card-eng">Fractovision</div><span class="card-cat">多媒体生成</span></a>
-<a href="https://github.com/503496348-ops/barren-order" target="_blank" class="card"><div class="card-top"><span class="card-num">#09</span><span class="badge active">活跃</span></div><div class="card-name">荒原序列</div><div class="card-eng">BarrenOrder</div><span class="card-cat">多Agent协作</span></a>
-<a href="https://github.com/503496348-ops/canvas-design" target="_blank" class="card"><div class="card-top"><span class="card-num">#10</span><span class="badge active">活跃</span></div><div class="card-name">艺游未境</div><div class="card-eng">Wanderix</div><span class="card-cat">视觉创作</span></a>
-<a href="https://github.com/503496348-ops/hermes-security-suite" target="_blank" class="card"><div class="card-top"><span class="card-num">#11</span><span class="badge active">活跃</span></div><div class="card-name">奇点造物</div><div class="card-eng">Genesisix</div><span class="card-cat">安全检测</span></a>
-<a href="https://github.com/503496348-ops/hermes-skill-aestheflow" target="_blank" class="card"><div class="card-top"><span class="card-num">#12</span><span class="badge active">活跃</span></div><div class="card-name">艺术生花</div><div class="card-eng">AestheFlow</div><span class="card-cat">文本分析</span></a>
-<a href="https://github.com/503496348-ops/easyrhythm" target="_blank" class="card"><div class="card-top"><span class="card-num">#13</span><span class="badge active">活跃</span></div><div class="card-name">松弛有度</div><div class="card-eng">EasyRhythm</div><span class="card-cat">日程管理</span></a>
-<a href="https://github.com/503496348-ops/herpeakgem" target="_blank" class="card"><div class="card-top"><span class="card-num">#14</span><span class="badge active">活跃</span></div><div class="card-name">他山之石</div><div class="card-eng">HerPeakGem</div><span class="card-cat">竞品分析</span></a>
-<a href="https://github.com/503496348-ops/purepicks" target="_blank" class="card"><div class="card-top"><span class="card-num">#15</span><span class="badge active">活跃</span></div><div class="card-name">自然良品</div><div class="card-eng">PurePicks</div><span class="card-cat">选品推荐</span></a>
-<a href="https://github.com/503496348-ops/energsolve" target="_blank" class="card"><div class="card-top"><span class="card-num">#16</span><span class="badge active">活跃</span></div><div class="card-name">元气方程</div><div class="card-eng">EnergSolve</div><span class="card-cat">学习路径</span></a>
-<a href="https://github.com/503496348-ops/summoner" target="_blank" class="card"><div class="card-top"><span class="card-num">#17</span><span class="badge active">活跃</span></div><div class="card-name">召物少年</div><div class="card-eng">Summoner</div><span class="card-cat">需求解析</span></a>
-<a href="https://github.com/503496348-ops/football-predictor" target="_blank" class="card"><div class="card-top"><span class="card-num">#18</span><span class="badge active">活跃</span></div><div class="card-name">此地无垠</div><div class="card-eng">FootPredict</div><span class="card-cat">体育分析</span></a>
-<a href="https://github.com/503496348-ops/worldcup-predictor" target="_blank" class="card"><div class="card-top"><span class="card-num">#19</span><span class="badge active">活跃</span></div><div class="card-name">绿茵智脑</div><div class="card-eng">WorldCup Predictor</div><span class="card-cat">体育分析</span></a>
-<a href="https://github.com/503496348-ops/minddistill" target="_blank" class="card"><div class="card-top"><span class="card-num">#20</span><span class="badge active">活跃</span></div><div class="card-name">意识浓缩</div><div class="card-eng">MindDistill</div><span class="card-cat">SEO诊断</span></a>
-<a href="https://github.com/503496348-ops/mindriver" target="_blank" class="card"><div class="card-top"><span class="card-num">#21</span><span class="badge active">活跃</span></div><div class="card-name">智脑星河</div><div class="card-eng">MindRiver</div><span class="card-cat">数据可视化</span></a>
-<a href="https://github.com/503496348-ops/artipen" target="_blank" class="card"><div class="card-top"><span class="card-num">#22</span><span class="badge active">活跃</span></div><div class="card-name">妙笔生花</div><div class="card-eng">ArtiPen</div><span class="card-cat">结构化写作</span></a>
-<a href="https://github.com/503496348-ops/neverend" target="_blank" class="card"><div class="card-top"><span class="card-num">#23</span><span class="badge active">活跃</span></div><div class="card-name">无限循环</div><div class="card-eng">Neverend</div><span class="card-cat">知识管理</span></a>
-<a href="https://github.com/503496348-ops/atomguard" target="_blank" class="card"><div class="card-top"><span class="card-num">#24</span><span class="badge archive">归档</span></div><div class="card-name">AtomGuard</div><div class="card-eng">AtomGuard</div><span class="card-cat">安全防护</span></a>
+<a href="https://github.com/503496348-ops/fission-creative" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#01</span><span class="badge active">活跃</span></div><div class="card-name">裂变创作</div><div class="card-eng">Fission Creative</div><span class="card-cat" data-cat="zhixie">长文创作</span></a>
+<a href="https://github.com/503496348-ops/awake-differently" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#02</span><span class="badge active">活跃</span></div><div class="card-name">别样觉醒</div><div class="card-eng">Awake Differently</div><span class="card-cat" data-cat="zhixie">身份蒸馏</span></a>
+<a href="https://github.com/503496348-ops/hermes-doctor" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#03</span><span class="badge active">活跃</span></div><div class="card-name">白龙马医生</div><div class="card-eng">Bailongma Doctor</div><span class="card-cat" data-cat="zhixie">智能体健康</span></a>
+<a href="https://github.com/503496348-ops/pipixia-doctor" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#04</span><span class="badge active">活跃</span></div><div class="card-name">皮皮虾医生</div><div class="card-eng">PipiXia Doctor</div><span class="card-cat" data-cat="zhixie">智能体健康</span></a>
+<a href="https://github.com/503496348-ops/Stratapro" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#05</span><span class="badge active">活跃</span></div><div class="card-name">深度方略</div><div class="card-eng">Stratapro</div><span class="card-cat" data-cat="zhixie">量化投资</span></a>
+<a href="https://github.com/503496348-ops/hermes-skill-ideasphere" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#06</span><span class="badge active">活跃</span></div><div class="card-name">灵感象限</div><div class="card-eng">Ideasphere</div><span class="card-cat" data-cat="zhixie">视频剪辑</span></a>
+<a href="https://github.com/503496348-ops/nichecraft" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#07</span><span class="badge active">活跃</span></div><div class="card-name">有点东西</div><div class="card-eng">Nichecraft</div><span class="card-cat" data-cat="zhixie">飞书白板+PPT</span></a>
+<a href="https://github.com/503496348-ops/fractovision" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#08</span><span class="badge active">活跃</span></div><div class="card-name">破窗造视</div><div class="card-eng">Fractovision</div><span class="card-cat" data-cat="zhixie">多媒体生成</span></a>
+<a href="https://github.com/503496348-ops/barren-order" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#09</span><span class="badge active">活跃</span></div><div class="card-name">荒原序列</div><div class="card-eng">BarrenOrder</div><span class="card-cat" data-cat="zhixie">多Agent协作</span></a>
+<a href="https://github.com/503496348-ops/canvas-design" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#10</span><span class="badge active">活跃</span></div><div class="card-name">艺游未境</div><div class="card-eng">Wanderix</div><span class="card-cat" data-cat="zhixie">视觉创作</span></a>
+<a href="https://github.com/503496348-ops/hermes-security-suite" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#11</span><span class="badge active">活跃</span></div><div class="card-name">奇点造物</div><div class="card-eng">Genesisix</div><span class="card-cat" data-cat="zhixie">安全检测</span></a>
+<a href="https://github.com/503496348-ops/hermes-skill-aestheflow" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#12</span><span class="badge active">活跃</span></div><div class="card-name">艺术生花</div><div class="card-eng">AestheFlow</div><span class="card-cat" data-cat="zhixie">文本分析</span></a>
+<a href="https://github.com/503496348-ops/easyrhythm" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#13</span><span class="badge active">活跃</span></div><div class="card-name">松弛有度</div><div class="card-eng">EasyRhythm</div><span class="card-cat" data-cat="zhixie">日程管理</span></a>
+<a href="https://github.com/503496348-ops/herpeakgem" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#14</span><span class="badge active">活跃</span></div><div class="card-name">他山之石</div><div class="card-eng">HerPeakGem</div><span class="card-cat" data-cat="zhixie">竞品分析</span></a>
+<a href="https://github.com/503496348-ops/purepicks" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#15</span><span class="badge active">活跃</span></div><div class="card-name">自然良品</div><div class="card-eng">PurePicks</div><span class="card-cat" data-cat="zhixie">选品推荐</span></a>
+<a href="https://github.com/503496348-ops/energsolve" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#16</span><span class="badge active">活跃</span></div><div class="card-name">元气方程</div><div class="card-eng">EnergSolve</div><span class="card-cat" data-cat="zhixie">学习路径</span></a>
+<a href="https://github.com/503496348-ops/summoner" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#17</span><span class="badge active">活跃</span></div><div class="card-name">召物少年</div><div class="card-eng">Summoner</div><span class="card-cat" data-cat="openbuild">需求解析</span></a>
+<a href="https://github.com/503496348-ops/football-predictor" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#18</span><span class="badge active">活跃</span></div><div class="card-name">此地无垠</div><div class="card-eng">FootPredict</div><span class="card-cat" data-cat="openbuild">体育分析</span></a>
+<a href="https://github.com/503496348-ops/worldcup-predictor" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#19</span><span class="badge active">活跃</span></div><div class="card-name">绿茵智脑</div><div class="card-eng">WorldCup Predictor</div><span class="card-cat" data-cat="openbuild">体育分析</span></a>
+<a href="https://github.com/503496348-ops/minddistill" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#20</span><span class="badge active">活跃</span></div><div class="card-name">意识浓缩</div><div class="card-eng">MindDistill</div><span class="card-cat" data-cat="openbuild">SEO诊断</span></a>
+<a href="https://github.com/503496348-ops/mindriver" target="_blank" class="card" data-category="openbuild"><div class="card-top"><span class="card-num">#21</span><span class="badge active">活跃</span></div><div class="card-name">智脑星河</div><div class="card-eng">MindRiver</div><span class="card-cat" data-cat="openbuild">数据可视化</span></a>
+<a href="https://github.com/503496348-ops/artipen" target="_blank" class="card" data-category="acu"><div class="card-top"><span class="card-num">#22</span><span class="badge active">活跃</span></div><div class="card-name">妙笔生花</div><div class="card-eng">ArtiPen</div><span class="card-cat" data-cat="acu">结构化写作</span></a>
+<a href="https://github.com/503496348-ops/neverend" target="_blank" class="card" data-category="acu"><div class="card-top"><span class="card-num">#23</span><span class="badge active">活跃</span></div><div class="card-name">无限循环</div><div class="card-eng">Neverend</div><span class="card-cat" data-cat="acu">知识管理</span></a>
+<a href="https://github.com/503496348-ops/atomguard" target="_blank" class="card" data-category="zhixie"><div class="card-top"><span class="card-num">#24</span><span class="badge archive">归档</span></div><div class="card-name">AtomGuard</div><div class="card-eng">AtomGuard</div><span class="card-cat" data-cat="zhixie">安全防护</span></a>
 </div>
 </section>
+<!-- ========== MODULE: PRODUCTS END ========== -->
 
 <div class="divider"></div>
 
-<!-- KB -->
-<section class="section reveal">
-<div class="section-head"><span class="section-num">[02]</span><h2>📚 知识库（10 席）</h2><div class="head-line"></div></div>
+<!-- ========== MODULE: TEAM START (M08 · P1) ========== -->
+<section class="section module-team reveal" id="team" data-module="M08">
+<div class="section-head"><span class="section-num">[02]</span><h2>🌟 核心团队 · 20 人</h2><div class="head-line"></div></div>
+<div class="section-head" style="margin-top:-28px"><p>联合发起人 · 治安官 · 杰出贡献者</p></div>
+
+<div class="team-group">
+<h3 class="group-title">联合发起人</h3>
+<div class="team-grid">
+<div class="team-card" data-member-id="t-001" style="--member-color:var(--color-zhixie)">
+  <div class="avatar-wrapper"><img src="assets/avatars/chenyufeng.webp" alt="陈宇锋" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">陈宇锋</div><div class="member-role">联创 · 智械工坊创始人</div>
+  <div class="member-tags"><span class="member-tag">16年大厂</span><span class="member-tag">ACU校长</span></div>
+</div>
+<div class="team-card" data-member-id="t-002" style="--member-color:var(--color-zhixie)">
+  <div class="avatar-wrapper"><img src="assets/avatars/pr.webp" alt="PR" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">PR</div><div class="member-role">联创 · 联合发起人</div>
+  <div class="member-tags"><span class="member-tag">音乐老师</span><span class="member-tag">独立音乐人</span></div>
+</div>
+<div class="team-card" data-member-id="t-003" style="--member-color:var(--color-open)">
+  <div class="avatar-wrapper"><img src="assets/avatars/jkl.webp" alt="JKL" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">JKL</div><div class="member-role">联创 · JKL神思记创始人</div>
+  <div class="member-tags"><span class="member-tag">国际教育</span></div>
+</div>
+<div class="team-card" data-member-id="t-004" style="--member-color:var(--color-zhixie)">
+  <div class="avatar-wrapper"><img src="assets/avatars/liyuqiao.webp" alt="李渔樵" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">李渔樵</div><div class="member-role">联创 · 首席治安官</div>
+  <div class="member-tags"><span class="member-tag">智械工坊联创</span></div>
+</div>
+<div class="team-card" data-member-id="t-005" style="--member-color:var(--color-acu)">
+  <div class="avatar-wrapper"><img src="assets/avatars/huanxi.webp" alt="欢喜" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">欢喜</div><div class="member-role">联创</div>
+  <div class="member-tags"><span class="member-tag">心理咨询师</span><span class="member-tag">心灵驿站</span></div>
+</div>
+<div class="team-card" data-member-id="t-006" style="--member-color:var(--color-zhixie)">
+  <div class="avatar-wrapper"><img src="assets/avatars/chenfeifei.webp" alt="陈飞飞" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">陈飞飞</div><div class="member-role">联创 · 治安官</div>
+  <div class="member-tags"><span class="member-tag">数据资产CEO</span><span class="member-tag">投资人</span></div>
+</div>
+</div>
+</div>
+
+<div class="team-group">
+<h3 class="group-title">治安官</h3>
+<div class="team-grid">
+<div class="team-card" data-member-id="t-007" style="--member-color:var(--color-acu)">
+  <div class="avatar-wrapper"><img src="assets/avatars/jinglaoshi.webp" alt="井老师" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">井老师</div><div class="member-role">治安官</div>
+  <div class="member-tags"><span class="member-tag">珠宝鉴定师</span><span class="member-tag">NGTC讲师</span></div>
+</div>
+<div class="team-card" data-member-id="t-008" style="--member-color:var(--color-open)">
+  <div class="avatar-wrapper"><img src="assets/avatars/wujianjian.webp" alt="吴见见" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">吴见见</div><div class="member-role">治安官</div>
+  <div class="member-tags"><span class="member-tag">茶品牌</span><span class="member-tag">投资人</span></div>
+</div>
+<div class="team-card" data-member-id="t-009" style="--member-color:var(--color-open)">
+  <div class="avatar-wrapper"><img src="assets/avatars/jiangshimin.webp" alt="江诗敏" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">江诗敏</div><div class="member-role">治安官</div>
+  <div class="member-tags"><span class="member-tag">数学老师</span><span class="member-tag">三猫教辅</span></div>
+</div>
+<div class="team-card" data-member-id="t-010" style="--member-color:var(--color-open)">
+  <div class="avatar-wrapper"><img src="assets/avatars/hanyin.webp" alt="瀚音" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">瀚音</div><div class="member-role">治安官</div>
+  <div class="member-tags"><span class="member-tag">AI Agent Lab</span></div>
+</div>
+<div class="team-card" data-member-id="t-011" style="--member-color:var(--color-zhixie)">
+  <div class="avatar-wrapper"><img src="assets/avatars/maoge.webp" alt="猫哥" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">猫哥</div><div class="member-role">治安官</div>
+  <div class="member-tags"><span class="member-tag">游戏主策</span><span class="member-tag">开发</span></div>
+</div>
+<div class="team-card" data-member-id="t-012" style="--member-color:var(--color-open)">
+  <div class="avatar-wrapper"><img src="assets/avatars/404notfound.webp" alt="404NotFound" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">404NotFound</div><div class="member-role">治安官 · 棱镜设计所主理人</div>
+  <div class="member-tags"><span class="member-tag">视觉设计</span><span class="member-tag">游戏美术</span></div>
+</div>
+</div>
+</div>
+
+<div class="team-group">
+<h3 class="group-title">杰出贡献者</h3>
+<div class="team-grid">
+<div class="team-card" style="--member-color:var(--color-open)">
+  <div class="avatar-wrapper"><img src="assets/avatars/thefuture.webp" alt="The Future" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">Tʜᴇ ғᴜᴛᴜʀᴇ</div>
+</div>
+<div class="team-card" style="--member-color:var(--color-zhixie)">
+  <div class="avatar-wrapper"><img src="assets/avatars/renbin.webp" alt="任斌" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">任斌</div>
+</div>
+<div class="team-card" style="--member-color:var(--color-open)">
+  <div class="avatar-wrapper"><img src="assets/avatars/hongfeng.webp" alt="鸿枫技术栈" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">鸿枫技术栈</div>
+</div>
+<div class="team-card" style="--member-color:var(--color-acu)">
+  <div class="avatar-wrapper"><img src="assets/avatars/adgai.webp" alt="Adgai" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">Adgai</div>
+</div>
+<div class="team-card" style="--member-color:var(--color-open)">
+  <div class="avatar-wrapper"><img src="assets/avatars/will.webp" alt="Will" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">Will</div>
+</div>
+<div class="team-card" style="--member-color:var(--color-zhixie)">
+  <div class="avatar-wrapper"><img src="assets/avatars/wanshouge.webp" alt="万手哥" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">万手哥</div>
+</div>
+<div class="team-card" style="--member-color:var(--color-open)">
+  <div class="avatar-wrapper"><img src="assets/avatars/zhaoning.webp" alt="昭宁" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">昭宁</div>
+</div>
+<div class="team-card" style="--member-color:var(--color-acu)">
+  <div class="avatar-wrapper"><img src="assets/avatars/likangqiang.webp" alt="李康强" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="member-name">李康强</div>
+</div>
+</div>
+</div>
+
+<!-- Detail panel overlay -->
+<div class="detail-overlay"></div>
+<div class="team-detail" id="team-detail-panel">
+  <button class="detail-close">✕</button>
+  <img class="detail-avatar" id="detail-avatar" src="" alt="">
+  <div class="detail-name" id="detail-name"></div>
+  <div class="detail-career" id="detail-career"></div>
+  <div class="detail-roles" id="detail-roles"></div>
+</div>
+</section>
+<!-- ========== MODULE: TEAM END ========== -->
+
+<div class="divider"></div>
+
+<!-- ========== MODULE: KB START (M07 · P1) ========== -->
+<section class="section module-kb reveal" data-module="M07">
+<div class="section-head"><span class="section-num">[03]</span><h2>📚 知识库（10 席）</h2><div class="head-line"></div></div>
 <div class="section-head" style="margin-top:-28px"><p>覆盖踩坑经验 · 商业化案例 · 社区问答 · 组织升级 · 行业资料 · 技能智造 · 社群共建 · 融媒矩阵 · AI教育 · 赛道观察</p></div>
 <div class="kb-grid">
 <a href="https://vcnvmnln7wit.feishu.cn/wiki/CjV9wG8IHiIpWikCdFEcxfErnne" target="_blank" class="kb-card"><span class="kb-icon">🪐</span><div class="kb-info"><div class="kb-title">T0 · 智能体经验知识库</div><div class="kb-sub">训练踩坑 · 故障修复 · 部署手册</div></div><span class="kb-arrow">↗</span></a>
@@ -301,12 +567,13 @@ AtomCollide
 <a href="https://vcnvmnln7wit.feishu.cn/wiki/NZiowKz9Ei9LDek78Y4cJ8L5nvc" target="_blank" class="kb-card"><span class="kb-icon">🌐</span><div class="kb-info"><div class="kb-title">T9 · 浮世杂拾知识库</div><div class="kb-sub">赛道观察 · AI杂拾</div></div><span class="kb-arrow">↗</span></a>
 </div>
 </section>
+<!-- ========== MODULE: KB END ========== -->
 
 <div class="divider"></div>
 
-<!-- Groups -->
-<section class="section reveal" id="community">
-<div class="section-head"><span class="section-num">[03]</span><h2>💬 社群入口（16 席）</h2><div class="head-line"></div></div>
+<!-- ========== MODULE: COMMUNITY START (M09 · P1) ========== -->
+<section class="section module-community reveal" id="community" data-module="M09">
+<div class="section-head"><span class="section-num">[04]</span><h2>💬 社群入口（16 席）</h2><div class="head-line"></div></div>
 <div class="section-head" style="margin-top:-28px"><p>全社区内容全域同步 · 保留 1 个常用社群即可</p></div>
 <div class="grp-grid">
 <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=074vd565-6084-455c-ac52-9703e89a0697" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 1 区</span><span class="grp-arr">→</span></a>
@@ -328,11 +595,12 @@ AtomCollide
 </div>
 <div class="notice"><strong>📢 社群公告：</strong>全社区所有社群已实现<strong>内容全域同步</strong>。所有通知、干货、活动公告均由机器人自动跨群搬运。<strong>请保留 1 个常用社群即可</strong>。</div>
 </section>
+<!-- ========== MODULE: COMMUNITY END ========== -->
 
 <div class="divider"></div>
 
-<!-- Recruit -->
-<section class="section reveal">
+<!-- ========== MODULE: RECRUIT START (M10 · P2) ========== -->
+<section class="section module-recruit reveal" data-module="M10">
 <div class="recruit">
 <div class="recruit-tag">// JOIN US</div>
 <h2>🚀 元素碰撞 — AI 智能体实验室 正式招募</h2>
@@ -345,10 +613,12 @@ AtomCollide
 <a class="recruit-cta" href="https://vcnvmnln7wit.feishu.cn/wiki/WpK2wAcV8i6P8tke8X9cLcmDnSh" target="_blank">📖 浏览知识库</a>
 </div>
 </section>
+<!-- ========== MODULE: RECRUIT END ========== -->
 
 </div>
 
-<footer>
+<!-- ========== MODULE: FOOTER START (M11 · P2) ========== -->
+<footer class="module-footer" data-module="M11">
 <div class="content">
 <div class="footer-logo">
 <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="5" fill="#00d4ff"/><ellipse cx="16" cy="16" rx="14" ry="6" stroke="#00d4ff" stroke-width="0.8" opacity="0.5"/><ellipse cx="16" cy="16" rx="14" ry="6" stroke="#00d4ff" stroke-width="0.8" opacity="0.3" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="14" ry="6" stroke="#00d4ff" stroke-width="0.8" opacity="0.3" transform="rotate(-60 16 16)"/></svg>
@@ -361,12 +631,132 @@ AtomCollide
 <a href="https://github.com/503496348-ops" target="_blank">GitHub Organization</a>
 <a href="https://vcnvmnln7wit.feishu.cn/wiki/WpK2wAcV8i6P8tke8X9cLcmDnSh" target="_blank">知识库首页</a>
 </div>
+<!-- Mobile promo links (hidden on desktop, shown on mobile) -->
+<div class="footer-promo">
+<a href="https://cloud.tencent.com/act/pro/warmup-202606?from=29779&cps_key=c3102324fb3989336d42de76070a0cba&page=featured-202604&s_source=https%3A%2F%2Fcloud.tencent.com%2Fact%2Fpro%2Ffeatured-202604" target="_blank">☁️ 腾讯云服务器</a>
+<a href="https://5yuantoken.org/register?aff=R2YCECS7LKG4" target="_blank">🔗 5元Token API服务</a>
+</div>
 <div class="footer-copy">© 2024-2026 ATOMCOLLIDE · ALL SYSTEMS OPERATIONAL</div>
 </div>
 </footer>
+<!-- ========== MODULE: FOOTER END ========== -->
 
+<!-- ========== SCRIPTS ========== -->
 <script>
-// Particle starfield
+// ============================================================
+// Team member data (M08 · Level 1 — only change this file)
+// ============================================================
+const teamData = {
+  core: [
+    { id:"t-001", name:"陈宇锋", career:"16年互联网大厂BU-VP", roles:["AtomCollide社区-联创","智械工坊-创始人","ACU-校长"], avatar:"assets/avatars/chenyufeng.webp", color:"#00d4ff" },
+    { id:"t-002", name:"PR", career:"流行音乐老师/独立音乐人", roles:["AtomCollide社区-联创","智械工坊-联合发起人"], avatar:"assets/avatars/pr.webp", color:"#00d4ff" },
+    { id:"t-003", name:"JKL", career:"国际教育顾问", roles:["JKL神思记创始人","社区-联创","智械工坊-联创"], avatar:"assets/avatars/jkl.webp", color:"#7b61ff" },
+    { id:"t-004", name:"李渔樵", career:"", roles:["社区-联创","智械工坊-联创","首席治安官"], avatar:"assets/avatars/liyuqiao.webp", color:"#00d4ff" },
+    { id:"t-005", name:"欢喜", career:"欢喜心灵驿站主理人/国际心理咨询师", roles:["社区-联创"], avatar:"assets/avatars/huanxi.webp", color:"#00f0a0" },
+    { id:"t-006", name:"陈飞飞", career:"数据资产集团CEO&独立投资人", roles:["社区-联创","治安官"], avatar:"assets/avatars/chenfeifei.webp", color:"#00d4ff" },
+    { id:"t-007", name:"井老师", career:"国际珠宝石学家/NGTC认证讲师", roles:["治安官"], avatar:"assets/avatars/jinglaoshi.webp", color:"#00f0a0" },
+    { id:"t-008", name:"吴见见", career:"新锐茶品牌&独立投资人", roles:["治安官"], avatar:"assets/avatars/wujianjian.webp", color:"#7b61ff" },
+    { id:"t-009", name:"江诗敏", career:"独立数学老师/三猫教辅SaaS创始人", roles:["治安官"], avatar:"assets/avatars/jiangshimin.webp", color:"#7b61ff" },
+    { id:"t-010", name:"瀚音", career:"", roles:["治安官"], avatar:"assets/avatars/hanyin.webp", color:"#7b61ff" },
+    { id:"t-011", name:"猫哥", career:"资深游戏主策与开发", roles:["治安官"], avatar:"assets/avatars/maoge.webp", color:"#00d4ff" },
+    { id:"t-012", name:"404NotFound", career:"资深游戏平面视觉设计师", roles:["治安官","棱镜设计所主理人"], avatar:"assets/avatars/404notfound.webp", color:"#7b61ff" },
+  ],
+  contributors: [
+    { name:"Tʜᴇ ғᴜᴛᴜʀᴇ", avatar:"assets/avatars/thefuture.webp" },
+    { name:"任斌", avatar:"assets/avatars/renbin.webp" },
+    { name:"鸿枫技术栈", avatar:"assets/avatars/hongfeng.webp" },
+    { name:"Adgai", avatar:"assets/avatars/adgai.webp" },
+    { name:"Will", avatar:"assets/avatars/will.webp" },
+    { name:"万手哥", avatar:"assets/avatars/wanshouge.webp" },
+    { name:"昭宁", avatar:"assets/avatars/zhaoning.webp" },
+    { name:"李康强", avatar:"assets/avatars/likangqiang.webp" },
+  ]
+};
+
+// ============================================================
+// Hero stats number rolling animation (M03)
+// ============================================================
+function animateNumbers() {
+  document.querySelectorAll('.stat-val[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const unit = el.querySelector('.unit')?.textContent || '';
+    const duration = 1200;
+    const startTime = performance.now();
+    function update(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      const current = Math.round(target * eased);
+      el.innerHTML = current.toLocaleString() + '<span class="unit">' + unit + '</span>';
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  });
+}
+// Trigger when hero becomes visible
+const heroObserver = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) { animateNumbers(); heroObserver.disconnect(); }
+}, { threshold: 0.3 });
+heroObserver.observe(document.querySelector('.module-hero'));
+
+// ============================================================
+// Product category filter (M06)
+// ============================================================
+document.querySelectorAll('.module-products .filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const cat = btn.dataset.cat;
+    // Update active button
+    document.querySelectorAll('.module-products .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    // Filter cards
+    document.querySelectorAll('.module-products .card').forEach(card => {
+      if (cat === 'all' || card.dataset.category === cat) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  });
+});
+
+// ============================================================
+// Team card click → detail panel (M08)
+// ============================================================
+const detailPanel = document.getElementById('team-detail-panel');
+const detailOverlay = document.querySelector('.detail-overlay');
+const detailClose = detailPanel.querySelector('.detail-close');
+
+document.querySelectorAll('.team-card[data-member-id]').forEach(card => {
+  card.addEventListener('click', () => {
+    const memberId = card.dataset.memberId;
+    const member = teamData.core.find(m => m.id === memberId);
+    if (!member) return;
+
+    // Set content
+    document.getElementById('detail-avatar').src = member.avatar;
+    document.getElementById('detail-avatar').style.borderColor = member.color;
+    document.getElementById('detail-name').textContent = member.name;
+    document.getElementById('detail-career').textContent = member.career || '（保密）';
+    document.getElementById('detail-roles').textContent = member.roles.join(' · ');
+    document.getElementById('detail-roles').style.color = member.color;
+
+    // Show panel
+    detailPanel.classList.add('active');
+    detailOverlay.classList.add('active');
+  });
+});
+
+// Close detail panel
+detailClose.addEventListener('click', closeDetail);
+detailOverlay.addEventListener('click', closeDetail);
+function closeDetail() {
+  detailPanel.classList.remove('active');
+  detailOverlay.classList.remove('active');
+}
+
+// ============================================================
+// Particle starfield (M03 background)
+// ============================================================
 const c=document.getElementById('particles'),ctx=c.getContext('2d');
 function resize(){c.width=innerWidth;c.height=innerHeight}
 resize();addEventListener('resize',resize);
@@ -374,13 +764,17 @@ const stars=Array.from({length:120},()=>({x:Math.random()*innerWidth,y:Math.rand
 function draw(){ctx.clearRect(0,0,c.width,c.height);stars.forEach(s=>{s.a+=s.s*0.02*(Math.random()>0.5?1:-1);if(s.a>1)s.a=1;if(s.a<0.1)s.a=0.1;s.x+=s.vx;s.y+=s.vy;if(s.x<0)s.x=c.width;if(s.x>c.width)s.x=0;if(s.y<0)s.y=c.height;if(s.y>c.height)s.y=0;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(0,212,255,'+s.a+')';ctx.fill()});requestAnimationFrame(draw)}
 draw();
 
+// ============================================================
 // Scroll reveal animation
-const observer=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})
+// ============================================================
+const revealObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObserver.unobserve(e.target)}})
 },{threshold:0.08,rootMargin:'0px 0px -60px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
-// Mouse glow on group buttons
+// ============================================================
+// Mouse glow on group buttons (M09)
+// ============================================================
 document.querySelectorAll('.grp-btn').forEach(btn=>{
   btn.addEventListener('mousemove',e=>{
     const r=btn.getBoundingClientRect();
@@ -388,5 +782,23 @@ document.querySelectorAll('.grp-btn').forEach(btn=>{
     btn.style.setProperty('--my',(e.clientY-r.top)+'px');
   });
 });
+
+// ============================================================
+// Nav scroll shrink (M02)
+// ============================================================
+const navMain = document.querySelector('.module-nav .nav-main');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    navMain.style.height = '50px';
+  } else {
+    navMain.style.height = '60px';
+  }
+});
+
+// Keyboard: ESC closes detail panel
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeDetail();
+});
 </script>
-</body></html>
+</body>
+</html>
