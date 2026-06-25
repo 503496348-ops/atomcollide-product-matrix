@@ -124,7 +124,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .module-vision .value-card:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,180,255,0.08)}
 .module-vision .value-card:hover::before{opacity:1}
 .module-vision .value-icon{font-size:1.6rem;margin-bottom:10px}
-.module-vision .value-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:6px;font-family:'JetBrains Mono',monospace}
+.module-vision .value-title{font-size:13px;font-weight:600;color:var(--value-color,var(--text-primary));margin-bottom:6px;font-family:'JetBrains Mono',monospace}
 .module-vision .value-desc{font-size:12px;color:var(--text-tertiary);line-height:1.6}
 
 /* ============================================================
@@ -227,15 +227,19 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
    MODULE: COMMUNITY (M09 · P1)
    ============================================================ */
 .module-community .grp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.module-community .community-category{margin-bottom:24px}
 .module-community .grp-btn{display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:10px;background:var(--bg-glass);border:1px solid var(--border-glass);text-decoration:none;color:inherit;transition:var(--transition-all);position:relative;overflow:hidden}
 .module-community .grp-btn::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(0,212,255,0.08),transparent 50%);opacity:0;transition:opacity var(--transition-speed)}
-.module-community .grp-btn:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateY(-1px)}
-.module-community .grp-btn:hover::before{opacity:1}
+.module-community .grp-btn.group-full{opacity:0.5;pointer-events:none}
+.module-community .grp-btn.group-open:hover{background:var(--bg-glass-hover);border-color:rgba(0,240,160,0.25);transform:translateY(-1px)}
+.module-community .grp-btn.group-open:hover::before{opacity:1}
 .grp-icon{font-size:1rem;position:relative;z-index:1}
 .grp-name{flex:1;font-size:12px;font-weight:500;color:var(--text-secondary);position:relative;z-index:1}
-.module-community .grp-btn:hover .grp-name{color:#c0d0e8}
+.module-community .grp-btn.group-open:hover .grp-name{color:#c0d0e8}
 .grp-arr{font-size:12px;color:var(--text-muted);transition:var(--transition-all);position:relative;z-index:1}
-.module-community .grp-btn:hover .grp-arr{color:var(--color-zhixie);transform:translateX(3px)}
+.module-community .grp-btn.group-open:hover .grp-arr{color:var(--color-acu);transform:translateX(3px)}
+.grp-status{font-size:10px;font-family:'JetBrains Mono',monospace;position:relative;z-index:1}
+.grp-status-open{color:var(--color-acu)}
 .module-community .notice{background:rgba(0,212,255,0.03);border:1px solid rgba(0,212,255,0.1);border-radius:12px;padding:18px 22px;margin-top:20px;font-size:13px;line-height:1.8;color:var(--text-muted);display:flex;align-items:flex-start;gap:10px}
 .module-community .notice strong{color:var(--color-zhixie);font-weight:600}
 
@@ -305,6 +309,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
   .nav-promo-links{display:none}
   .module-footer .footer-promo{display:flex}
   .module-team .team-grid{grid-template-columns:repeat(3,1fr)}
+  .module-community .grp-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:500px){
   .module-products .prod-grid{grid-template-columns:1fr}
@@ -372,9 +377,9 @@ AtomCollide
 <div class="vision-label">// VISION</div>
 <div class="vision-text">🎯 <strong>愿景</strong>：成为测试人 AI 转型的第一站，让每位成员都能在这里找到从 0 到 1 的成长路径，让 AI 技术触手可及。</div>
 <div class="values-grid">
-<div class="value-card"><div class="value-icon">✅</div><div class="value-title">Done better than Perfect</div><div class="value-desc">完成比完美更重要<br>先做出来，再迭代优化</div></div>
-<div class="value-card"><div class="value-icon">💎</div><div class="value-title">Stay hungry, Stay foolish</div><div class="value-desc">求知若饥，虚心若愚<br>永远保持渴望，敢于尝试</div></div>
-<div class="value-card"><div class="value-icon">❤️</div><div class="value-title">Keep Moving, Never Settle</div><div class="value-desc">永不止步，永不满足<br>持续迭代，永远追求更好</div></div>
+<div class="value-card" style="--value-color:var(--color-zhixie)"><div class="value-icon">🧠</div><div class="value-title">认知先行</div><div class="value-desc">我们相信认知升级是转型的起点<br>知识库不只是资料堆砌，而是结构化的认知地图</div></div>
+<div class="value-card" style="--value-color:var(--color-open)"><div class="value-icon">🛠️</div><div class="value-title">实战为王</div><div class="value-desc">每个产品都经过真实场景验证<br>从踩坑修复到商业闭环，只分享跑通的路</div></div>
+<div class="value-card" style="--value-color:var(--color-acu)"><div class="value-icon">🤝</div><div class="value-title">开放共建</div><div class="value-desc">代码开源、方法论公开、社群共治<br>越开放，越强大</div></div>
 </div>
 </div>
 </section>
@@ -430,32 +435,32 @@ AtomCollide
 <h3 class="group-title">联合发起人</h3>
 <div class="team-grid">
 <div class="team-card" data-member-id="t-001" style="--member-color:var(--color-zhixie)">
-  <div class="avatar-wrapper"><img src="assets/avatars/chenyufeng.webp" alt="陈宇锋" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/chenyufeng.webp" alt="陈宇锋" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">陈宇锋</div><div class="member-role">联创 · 智械工坊创始人</div>
   <div class="member-tags"><span class="member-tag">16年大厂</span><span class="member-tag">ACU校长</span></div>
 </div>
 <div class="team-card" data-member-id="t-002" style="--member-color:var(--color-zhixie)">
-  <div class="avatar-wrapper"><img src="assets/avatars/pr.webp" alt="PR" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/pr.webp" alt="PR" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">PR</div><div class="member-role">联创 · 联合发起人</div>
   <div class="member-tags"><span class="member-tag">音乐老师</span><span class="member-tag">独立音乐人</span></div>
 </div>
 <div class="team-card" data-member-id="t-003" style="--member-color:var(--color-open)">
-  <div class="avatar-wrapper"><img src="assets/avatars/jkl.webp" alt="JKL" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/jkl.webp" alt="JKL" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">JKL</div><div class="member-role">联创 · JKL神思记创始人</div>
   <div class="member-tags"><span class="member-tag">国际教育</span></div>
 </div>
 <div class="team-card" data-member-id="t-004" style="--member-color:var(--color-zhixie)">
-  <div class="avatar-wrapper"><img src="assets/avatars/liyuqiao.webp" alt="李渔樵" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/liyuqiao.webp" alt="李渔樵" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">李渔樵</div><div class="member-role">联创 · 首席治安官</div>
   <div class="member-tags"><span class="member-tag">智械工坊联创</span></div>
 </div>
 <div class="team-card" data-member-id="t-005" style="--member-color:var(--color-acu)">
-  <div class="avatar-wrapper"><img src="assets/avatars/huanxi.webp" alt="欢喜" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/huanxi.webp" alt="欢喜" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">欢喜</div><div class="member-role">联创</div>
   <div class="member-tags"><span class="member-tag">心理咨询师</span><span class="member-tag">心灵驿站</span></div>
 </div>
 <div class="team-card" data-member-id="t-006" style="--member-color:var(--color-zhixie)">
-  <div class="avatar-wrapper"><img src="assets/avatars/chenfeifei.webp" alt="陈飞飞" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/chenfeifei.webp" alt="陈飞飞" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">陈飞飞</div><div class="member-role">联创 · 治安官</div>
   <div class="member-tags"><span class="member-tag">数据资产CEO</span><span class="member-tag">投资人</span></div>
 </div>
@@ -466,32 +471,32 @@ AtomCollide
 <h3 class="group-title">治安官</h3>
 <div class="team-grid">
 <div class="team-card" data-member-id="t-007" style="--member-color:var(--color-acu)">
-  <div class="avatar-wrapper"><img src="assets/avatars/jinglaoshi.webp" alt="井老师" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/jinglaoshi.webp" alt="井老师" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">井老师</div><div class="member-role">治安官</div>
   <div class="member-tags"><span class="member-tag">珠宝鉴定师</span><span class="member-tag">NGTC讲师</span></div>
 </div>
 <div class="team-card" data-member-id="t-008" style="--member-color:var(--color-open)">
-  <div class="avatar-wrapper"><img src="assets/avatars/wujianjian.webp" alt="吴见见" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/wujianjian.webp" alt="吴见见" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">吴见见</div><div class="member-role">治安官</div>
   <div class="member-tags"><span class="member-tag">茶品牌</span><span class="member-tag">投资人</span></div>
 </div>
 <div class="team-card" data-member-id="t-009" style="--member-color:var(--color-open)">
-  <div class="avatar-wrapper"><img src="assets/avatars/jiangshimin.webp" alt="江诗敏" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/jiangshimin.webp" alt="江诗敏" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">江诗敏</div><div class="member-role">治安官</div>
   <div class="member-tags"><span class="member-tag">数学老师</span><span class="member-tag">三猫教辅</span></div>
 </div>
 <div class="team-card" data-member-id="t-010" style="--member-color:var(--color-open)">
-  <div class="avatar-wrapper"><img src="assets/avatars/hanyin.webp" alt="瀚音" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/hanyin.webp" alt="瀚音" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">瀚音</div><div class="member-role">治安官</div>
   <div class="member-tags"><span class="member-tag">AI Agent Lab</span></div>
 </div>
 <div class="team-card" data-member-id="t-011" style="--member-color:var(--color-zhixie)">
-  <div class="avatar-wrapper"><img src="assets/avatars/maoge.webp" alt="猫哥" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/maoge.webp" alt="猫哥" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">猫哥</div><div class="member-role">治安官</div>
   <div class="member-tags"><span class="member-tag">游戏主策</span><span class="member-tag">开发</span></div>
 </div>
 <div class="team-card" data-member-id="t-012" style="--member-color:var(--color-open)">
-  <div class="avatar-wrapper"><img src="assets/avatars/404notfound.webp" alt="404NotFound" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/404notfound.webp" alt="404NotFound" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">404NotFound</div><div class="member-role">治安官 · 棱镜设计所主理人</div>
   <div class="member-tags"><span class="member-tag">视觉设计</span><span class="member-tag">游戏美术</span></div>
 </div>
@@ -502,35 +507,35 @@ AtomCollide
 <h3 class="group-title">杰出贡献者</h3>
 <div class="team-grid">
 <div class="team-card" style="--member-color:var(--color-open)">
-  <div class="avatar-wrapper"><img src="assets/avatars/thefuture.webp" alt="The Future" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/thefuture.webp" alt="The Future" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">Tʜᴇ ғᴜᴛᴜʀᴇ</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-zhixie)">
-  <div class="avatar-wrapper"><img src="assets/avatars/renbin.webp" alt="任斌" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/renbin.webp" alt="任斌" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">任斌</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-open)">
-  <div class="avatar-wrapper"><img src="assets/avatars/hongfeng.webp" alt="鸿枫技术栈" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/hongfeng.webp" alt="鸿枫技术栈" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">鸿枫技术栈</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-acu)">
-  <div class="avatar-wrapper"><img src="assets/avatars/adgai.webp" alt="Adgai" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/adgai.webp" alt="Adgai" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">Adgai</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-open)">
-  <div class="avatar-wrapper"><img src="assets/avatars/will.webp" alt="Will" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/will.webp" alt="Will" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">Will</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-zhixie)">
-  <div class="avatar-wrapper"><img src="assets/avatars/wanshouge.webp" alt="万手哥" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/wanshouge.webp" alt="万手哥" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">万手哥</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-open)">
-  <div class="avatar-wrapper"><img src="assets/avatars/zhaoning.webp" alt="昭宁" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/zhaoning.webp" alt="昭宁" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">昭宁</div>
 </div>
 <div class="team-card" style="--member-color:var(--color-acu)">
-  <div class="avatar-wrapper"><img src="assets/avatars/likangqiang.webp" alt="李康强" class="team-avatar"/><div class="avatar-glow"></div></div>
+  <div class="avatar-wrapper"><img src="assets/avatars/likangqiang.webp" alt="李康强" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">李康强</div>
 </div>
 </div>
@@ -575,24 +580,47 @@ AtomCollide
 <section class="section module-community reveal" id="community" data-module="M09">
 <div class="section-head"><span class="section-num">[04]</span><h2>💬 社群入口（16 席）</h2><div class="head-line"></div></div>
 <div class="section-head" style="margin-top:-28px"><p>全社区内容全域同步 · 保留 1 个常用社群即可</p></div>
+
+<!-- Category: AI 智能体踩坑交流 -->
+<div class="community-category">
+<h3 class="group-title">AI 智能体踩坑交流社群</h3>
+<p style="font-size:12px;color:var(--text-tertiary);margin-bottom:12px">专注 AI 赋能测试落地，深度技术交流</p>
 <div class="grp-grid">
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=074vd565-6084-455c-ac52-9703e89a0697" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 1 区</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=60bj94f0-1a67-48a7-abbb-9172b161c2b0" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 2 区</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=13do1920-db46-4444-b635-005680beaf58" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 3 区</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f17o1b86-06f6-4f10-911a-69a299a25fe3" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 4 区</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=2bbh6ab6-22c2-4753-b973-74bb1a2edcc9" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 5 区</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=d19r19f7-2f47-42ba-b1ec-cb0342cf2e80" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 6 区</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=fe9vdacc-7316-4b4d-ae4a-fdbcf56315e6" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 7 区</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=103kfae8-1fd7-424f-984f-d66c210e42d1" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 8 区</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=239p3cad-2f83-4baa-a230-f40386067548" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 9 区</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=880r7cf5-3638-45ff-afb9-7944de991872" target="_blank" class="grp-btn"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 10 区</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=6a3v579b-ab43-4e1a-87f9-be63bab88da7" target="_blank" class="grp-btn"><span class="grp-icon">✍️</span><span class="grp-name">网文作家</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=76at299e-73da-4eeb-9eba-32161e98f2f8" target="_blank" class="grp-btn"><span class="grp-icon">🎵</span><span class="grp-name">音乐达人</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f2av73d0-6bb4-4a9f-9095-5fbbe83e49ec" target="_blank" class="grp-btn"><span class="grp-icon">💌</span><span class="grp-name">微笑驿站</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=5d8qa952-d8b8-4ee1-8232-0729916068b0" target="_blank" class="grp-btn"><span class="grp-icon">📡</span><span class="grp-name">融媒矩阵</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/open?chatId=oc_49233d7f777b3f249c59d7fa26c2b6e6" target="_blank" class="grp-btn"><span class="grp-icon">⚡</span><span class="grp-name">Codex加油站</span><span class="grp-arr">→</span></a>
-<a href="https://applink.feishu.cn/client/chat/open?chatId=oc_d118a0da56b9beac8ba5dc5e913de4fa" target="_blank" class="grp-btn"><span class="grp-icon">🏗️</span><span class="grp-name">Open Build</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=074vd565-6084-455c-ac52-9703e89a0697" target="_blank" class="grp-btn group-full"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 1 区</span><span class="grp-status">🔴 已满</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=60bj94f0-1a67-48a7-abbb-9172b161c2b0" target="_blank" class="grp-btn group-full"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 2 区</span><span class="grp-status">🔴 已满</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=13do1920-db46-4444-b635-005680beaf58" target="_blank" class="grp-btn group-full"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 3 区</span><span class="grp-status">🔴 已满</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f17o1b86-06f6-4f10-911a-69a299a25fe3" target="_blank" class="grp-btn group-full"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 4 区</span><span class="grp-status">🔴 已满</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=2bbh6ab6-22c2-4753-b973-74bb1a2edcc9" target="_blank" class="grp-btn group-full"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 5 区</span><span class="grp-status">🔴 已满</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=d19r19f7-2f47-42ba-b1ec-cb0342cf2e80" target="_blank" class="grp-btn group-open"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 6 区</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=fe9vdacc-7316-4b4d-ae4a-fdbcf56315e6" target="_blank" class="grp-btn group-open"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 7 区</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=103kfae8-1fd7-424f-984f-d66c210e42d1" target="_blank" class="grp-btn group-open"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 8 区</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=239p3cad-2f83-4baa-a230-f40386067548" target="_blank" class="grp-btn group-open"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 9 区</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=880r7cf5-3638-45ff-afb9-7944de991872" target="_blank" class="grp-btn group-open"><span class="grp-icon">💬</span><span class="grp-name">AI 探索交流 10 区</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
 </div>
+</div>
+
+<!-- Category: AI 变现交流 -->
+<div class="community-category">
+<h3 class="group-title">AI 变现交流社群 🎯 垂直</h3>
+<p style="font-size:12px;color:var(--text-tertiary);margin-bottom:12px">行业垂直社群，探索 AI 赋能各领域变现路径</p>
+<div class="grp-grid">
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=6a3v579b-ab43-4e1a-87f9-be63bab88da7" target="_blank" class="grp-btn group-open"><span class="grp-icon">✍️</span><span class="grp-name">网文作家</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=76at299e-73da-4eeb-9eba-32161e98f2f8" target="_blank" class="grp-btn group-open"><span class="grp-icon">🎵</span><span class="grp-name">音乐达人</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f2av73d0-6bb4-4a9f-9095-5fbbe83e49ec" target="_blank" class="grp-btn group-open"><span class="grp-icon">💌</span><span class="grp-name">微笑驿站</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=5d8qa952-d8b8-4ee1-8232-0729916068b0" target="_blank" class="grp-btn group-open"><span class="grp-icon">📡</span><span class="grp-name">融媒矩阵</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
+</div>
+</div>
+
+<!-- Category: 技术极客 -->
+<div class="community-category">
+<h3 class="group-title">技术极客社区 🎯 垂直</h3>
+<p style="font-size:12px;color:var(--text-tertiary);margin-bottom:12px">高标准技术门槛，需审核入群</p>
+<div class="grp-grid">
+<a href="https://applink.feishu.cn/client/chat/open?chatId=oc_49233d7f777b3f249c59d7fa26c2b6e6" target="_blank" class="grp-btn group-open"><span class="grp-icon">⚡</span><span class="grp-name">Codex加油站</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/open?chatId=oc_d118a0da56b9beac8ba5dc5e913de4fa" target="_blank" class="grp-btn group-open"><span class="grp-icon">🏗️</span><span class="grp-name">Open Build</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
+</div>
+</div>
+
 <div class="notice"><strong>📢 社群公告：</strong>全社区所有社群已实现<strong>内容全域同步</strong>。所有通知、干货、活动公告均由机器人自动跨群搬运。<strong>请保留 1 个常用社群即可</strong>。</div>
 </section>
 <!-- ========== MODULE: COMMUNITY END ========== -->
@@ -609,6 +637,8 @@ AtomCollide
 <ul><li><strong>一线大厂内推通道</strong> — 字节、阿里、腾讯等头部企业测试负责人资源</li><li><strong>全链路求职赋能包</strong> — AI 测试面试题库、简历优化模板、面试技巧</li><li><strong>线下技术沙龙 & 人脉网络</strong> — 不定期城市线下交流局</li></ul>
 <h3>🧪 学 AI 测试：真正落地，拒绝空谈</h3>
 <ul><li><strong>从 0 到 1 实战落地体系</strong> — 紧跟 Skills、MCP、RAG、AI IDE 等前沿技术</li><li><strong>独家自研资料与工具矩阵</strong> — 《AtomCollide AI测试实战知识库》全套内容</li><li><strong>前沿技术同步与提效方案</strong> — 最新研究成果与行业动态</li></ul>
+<h3>🛠️ 做项目：一起造东西</h3>
+<ul><li><strong>开源协作 · 产品共建</strong> — 召物少年、灵感象限等项目欢迎贡献</li><li><strong>技术验证 · 从0到1</strong> — 完整经历从想法到上线的产品全流程</li><li><strong>社区导师 1v1 辅导</strong> — 核心团队成员手把手指导开源贡献路径</li></ul>
 <p>拒绝水群、纯技术驱动、真诚互助的成长社群。</p>
 <a class="recruit-cta" href="https://vcnvmnln7wit.feishu.cn/wiki/WpK2wAcV8i6P8tke8X9cLcmDnSh" target="_blank">📖 浏览知识库</a>
 </div>
@@ -626,7 +656,7 @@ AtomCollide
 </div>
 <div class="footer-section"><span class="ft-label">MISSION</span><span class="ft-value">for the learner，和学习者一起成长</span></div>
 <div class="footer-section"><span class="ft-label">VISION</span><span class="ft-value"><strong>成为测试人 AI 转型的第一站，让 AI 技术触手可及</strong></span></div>
-<div class="footer-section"><span class="ft-label">VALUES</span><span class="ft-value">Done better than Perfect · Stay hungry, Stay foolish · Keep Moving, Never Settle</span></div>
+<div class="footer-section"><span class="ft-label">VALUES</span><span class="ft-value">🧠 认知先行 · 🛠️ 实战为王 · 🤝 开放共建</span></div>
 <div class="footer-links">
 <a href="https://github.com/503496348-ops" target="_blank">GitHub Organization</a>
 <a href="https://vcnvmnln7wit.feishu.cn/wiki/WpK2wAcV8i6P8tke8X9cLcmDnSh" target="_blank">知识库首页</a>
@@ -637,6 +667,7 @@ AtomCollide
 <a href="https://5yuantoken.org/register?aff=R2YCECS7LKG4" target="_blank">🔗 5元Token API服务</a>
 </div>
 <div class="footer-copy">© 2024-2026 ATOMCOLLIDE · ALL SYSTEMS OPERATIONAL</div>
+<div class="footer-motto" style="font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;letter-spacing:2px;margin-top:6px">元素碰撞 · 智能涌现</div>
 </div>
 </footer>
 <!-- ========== MODULE: FOOTER END ========== -->
@@ -755,14 +786,21 @@ function closeDetail() {
 }
 
 // ============================================================
-// Particle starfield (M03 background)
+// Particle starfield (M03 background) — mobile degrades to static
 // ============================================================
+const isMobile = window.matchMedia('(max-width: 768px)').matches;
 const c=document.getElementById('particles'),ctx=c.getContext('2d');
 function resize(){c.width=innerWidth;c.height=innerHeight}
 resize();addEventListener('resize',resize);
-const stars=Array.from({length:120},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.2+0.3,a:Math.random(),s:Math.random()*0.3+0.05,vx:(Math.random()-0.5)*0.15,vy:(Math.random()-0.5)*0.15}));
-function draw(){ctx.clearRect(0,0,c.width,c.height);stars.forEach(s=>{s.a+=s.s*0.02*(Math.random()>0.5?1:-1);if(s.a>1)s.a=1;if(s.a<0.1)s.a=0.1;s.x+=s.vx;s.y+=s.vy;if(s.x<0)s.x=c.width;if(s.x>c.width)s.x=0;if(s.y<0)s.y=c.height;if(s.y>c.height)s.y=0;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(0,212,255,'+s.a+')';ctx.fill()});requestAnimationFrame(draw)}
-draw();
+
+if(isMobile){
+  // Mobile: skip Canvas animation, rely on CSS gradients only
+  c.style.display='none';
+}else{
+  const stars=Array.from({length:120},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.2+0.3,a:Math.random(),s:Math.random()*0.3+0.05,vx:(Math.random()-0.5)*0.15,vy:(Math.random()-0.5)*0.15}));
+  function draw(){ctx.clearRect(0,0,c.width,c.height);stars.forEach(s=>{s.a+=s.s*0.02*(Math.random()>0.5?1:-1);if(s.a>1)s.a=1;if(s.a<0.1)s.a=0.1;s.x+=s.vx;s.y+=s.vy;if(s.x<0)s.x=c.width;if(s.x>c.width)s.x=0;if(s.y<0)s.y=c.height;if(s.y>c.height)s.y=0;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(0,212,255,'+s.a+')';ctx.fill()});requestAnimationFrame(draw)}
+  draw();
+}
 
 // ============================================================
 // Scroll reveal animation
@@ -773,9 +811,9 @@ const revealObserver=new IntersectionObserver((entries)=>{
 document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
 // ============================================================
-// Mouse glow on group buttons (M09)
+// Mouse glow on group buttons (M09) — only for open groups
 // ============================================================
-document.querySelectorAll('.grp-btn').forEach(btn=>{
+document.querySelectorAll('.grp-btn.group-open').forEach(btn=>{
   btn.addEventListener('mousemove',e=>{
     const r=btn.getBoundingClientRect();
     btn.style.setProperty('--mx',(e.clientX-r.left)+'px');
