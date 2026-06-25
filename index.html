@@ -142,6 +142,40 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 .content{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:2}
 
 /* ============================================================
+   MODULE: ENGINE — 四驾马车 + AIGC 闭环
+   ============================================================ */
+.module-engine .engine-intro{text-align:center;margin-bottom:32px;font-size:15px;color:var(--text-secondary);line-height:1.8;max-width:640px;margin-left:auto;margin-right:auto}
+.module-engine .engine-intro strong{color:var(--color-zhixie);font-weight:600}
+.module-engine .engine-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:36px}
+.module-engine .engine-card{padding:28px 24px;border-radius:14px;background:var(--bg-glass);border:1px solid var(--border-glass);position:relative;overflow:hidden;transition:var(--transition-all)}
+.module-engine .engine-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--card-accent),transparent);opacity:0;transition:opacity var(--transition-speed)}
+.module-engine .engine-card:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,180,255,0.1)}
+.module-engine .engine-card:hover::before{opacity:1}
+.module-engine .engine-card-icon{font-size:1.4rem;margin-bottom:12px;display:inline-block}
+.module-engine .engine-card-title{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:4px;font-family:'JetBrains Mono',monospace}
+.module-engine .engine-card-subtitle{font-size:11px;color:var(--card-accent);font-family:'JetBrains Mono',monospace;margin-bottom:10px;letter-spacing:0.5px}
+.module-engine .engine-card-desc{font-size:12px;color:var(--text-tertiary);line-height:1.7}
+.module-engine .engine-card-desc strong{color:var(--text-secondary);font-weight:600}
+
+/* AIGC Closed Loop */
+.module-engine .loop-section{text-align:center;margin-top:8px}
+.module-engine .loop-title{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:20px}
+.module-engine .loop-title strong{color:var(--color-acu)}
+.module-engine .loop-chain{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;max-width:900px;margin:0 auto}
+.module-engine .loop-node{padding:10px 16px;border-radius:8px;background:var(--bg-glass);border:1px solid var(--border-glass);font-size:12px;font-weight:600;color:var(--text-secondary);transition:var(--transition-all);position:relative}
+.module-engine .loop-node:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);color:var(--text-primary);transform:translateY(-2px)}
+.module-engine .loop-node .loop-emoji{font-size:1rem;margin-right:4px}
+.module-engine .loop-arrow{color:var(--color-acu);font-size:1rem;font-weight:700;opacity:0.6}
+.module-engine .loop-desc{font-size:12px;color:var(--text-tertiary);margin-top:16px;line-height:1.7;max-width:640px;margin-left:auto;margin-right:auto}
+.module-engine .loop-desc strong{color:var(--color-acu);font-weight:600}
+
+@media(max-width:900px){
+  .module-engine .engine-grid{grid-template-columns:1fr}
+  .module-engine .loop-chain{flex-direction:column;gap:6px}
+  .module-engine .loop-arrow{transform:rotate(90deg)}
+}
+
+/* ============================================================
    SECTION COMMON
    ============================================================ */
 .section{padding:40px 0;position:relative}
@@ -210,7 +244,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 .module-team .team-card:hover{background:var(--bg-glass-hover);border-color:var(--border-glass-hover);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,180,255,0.1)}
 .module-team .team-card:hover::before{opacity:1}
 .module-team .avatar-wrapper{width:80px;height:80px;margin:0 auto 12px;position:relative}
-.module-team .team-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,212,255,0.2);transition:transform var(--transition-speed) var(--ease-out)}
+.module-team .team-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid rgba(0,212,255,0.35);box-shadow:0 0 8px 2px rgba(0,212,255,0.15);transition:transform var(--transition-speed) var(--ease-out)}
 .module-team .team-card:hover .team-avatar{transform:scale(1.125)}
 .module-team .avatar-glow{position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--member-color,var(--color-zhixie));opacity:0;transition:opacity var(--transition-speed);pointer-events:none}
 .module-team .team-card:hover .avatar-glow{opacity:0.4;box-shadow:0 0 20px 6px var(--member-color,var(--color-zhixie))}
@@ -219,6 +253,14 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 .module-team .member-tags{display:flex;gap:4px;justify-content:center;margin-top:8px;opacity:0;transform:translateY(6px);transition:var(--transition-all)}
 .module-team .team-card:hover .member-tags{opacity:1;transform:translateY(0)}
 .module-team .member-tag{font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid var(--border-glass);color:var(--text-tertiary)}
+
+/* Vacant "期待加入" card */
+.module-team .team-card-vacant{border-style:dashed;border-color:var(--border-glass-hover);cursor:default;animation:vacantPulse 3s ease-in-out infinite}
+.module-team .vacant-avatar{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:var(--bg-glass);border:2px dashed var(--border-glass-hover)}
+.module-team .vacant-icon{font-size:24px;color:var(--color-acu);animation:blink 2s ease-in-out infinite}
+.module-team .vacant-name{font-size:14px;font-weight:600;color:var(--text-tertiary)}
+.module-team .vacant-role{font-size:11px;color:var(--member-color,var(--color-acu));font-family:'JetBrains Mono',monospace;margin-top:2px}
+@keyframes vacantPulse{0%,100%{border-color:var(--border-glass)}50%{border-color:var(--border-glass-hover)}}
 
 /* Team detail panel */
 .module-team .team-detail{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);width:min(420px,90vw);padding:32px;border-radius:16px;background:rgba(10,14,20,0.95);border:1px solid var(--border-glass-hover);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.3s var(--ease-out),transform 0.3s var(--ease-out);backdrop-filter:blur(30px)}
@@ -243,7 +285,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backgr
 .module-community .grp-btn.group-open:hover{background:var(--bg-glass-hover);border-color:rgba(0,240,160,0.25);transform:translateY(-1px)}
 .module-community .grp-btn.group-open:hover::before{opacity:1}
 .grp-icon{font-size:1rem;position:relative;z-index:1}
-.grp-name{flex:1;font-size:12px;font-weight:500;color:var(--text-secondary);position:relative;z-index:1}
+.grp-name{flex:1;font-size:12px;font-weight:500;color:var(--text-secondary);position:relative;z-index:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .module-community .grp-btn.group-open:hover .grp-name{color:#c0d0e8}
 .grp-arr{font-size:12px;color:var(--text-muted);transition:var(--transition-all);position:relative;z-index:1}
 .module-community .grp-btn.group-open:hover .grp-arr{color:var(--color-acu);transform:translateX(3px)}
@@ -397,6 +439,58 @@ AtomCollide
 
 <div class="divider"></div>
 
+<!-- ========== MODULE: ENGINE START — 四驾马车 + AIGC 闭环 ========== -->
+<section class="section module-engine reveal" data-module="M05">
+<div class="section-head"><h2>⚡ 四驾马车 · 核心架构</h2><div class="head-line"></div></div>
+<div class="engine-intro">
+<strong>AtomCollide</strong> 是去中心化共建社区——在这里没有绝对的中心掌权者，人人皆是生态主角。我们联合一群志同道合的伙伴作为发起人，牵头组织统筹、长期维护整个社区的搭建、运营与生态发展。目前依靠<strong>「四驾马车」</strong>四大核心板块，协同驱动社区稳定迭代、长效发展。
+</div>
+<div class="engine-grid">
+<div class="engine-card" style="--card-accent:var(--color-zhixie)">
+  <div class="engine-card-icon">📚</div>
+  <div class="engine-card-title">知识库系统</div>
+  <div class="engine-card-subtitle">ATOMCOLLIDE KB</div>
+  <div class="engine-card-desc">依托万人规模社区，凭借日均 <strong>7000+</strong> 的高频社群互动、一线实战经验分享，把大家踩过的坑、落地验证的方法论不断萃取、规整入库，沉淀成独家可复用的行业实战数字资产，成为整个生态最核心的<strong>底层壁垒</strong>。</div>
+</div>
+<div class="engine-card" style="--card-accent:var(--color-open)">
+  <div class="engine-card-icon">🏗️</div>
+  <div class="engine-card-title">OpenBuild 无核化开源共建</div>
+  <div class="engine-card-subtitle">ATOMCOLLIDE OPENBUILD</div>
+  <div class="engine-card-desc">和知识库侧重经验沉淀不同，这里汇聚 <strong>50 位</strong>具备 Vibe Coding 实战能力的技术从业者，去中心化协同共创、联合开发落地各类开源项目，把创意方案、工具想法真正打磨成<strong>可落地、可商用</strong>的技术产品。</div>
+</div>
+<div class="engine-card" style="--card-accent:var(--color-acu)">
+  <div class="engine-card-icon">🎓</div>
+  <div class="engine-card-title">ACU 智能体学院</div>
+  <div class="engine-card-subtitle">ATOMCOLLIDE UNIVERSITY</div>
+  <div class="engine-card-desc">搭建行业标准化的智能体 <strong>8 维能力检测体系</strong> + 人才成长资质认证系统，为开发者、智能体项目建立统一的能力考核、等级晋升、资质确权规则，规范化完成技术人才筛选、培育与<strong>价值认定</strong>。</div>
+</div>
+<div class="engine-card" style="--card-accent:var(--color-zhixie)">
+  <div class="engine-card-icon">🧬</div>
+  <div class="engine-card-title">智械工坊</div>
+  <div class="engine-card-subtitle">ATOMCOLLIDE WORKSHOP</div>
+  <div class="engine-card-desc">核心原创创作团队，也是整个生态早期 GitHub 开源项目的<strong>基石</strong>。主要负责标杆项目研发、底层技术架构打磨、原创 IP 内容孵化，为社区全业务线提供初始的<strong>技术、内容与产品驱动力</strong>。</div>
+</div>
+</div>
+
+<div class="loop-section">
+<div class="loop-title">🔄 <strong>AIGC 全链路商业闭环</strong></div>
+<div class="loop-chain">
+  <div class="loop-node"><span class="loop-emoji">📚</span>知识驱动</div><span class="loop-arrow">→</span>
+  <div class="loop-node"><span class="loop-emoji">💬</span>社区保活</div><span class="loop-arrow">→</span>
+  <div class="loop-node"><span class="loop-emoji">📖</span>网文创作</div><span class="loop-arrow">→</span>
+  <div class="loop-node"><span class="loop-emoji">✍️</span>融媒撰稿</div><span class="loop-arrow">→</span>
+  <div class="loop-node"><span class="loop-emoji">🎬</span>剧本开发</div><span class="loop-arrow">→</span>
+  <div class="loop-node"><span class="loop-emoji">🎨</span>漫画漫剧</div><span class="loop-arrow">→</span>
+  <div class="loop-node"><span class="loop-emoji">📡</span>融媒分发</div><span class="loop-arrow">→</span>
+  <div class="loop-node"><span class="loop-emoji">🔄</span>生态回流</div>
+</div>
+<div class="loop-desc">我们搭建了「知识沉淀 → 人才集聚 → 技术落地 → 内容量产 → 全网变现 → <strong>生态反哺</strong>」的完整闭环，具备极强的可持续增长能力与行业壁垒。</div>
+</div>
+</section>
+<!-- ========== MODULE: ENGINE END ========== -->
+
+<div class="divider"></div>
+
 <!-- ========== MODULE: TEAM START (M08 · P1) ========== -->
 <section class="section module-team reveal" id="team" data-module="M08">
 <div class="section-head"><h2>🌟 核心团队 · 20 人</h2><div class="head-line"></div></div>
@@ -508,6 +602,11 @@ AtomCollide
 <div class="team-card" style="--member-color:var(--color-acu)">
   <div class="avatar-wrapper"><img src="assets/avatars/likangqiang.webp" alt="李康强" class="team-avatar" loading="lazy"/><div class="avatar-glow"></div></div>
   <div class="member-name">李康强</div>
+</div>
+<div class="team-card team-card-vacant" style="--member-color:var(--color-acu)">
+  <div class="avatar-wrapper vacant-avatar"><div class="vacant-icon">✦</div></div>
+  <div class="member-name vacant-name">虚位以待</div>
+  <div class="member-role vacant-role">期待你的加入</div>
 </div>
 </div>
 </div>
@@ -628,7 +727,7 @@ AtomCollide
 <h3 class="group-title">技术极客社区 🎯 垂直</h3>
 <p style="font-size:12px;color:var(--text-tertiary);margin-bottom:12px">高标准技术门槛，需审核入群</p>
 <div class="grp-grid">
-<a href="https://applink.feishu.cn/client/chat/open?chatId=oc_49233d7f777b3f249c59d7fa26c2b6e6" target="_blank" class="grp-btn group-open"><span class="grp-icon">⚡</span><span class="grp-name">Codex加油站</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
+<a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=606td012-a6c0-4878-b632-9befc13088f9" target="_blank" class="grp-btn group-open"><span class="grp-icon">⚡</span><span class="grp-name">Codex加油站</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
 <a href="https://applink.feishu.cn/client/chat/open?chatId=oc_d118a0da56b9beac8ba5dc5e913de4fa" target="_blank" class="grp-btn group-open"><span class="grp-icon">🏗️</span><span class="grp-name">Open Build</span><span class="grp-status grp-status-open">🟢 可加入</span><span class="grp-arr">→</span></a>
 </div>
 </div>
@@ -722,7 +821,7 @@ function animateNumbers() {
   document.querySelectorAll('.stat-val[data-target]').forEach(el => {
     const target = parseInt(el.dataset.target);
     const unit = el.querySelector('.unit')?.textContent || '';
-    const duration = 1200;
+    const duration = 2000; // 2s rolling animation for dramatic effect
     const startTime = performance.now();
     function update(now) {
       const elapsed = now - startTime;
@@ -731,33 +830,42 @@ function animateNumbers() {
       const current = Math.round(target * eased);
       el.innerHTML = current.toLocaleString() + '<span class="unit">' + unit + '</span>';
       if (progress < 1) requestAnimationFrame(update);
-      else el.dataset.current = target; // Store for growth
+      else { el.dataset.current = target; el.dataset.animated = '1'; } // Mark animation done
     }
     requestAnimationFrame(update);
   });
 }
-// Trigger when hero becomes visible
-const heroObserver = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting) { animateNumbers(); heroObserver.disconnect(); startSlowGrowth(); }
-}, { threshold: 0.3 });
-heroObserver.observe(document.querySelector('.module-hero'));
 
-// Slow growth — makes community feel alive
+// Start animation immediately on page load, no need to wait for scroll
+function initStatsAnimation() {
+  animateNumbers();
+  // Wait for rolling animation to finish (2s), then start slow growth
+  setTimeout(() => { startSlowGrowth(); }, 2200);
+}
+
+// Slow growth — makes community feel alive and growing
 function startSlowGrowth() {
   const membersEl = document.querySelector('.stat-val[data-target="10000"]');
   const activeEl = document.querySelector('.stat-val[data-target="7000"]');
   if (!membersEl || !activeEl) return;
   setInterval(() => {
-    // Random small increment every 8s
+    // Random small increment every 6s — feels natural
     const m = parseInt(membersEl.dataset.current || 10000);
     const a = parseInt(activeEl.dataset.current || 7000);
-    const mInc = Math.floor(Math.random() * 3) + 1;
-    const aInc = Math.floor(Math.random() * 2) + 1;
+    const mInc = Math.floor(Math.random() * 3) + 1; // +1~3 members
+    const aInc = Math.floor(Math.random() * 2) + 1;  // +1~2 active
     membersEl.dataset.current = m + mInc;
     activeEl.dataset.current = a + aInc;
+    // Brief highlight flash on update
+    membersEl.style.textShadow = '0 0 30px rgba(0,212,255,0.6)';
+    activeEl.style.textShadow = '0 0 30px rgba(0,212,255,0.6)';
+    setTimeout(() => {
+      membersEl.style.textShadow = '';
+      activeEl.style.textShadow = '';
+    }, 400);
     membersEl.innerHTML = (m + mInc).toLocaleString() + '<span class="unit">+</span>';
     activeEl.innerHTML = (a + aInc).toLocaleString() + '<span class="unit">+</span>';
-  }, 8000);
+  }, 6000);
 }
 
 // ============================================================
@@ -867,6 +975,9 @@ window.addEventListener('scroll', () => {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeDetail();
 });
+
+// Init stats animation on page load
+initStatsAnimation();
 </script>
 </body>
 </html>
